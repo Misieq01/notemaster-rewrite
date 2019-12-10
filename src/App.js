@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import NoAuthRoute from './utils/NoAuthRoute'
+import AuthRoute from './utils/AuthRoute'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Home from './Homepage/Pages/Home'
+import Login from './Authentication/Login'
+import Signup from './Authentication/Signup'
+import PasswordReset from './Authentication/PasswordReset'
+import Main from './App/Main'
+
+const App = () =>{
+  return <Router>
+    <Route exact path="/" component={Home}/>
+    <AuthRoute path="/Login" component={Login}/>
+    <AuthRoute path="/Signup" component={Signup}/>
+    <AuthRoute path="/Reset" component={PasswordReset}/>
+    <NoAuthRoute path='/User' component={Main}/>
+  </Router>
 }
 
 export default App;
