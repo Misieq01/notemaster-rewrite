@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom'
-
+import Background from '../../Components/Background'
 import Image from '../../Images/Home-background.jpg'
 
 const Container = styled.div`
@@ -87,26 +87,18 @@ const Author = styled.p`
   font-weight: 300;
 `;
 
-const Shadow = styled.div`
-    position:absolute;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.5);
-    z-index: 10;
-`
-
 const Home = props =>{
     return (
       <>
-        <Shadow />
+        <Background />
         <Container>
           <Header>
-            <Logo><NavLink><h1>NoteMaster</h1></NavLink></Logo>
+            <Logo><NavLink to='/' ><h1>NoteMaster</h1></NavLink></Logo>
             <Navigation>
-              <NavLink>About</NavLink>
-              <NavLink>Functionalities</NavLink>
-              <NavLink>Contact</NavLink>
-              <LoginLink to="/Login">Login/Register</LoginLink>
+              <NavLink to='/About' >About</NavLink>
+              <NavLink to='/Funct'>Functionalities</NavLink>
+              <NavLink to='/Contact'>Contact</NavLink>
+              <LoginLink to="/Login">Login</LoginLink>
             </Navigation>
           </Header>
           <TextWrapper>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { GetToken } from "./tokenHandler";
+import { GetToken } from "../utils/tokenHandler";
 
 const NoAuthRoute = ({ component: Component, ...rest }) => {
 

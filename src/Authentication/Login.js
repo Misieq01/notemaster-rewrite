@@ -86,11 +86,11 @@ const Login = props => {
             .post("http://localhost:4000/Login", data)
             .then(response => {
               SetToken(response.data);
-              props.history.push('/User')
+              props.history.push("/User/NotesPanel");
 
             })
             .catch(err => {
-              console.log(err.response);
+              console.log(err.response.data.message);
             });}
 
   return (

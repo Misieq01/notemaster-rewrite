@@ -1,7 +1,8 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  color: rgba(0,0,0,0.65);
+  color: rgba(0,0,0,0.75);
+  overflow-x: hidden;
 }
 
 code {
@@ -14,6 +15,7 @@ input,button{
   outline: none;
   text-decoration: none;
   background: rgb(250,250,250);
+  font-family: 'Roboto', sans-serif;
 
 }
 
@@ -29,4 +31,8 @@ p,h1,h2,h3,h4,h5,h6{
 
 h1{
   font-weight: normal;
+}
+
+textarea{
+  font-family: 'Roboto',sans-serif;
 }

@@ -86,7 +86,7 @@ const SignUp = props => {
     if(data.password === data.passwordConf){
       axios.post("http://localhost:4000/Signup",newData).then(response=>{
         SetToken(response.data)
-        props.history.push('/User')
+        props.history.push("/User/NotesPanel");
       }).catch(err=>{
         console.log(err.response)
       });

@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser')
 
 const PORT = 4000;
 const app = express();
 
-let auth = require("./Routes/Users");
+let users = require("./Routes/Users");
+let notes = require("./Routes/Notes");
+let labels = require('./Routes/Labels')
 
 app.use(cors());
 app.use(express.json());
@@ -22,7 +23,8 @@ app.use((req, res, next) => {
 mongoose.connect("mongodb://localhost:27017/notemaster", {
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  autoIndex: false
+  autoIndex: false,
+  useFindAndModify: false
 });
 
 const connection = mongoose.connection;
@@ -31,7 +33,9 @@ connection.once("open", () => {
   console.log("Database is connected");
 });
 
-app.use(auth);
+app.use(users);
+app.use(notes);
+app.use(labels);
 
 app.listen(PORT, () => {
   console.log("Server is online");

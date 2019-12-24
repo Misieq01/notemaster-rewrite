@@ -19,11 +19,10 @@ router.post('/Signup', async(req,res) =>{
 router.post('/Login', async(req,res)=>{
     try {
         const user = await User.FindByCredentials(req.body.email,req.body.password)
-        console.log(user)
         const token = await user.GenerateAuthToken()
         res.status(201).send(token)
     } catch (error) {
-        res.status(400).send(error)
+        res.status(400).send({message : error.message})
     }
 })
 
@@ -31,7 +30,7 @@ router.post('/Login', async(req,res)=>{
 router.post('/Logout',AuthMiddleware,async(req,res)=>{
     try {
         req.user.tokens = req.user.tokens.filter(token=>{
-            return req.token !== token
+            return req.token !== token.token
         })
         await req.user.save()
         res.send()

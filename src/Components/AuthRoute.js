@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { GetToken } from "./tokenHandler";
+import { GetToken } from "../utils/tokenHandler";
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
@@ -9,7 +9,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
       render={props =>
         GetToken() ? (
           <Redirect
-            to={{ pathname: "/User", state: { from: props.location } }}
+            to={{ pathname: "/User/NotesPanel", state: { from: props.location } }}
           />
         ) : (
           <Component {...props} />
