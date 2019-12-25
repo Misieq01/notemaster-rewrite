@@ -7,7 +7,9 @@ const AuthMiddleware = require("../Middleware/auth");
 const router = express.Router();
 
 router.post("/NewNote", AuthMiddleware, async (req, res) => {
+  
   const note = new Note(req.body);
+  console.log(req.body);
   try {
     await note.save();
     req.user.notes.push(note._id);
