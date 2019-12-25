@@ -1,8 +1,8 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link,Redirect } from "react-router-dom";
-import axios from 'axios'
-import {SetToken} from '../utils/tokenHandler'
+import { Link } from "react-router-dom";
+import * as axios from "../utils/axiosHandler";
+import { SetToken } from "../utils/tokenHandler";
 
 import Input from "./InputComponent";
 import Button from "./ButtonComponent";
@@ -64,34 +64,28 @@ const InputWrapper = styled.div`
 `;
 
 const SignUp = props => {
-
-  const [data,setData] = useState({
-    firstName:'',
-    lastName:'',
-    email: '',
-    password:'',
-    passwordConf: ''
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConf: ""
   });
 
+  const DataUpdate = (event, property) => {
+    setData({ ...data, [property]: event.target.value });
+  };
 
-  const DataUpdate = (event,property) =>{
-    setData({...data, [property]: event.target.value});
-  }
+  const SignUpHandler = () => {
+    delete data.passwordConf
 
-  const SignUpHandler = ()=>{
-    const newData = {...data}
-    delete newData.passwordConf
-
-
-    if(data.password === data.passwordConf){
-      axios.post("http://localhost:4000/Signup",newData).then(response=>{
-        SetToken(response.data)
+    if (data.password === data.passwordConf) {
+      axios.Post("http://localhost:4000/Signup", data, res => {
+        SetToken(res.data);
         props.history.push("/User/NotesPanel");
-      }).catch(err=>{
-        console.log(err.response)
       });
     }
-  }
+  };
 
   return (
     <Container>
@@ -134,7 +128,7 @@ const SignUp = props => {
             onChange={event => DataUpdate(event, "passwordConf")}
           />
         </InputWrapper>
-        <Button text="SignUp" onClick={SignUpHandler}/>
+        <Button text="SignUp" onClick={SignUpHandler} />
         <div>
           <Text>Already have account ?</Text>
           <Link to="/Login">

@@ -1,7 +1,6 @@
-import React,{useMemo} from 'react'
-import styled from 'styled-components'
-import axios from 'axios'
-import {GetToken} from '../../utils/tokenHandler'
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import * as axios from "../../utils/axiosHandler";
 
 const Container = styled.div`
   width: 250px;
@@ -32,7 +31,7 @@ const Color = styled.div`
   }
 `;
 
-const ColorPicker = ({ parent, id, ReRender,ApplyColor,Close, ...props }) => {
+const ColorPicker = ({ parent, id, ReRender, ApplyColor, Close, ...props }) => {
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
     console.log(rect);
@@ -45,22 +44,17 @@ const ColorPicker = ({ parent, id, ReRender,ApplyColor,Close, ...props }) => {
     return [y, x];
   }, [parent]);
 
-  const UpdateColor = color =>{
-      const token = GetToken();
-    axios
-      .patch("http://localhost:4000/UpdateNote/" + id, {color}, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        if(ReRender !== undefined){
-          ReRender();
-        }
-        if(ApplyColor !== undefined){
-          ApplyColor(color)
-        }
-        Close()
-      });
-  }
+  const UpdateColor = color => {
+    axios.Patch("http://localhost:4000/UpdateNote/" + id, { color }, () => {
+      if (ReRender !== undefined) {
+        ReRender();
+      }
+      if (ApplyColor !== undefined) {
+        ApplyColor(color);
+      }
+      Close();
+    });
+  };
 
   return (
     <Container top={top} left={left} onClick={event => event.stopPropagation()}>
@@ -88,4 +82,4 @@ const ColorPicker = ({ parent, id, ReRender,ApplyColor,Close, ...props }) => {
   );
 };
 
-export default ColorPicker
+export default ColorPicker;

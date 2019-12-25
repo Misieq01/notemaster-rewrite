@@ -1,6 +1,6 @@
 import React, { useMemo,useState,useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import * as axios from "../../utils/axiosHandler";
 import {GetToken} from '../../utils/tokenHandler'
 
 import CheckedBodIcon from "../../Icons/Labels/square-check.svg";
@@ -82,17 +82,9 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
 
   const [allLabels,setAllLabels] = useState([])
   const [noteLabels,setNoteLabels] = useState(labels.map(e=>e.name))
-  const [chuj,setChuj] = useState(false)
-
-  console.log(noteLabels)
 
   useEffect(()=>{
-    const token = GetToken()
-    axios.get('http://localhost:4000/Labels',{
-        headers: { Authorization: "Bearer " + token }
-      }).then(response=>{
-      setAllLabels(response.data)
-    })
+    axios.Get('http://localhost:4000/Labels',res=>setAllLabels(res.data))
   },[])
 
   const [top, left] = useMemo(() => {
@@ -108,22 +100,11 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
   }, [parent]);
 
   const AddLabelToNote = label =>{
-    const token = GetToken()
-    console.log(label)
-    axios.patch("http://localhost:4000/NoteAddLabel/" + id, {label}, {
-      headers: { Authorization: "Bearer " + token }
-    }).then(response=>{
-      ReRender()
-    });
+    axios.Patch("http://localhost:4000/NoteAddLabel/" + id, {label},ReRender)
   }
 
   const DeleteLabelFromNote = label =>{
-    const token = GetToken()
-        axios.patch("http://localhost:4000/NoteDeleteLabel/" + id, {label}, {
-      headers: { Authorization: "Bearer " + token }
-    }).then(response=>{
-      ReRender()
-    });
+        axios.Patch("http://localhost:4000/NoteDeleteLabel/" + id, {label},ReRender)
   }
 
   const displayedLabels = allLabels.map((e,i)=>{

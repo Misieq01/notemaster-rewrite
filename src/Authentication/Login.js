@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import axios from 'axios'
-import {SetToken} from '../utils/tokenHandler'
+import * as axios from "../utils/axiosHandler";
+import { SetToken } from "../utils/tokenHandler";
+
 import Input from "./InputComponent";
 import Button from "./ButtonComponent";
 
@@ -71,31 +72,25 @@ const InputWrapper = styled.div`
 `;
 
 const Login = props => {
+  const [data, setData] = useState({
+    email: "",
+    password: ""
+  });
 
-  const [data,setData] = useState({
-    email:'',
-    password:''
-  })
+  const DataUpdate = (event, property) => {
+    setData({ ...data, [property]: event.target.value });
+  };
 
-  const DataUpdate = (event,property) =>{
-    setData({...data,[property]:event.target.value})
-  }
-
-  const LoginHandler = () =>{
-          axios
-            .post("http://localhost:4000/Login", data)
-            .then(response => {
-              SetToken(response.data);
-              props.history.push("/User/NotesPanel");
-
-            })
-            .catch(err => {
-              console.log(err.response.data.message);
-            });}
+  const LoginHandler = () => {
+    axios.Post("http://localhost:4000/Login", data, response => {
+      SetToken(response.data);
+      props.history.push("/User/NotesPanel");
+    });
+  };
 
   return (
     <Container>
-      <Form>
+      <Title>
         <Title>Login</Title>
         <InputWrapper>
           <Input
@@ -123,9 +118,9 @@ const Login = props => {
             <Singup>Singup</Singup>
           </Link>
         </div>
-      </Form>
+      </Title>
     </Container>
   );
 };
 
-export default Login
+export default Login;

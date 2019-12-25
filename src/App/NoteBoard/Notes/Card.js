@@ -1,14 +1,14 @@
-import React, { useState,useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import styled from "styled-components";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { GetToken } from "../../../utils/tokenHandler";
-import axios from "axios";
+import * as axios from "../../../utils/axiosHandler";
 
 import List from "./List";
 import Note from "./Note";
 import Portal from "../../../Components/ReactPortal";
 import ColorPicker from "../../../Components/NoteCustomize/ColorPicker";
-import LabelsPicker from '../../../Components/NoteCustomize/LabelsPicker';
+import LabelsPicker from "../../../Components/NoteCustomize/LabelsPicker";
 
 import DeleteIcon from "../../../Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../../Icons/NoteOptions/copy.svg";
@@ -71,92 +71,58 @@ const Label = styled.div`
 `;
 
 const Card = ({
-  labels,
-  type,
-  title,
-  color,
-  id,
-  content,
+  data,
   ReRenderBoard,
   ...props
 }) => {
-
-
-  const [redirect, setRedirect] = useState(false);
   const [displayIcons, setdisplayIcons] = useState(false);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [displayLabelsPicker,setDisplayLabelsPicker] = useState(false)
+  const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
 
-  const data = {
-    id,
-    title,
-    content,
-    type,
-    color,
-    labels
+  const MAX_LABELS_LENGTH = 4;
+  const MAX_LABELS_TEXT_LENGTH = 12;
+
+  const TruncateText = (t, len) => {
+    if (t.length > len) t = t.slice(0, len) + "...";
+    return t;
   };
 
-    const MAX_LABELS_LENGTH = 4;
-    const MAX_LABELS_TEXT_LENGTH = 12;
-
-    const TruncateText = (t, len) => {
-      if (t.length > len) t = t.slice(0, len) + "...";
-      return t;
-    };
-
-    const truncatedLabels = useMemo(() => {
-      return [...data.labels]
-        .slice(0, MAX_LABELS_LENGTH)
-        .map(e => (
-          <Label key={e.name}>{TruncateText(e.name, MAX_LABELS_TEXT_LENGTH)}</Label>
-        ));
-    }, [data.labels]);
+  const truncatedLabels = useMemo(() => {
+    return [...data.labels]
+      .slice(0, MAX_LABELS_LENGTH)
+      .map(e => (
+        <Label key={e.name}>
+          {TruncateText(e.name, MAX_LABELS_TEXT_LENGTH)}
+        </Label>
+      ));
+  }, [data.labels]);
 
   const Content =
-    type === "note" ? (
-      <Note content={content} />
+    data.type === "note" ? (
+      <Note content={data.content} />
     ) : (
-      <List content={content} color={color} />
+      <List content={data.content} color={data.color} />
     );
 
   const CopyNote = event => {
-    event.stopPropagation();
-    const CopiedData = { ...data };
-    const token = GetToken();
-    delete CopiedData.id;
-    axios
-      .post("http://localhost:4000/NewNote", CopiedData, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        ReRenderBoard();
-      });
+    event.preventDefault();
+    delete data._id
+    axios.Post("http://localhost:4000/NewNote", data, ReRenderBoard);
   };
   const DeleteNote = event => {
-    event.stopPropagation();
-    const token = GetToken();
-    axios
-      .delete("http://localhost:4000/DeleteNote/" + id, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        ReRenderBoard();
-      });
+    event.preventDefault();
+    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,ReRenderBoard);
   };
 
-  const EditHandler = () => {
-    setRedirect(true);
+  const ColorPickerHandler = event => {
+    event.preventDefault();
+    setDisplayColorPicker(true);
   };
 
-  const ColorPickerHandler = event =>{
-    event.stopPropagation()
-    setDisplayColorPicker(true)
-  }
-
-  const LabelsPickerHandler = event =>{
-    event.stopPropagation()
-    setDisplayLabelsPicker(true)
-  }
+  const LabelsPickerHandler = event => {
+    event.preventDefault();
+    setDisplayLabelsPicker(true);
+  };
 
   const colorIconRef = useRef();
   const labelsIconRef = useRef();
@@ -165,9 +131,9 @@ const Card = ({
     <Portal setState={() => setDisplayColorPicker(false)}>
       <ColorPicker
         parent={colorIconRef.current}
-        id={id}
+        id={data._id}
         ReRender={ReRenderBoard}
-        Close={()=>setDisplayColorPicker(false)}
+        Close={() => setDisplayColorPicker(false)}
       />
     </Portal>
   ) : null;
@@ -176,63 +142,61 @@ const Card = ({
     <Portal setState={() => setDisplayLabelsPicker(false)}>
       <LabelsPicker
         parent={labelsIconRef.current}
-        id={id}
+        id={data._id}
         ReRender={ReRenderBoard}
-        labels={labels}
-        Close={()=>setDisplayLabelsPicker(false)}
+        labels={data.labels}
+        Close={() => setDisplayLabelsPicker(false)}
       />
     </Portal>
   ) : null;
 
-  return redirect ? (
-    <Redirect
+  return (
+    <Link
       to={{
-        pathname: "/User/EditNote/" + id,
-        state: { type: type, isNew: false, data: data }
+        pathname: "/User/EditNote/" + data._id,
+        state: { type: data.type, isNew: false, data: data }
       }}
-    />
-  ) : (
-    <Container
-      color={color}
-      onClick={EditHandler}
-      onMouseEnter={() => setdisplayIcons(true)}
-      onMouseLeave={() => setdisplayIcons(false)}
     >
-      <Title>{title}</Title>
-      {Content}
-      {truncatedLabels}
-      <IconsWrapper>
-        <Icon
-          src={LabelIcon}
-          title="Labels"
-          opacity={displayIcons ? "0.65" : "0"}
-          ref={labelsIconRef}
-          onClick={LabelsPickerHandler}
-          
-        />
-        {labelsPicker}
-        <Icon
-          src={ColorIcon}
-          title="Change Color"
-          opacity={displayIcons ? "0.65" : "0"}
-          ref={colorIconRef}
-          onClick={event => ColorPickerHandler(event)}
-        />
-        {colorPicker}
-        <Icon
-          src={CopyIcon}
-          title="Copy"
-          onClick={event => CopyNote(event)}
-          opacity={displayIcons ? "0.65" : "0"}
-        />
-        <Icon
-          src={DeleteIcon}
-          title="Delete"
-          onClick={event => DeleteNote(event)}
-          opacity={displayIcons ? "0.65" : "0"}
-        />
-      </IconsWrapper>
-    </Container>
+      <Container
+        color={data.color}
+        onMouseEnter={() => setdisplayIcons(true)}
+        onMouseLeave={() => setdisplayIcons(false)}
+      >
+        <Title>{data.title}</Title>
+        {Content}
+        {truncatedLabels}
+        <IconsWrapper>
+          <Icon
+            src={LabelIcon}
+            title="Labels"
+            opacity={displayIcons ? "0.65" : "0"}
+            ref={labelsIconRef}
+            onClick={LabelsPickerHandler}
+          />
+          {labelsPicker}
+          <Icon
+            src={ColorIcon}
+            title="Change Color"
+            opacity={displayIcons ? "0.65" : "0"}
+            ref={colorIconRef}
+            onClick={event => ColorPickerHandler(event)}
+          />
+          {colorPicker}
+          <Icon
+            src={CopyIcon}
+            title="Copy"
+            onClick={event => CopyNote(event)}
+            opacity={displayIcons ? "0.65" : "0"}
+          />
+          <Icon
+            src={DeleteIcon}
+            title="Delete"
+            onClick={event => DeleteNote(event)}
+            opacity={displayIcons ? "0.65" : "0"}
+          />
+        </IconsWrapper>
+      </Container>
+    </Link>
   );
 };
 

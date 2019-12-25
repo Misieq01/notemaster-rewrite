@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { GetToken } from "../../utils/tokenHandler";
+import * as axios from "../../utils/axiosHandler";
 
 import NoteEditor from "./NoteEditor";
 import ListEditor from "./ListEditor";
@@ -32,14 +31,14 @@ const Container = styled.div`
 const Title = styled.input`
   width: 92%;
   font-size: 24px;
-  color: rgba(0,0,0,0.75);
+  color: rgba(0, 0, 0, 0.75);
   line-height: 30px;
   padding: 4% 4% 2% 4%;
   text-decoration: none;
   background: none;
-  position:relative;
+  position: relative;
   border-radius: 8px 8px 0px 0px;
-  box-shadow: ${props => props.boxShadow || 'none'};
+  box-shadow: ${props => props.boxShadow || "none"};
   transition: all 0.2s ease-in-out;
   :focus {
     color: rgba(0, 0, 0, 1);
@@ -96,7 +95,7 @@ const Editor = props => {
 
   const [data, setData] = useState(PassedData);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [titleShadow, setTitleShadow] = useState('none');
+  const [titleShadow, setTitleShadow] = useState("none");
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -130,49 +129,25 @@ const Editor = props => {
     setData({ ...data, [fieldName]: event.target.value });
   };
 
+  const BackToNotePanel = () =>{
+    props.history.push("/User/NotesPanel");
+  }
+
   const FinishHandler = () => {
-    const token = GetToken();
     if (isNew) {
-      axios
-        .post("http://localhost:4000/NewNote", data, {
-          headers: { Authorization: "Bearer " + token }
-        })
-        .then(response => {
-          props.history.push("/User/NotesPanel");
-        });
+      axios.Post("http://localhost:4000/NewNote", data,BackToNotePanel);
     } else if (!isNew) {
-      axios
-        .patch("http://localhost:4000/UpdateNote/" + data.id, data, {
-          headers: { Authorization: "Bearer " + token }
-        })
-        .then(response => {
-          props.history.push("/User/NotesPanel");
-        });
+      axios.Patch("http://localhost:4000/UpdateNote/" + data._id,data,BackToNotePanel);
     }
   };
 
   const DeleteNote = () => {
-    const token = GetToken();
-    axios
-      .delete("http://localhost:4000/DeleteNote/" + data.id, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        props.history.push("/User/NotesPanel");
-      });
+    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,BackToNotePanel);
   };
 
   const CopyNote = () => {
-    const CopiedData = { ...data };
-    const token = GetToken();
-    delete CopiedData.id;
-    axios
-      .post("http://localhost:4000/NewNote", CopiedData, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        props.history.push("/User/NotesPanel");
-      });
+    delete data._id;
+    axios.Post("http://localhost:4000/NewNote",data,BackToNotePanel);
   };
 
   const ShowColorPicker = () => {
@@ -185,14 +160,13 @@ const Editor = props => {
     setData({ ...data, color: color });
   };
 
-  const TitleShadowHandler = top =>{
-    
-    if(top === 0){
-      setTitleShadow('none')
-    }else if(top!==0){
-      setTitleShadow('0 2px 3px rgba(0, 0, 0, 0.4)')
+  const TitleShadowHandler = top => {
+    if (top === 0) {
+      setTitleShadow("none");
+    } else if (top !== 0) {
+      setTitleShadow("0 2px 3px rgba(0, 0, 0, 0.4)");
     }
-  }
+  };
 
   const colorIconRef = useRef();
   const titleRef = useRef();

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { GetToken } from "../../utils/tokenHandler";
+import * as axios from "../../utils/axiosHandler";
 import { withRouter } from "react-router-dom";
 import Masonry from 'react-masonry-component'
 
@@ -36,31 +35,14 @@ const NoteBoard = ({ searchValue, ...props }) => {
   };
 
   useEffect(() => {
-    const token = GetToken();
-    axios
-      .get("http://localhost:4000/GetAllNotes", {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      })
-      .then(response => {
-        console.log(response.data)
-        setNotes(response.data);
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+    axios.Get("http://localhost:4000/GetAllNotes",res=>setNotes(res.data));
   }, [reRender]);
+
   const displayNotes = notes.map((e, i) => {
     searchValue = searchValue.toLowerCase();
     if(e.title.toLowerCase().includes(searchValue) || e.content.toLowerCase().includes(searchValue)){
       return <Card
-        color={e.color}
-        title={e.title}
-        content={e.content}
-        type={e.type}
-        labels={e.labels}
-        id={e._id}
+        data={e}
         key={e._id}
         ReRenderBoard={ReRenderBoard}
       />

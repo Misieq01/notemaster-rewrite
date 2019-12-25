@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { GetToken } from "../../../../utils/tokenHandler";
+import * as axios from "../../../../utils/axiosHandler";
 
 import SearchIcon from "../../../../Icons/Labels/search.svg";
 import AddIcon from "../../../../Icons/Labels/plus.svg";
@@ -68,14 +67,7 @@ const Labels = ({ parent, ...props }) => {
   const [editSlot, setEditSlot] = useState("");
 
   useEffect(() => {
-    const token = GetToken();
-    axios
-      .get("http://localhost:4000/Labels", {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        setLabels(response.data);
-      });
+    axios.Get("http://localhost:4000/Labels",res=>setLabels(res.data));
   }, [labels]);
 
   const [top, left] = useMemo(() => {
@@ -90,32 +82,15 @@ const Labels = ({ parent, ...props }) => {
   }, [parent]);
 
   const AddLabel = () => {
-    const token = GetToken();
-    axios
-      .post(
-        "http://localhost:4000/NewLabel",
-        { name: inputValue },
-        {
-          headers: { Authorization: "Bearer " + token }
-        }
-      )
-      .then(() => {
-        setInputValue("");
-      });
+    axios.Post("http://localhost:4000/NewLabel",{name:inputValue},()=>setInputValue(''));
   };
 
   const RemoveLabel = id => {
-    const token = GetToken();
-    axios.delete("http://localhost:4000/DeleteLabel/" + id, {
-      headers: { Authorization: "Bearer " + token }
-    });
+    axios.Delete("http://localhost:4000/DeleteLabel/" + id);
   };
 
   const ChangeLabel = (id, name) => {
-    const token = GetToken();
-    axios.patch("http://localhost:4000/ChangeLabel/" + id, {name}, {
-      headers: { Authorization: "Bearer " + token }
-    });
+    axios.Patch("http://localhost:4000/ChangeLabel/" + id, {name});
   };
 
   const displayedLabels = labels.map((e, i) => {

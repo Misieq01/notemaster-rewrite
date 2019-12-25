@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import axios from 'axios';
+import * as axios from '../../utils/axiosHandler';
 import {withRouter} from 'react-router-dom'
-import {GetToken,RemoveToken} from '../../utils/tokenHandler'
+import {RemoveToken} from '../../utils/tokenHandler'
 
 import SearchBar from './SeachBar'
 import Button from './Button'
@@ -33,18 +33,10 @@ const ButtonsWrapper = styled.div`
 
 const Navigation = ({GetSearchValue,...props}) => {
 
-console.log(props.history)
-
 const Logout = () =>{
-  const token = GetToken()
-  axios.post("http://localhost:4000/Logout", 'foo', {
-    headers: { Authorization: "Bearer " + token }
-  }).then(response=>{
-    console.log(response)
+  axios.Post("http://localhost:4000/Logout",'',()=>{
     RemoveToken()
     props.history.push("/Login")
-  }).catch(err=>{
-    console.log(err)
   });
 }
 
