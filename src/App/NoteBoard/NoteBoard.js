@@ -41,6 +41,7 @@ const NoteBoard = ({ searchValue, ...props }) => {
   const displayNotes = notes.map((e, i) => {
     searchValue = searchValue.toLowerCase();
     if(e.title.toLowerCase().includes(searchValue) || e.content.toLowerCase().includes(searchValue)){
+      console.log(e._id)
       return <Card
         data={e}
         key={e._id}

@@ -1,7 +1,6 @@
 const express = require("express");
 const Note = require("../Schemas/Notes");
 const User = require("../Schemas/Users");
-const Label = require("../Schemas/Labels");
 const AuthMiddleware = require("../Middleware/auth");
 
 const router = express.Router();
@@ -28,7 +27,7 @@ router.get("/GetAllNotes", AuthMiddleware, async (req, res) => {
       populate: {
         path: "labels",
         model: "Label",
-        select: { name: 1, _id: 0 }
+        select: { name: 1, _id: 1 }
       }
     });
     res.send(notes);

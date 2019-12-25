@@ -106,8 +106,13 @@ const Card = ({
 
   const CopyNote = event => {
     event.preventDefault();
-    delete data._id
-    axios.Post("http://localhost:4000/NewNote", data, ReRenderBoard);
+    const copiedData = {...data}
+    delete copiedData._id
+    copiedData.labels.map(e=>{
+      return e._id
+    })
+    console.log(data)
+    axios.Post("http://localhost:4000/NewNote", copiedData, ReRenderBoard);
   };
   const DeleteNote = event => {
     event.preventDefault();
