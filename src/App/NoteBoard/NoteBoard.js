@@ -29,8 +29,6 @@ const NoteBoard = ({ searchValue,state, ...props }) => {
     gutter: 20
   };
 
-  console.log(state)
-
   useEffect(() => {
     axios.Get("http://localhost:4000/GetAllNotes", res => setNotes(res.data));
   }, [state.render]);

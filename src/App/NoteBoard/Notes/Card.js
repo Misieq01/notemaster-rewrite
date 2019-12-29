@@ -79,6 +79,8 @@ const Card = ({
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
 
+  console.log('chuj')
+
   const MAX_LABELS_LENGTH = 4;
   const MAX_LABELS_TEXT_LENGTH = 12;
 

@@ -101,16 +101,27 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
   const AddLabelToNote = label => {
     axios.Patch(
       "http://localhost:4000/NoteAddLabel/" + id,
-      { label },
-      ReRender
+      { label : label._id },
+      ()=>{
+        const newNoteLabels = [...noteLabels]
+        newNoteLabels.push(label.name)
+        setNoteLabels(newNoteLabels)
+        ReRender()
+      }
     );
   };
 
   const DeleteLabelFromNote = label => {
     axios.Patch(
       "http://localhost:4000/NoteDeleteLabel/" + id,
-      { label },
-      ReRender
+      { label: label._id },
+      () => {
+        const newNoteLabels = [...noteLabels];
+        const index = newNoteLabels.indexOf(label.name)
+        newNoteLabels.splice(index,1);
+        setNoteLabels(newNoteLabels);
+        ReRender();
+      }
     );
   };
 
@@ -123,13 +134,13 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
           <Icon
             src={CheckedBodIcon}
             cursor="pointer"
-            onClick={() => DeleteLabelFromNote(e._id)}
+            onClick={() => DeleteLabelFromNote(e)}
           />
         ) : (
           <Icon
             src={UnCheckedBodIcon}
             cursor="pointer"
-            onClick={() => AddLabelToNote(e._id)}
+            onClick={() => AddLabelToNote(e)}
           />
         )}
       </LabelWrapper>
