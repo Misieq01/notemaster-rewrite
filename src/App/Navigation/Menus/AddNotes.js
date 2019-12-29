@@ -39,7 +39,7 @@ const AddNotes = ({ parent, ...props }) => {
     <Container top={top} left={left}>
       <Link
         to={{
-          pathname: "/User/AddNote",
+          pathname: "/User/NotesPanel/AddNote",
           state: { type: "note", isNew: true }
         }}
       >
@@ -47,7 +47,7 @@ const AddNotes = ({ parent, ...props }) => {
       </Link>
       <Link
         to={{
-          pathname: "/User/AddNote",
+          pathname: "/User/NotesPanel/AddNote",
           state: { type: "list", isNew: true }
         }}
       >

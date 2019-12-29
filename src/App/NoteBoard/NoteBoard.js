@@ -19,9 +19,8 @@ const MasonryDisplay = styled(Masonry)`
   position: relative;
 `;
 
-const NoteBoard = ({ searchValue, ...props }) => {
+const NoteBoard = ({ searchValue,state, ...props }) => {
   const [notes, setNotes] = useState([]);
-  const [reRender, setReRender] = useState(false);
 
   const MasonryOptions = {
     columnWidth: 264,
@@ -30,22 +29,19 @@ const NoteBoard = ({ searchValue, ...props }) => {
     gutter: 20
   };
 
-  const ReRenderBoard = () => {
-    setReRender(!reRender);
-  };
+  console.log(state)
 
   useEffect(() => {
-    axios.Get("http://localhost:4000/GetAllNotes",res=>setNotes(res.data));
-  }, [reRender]);
+    axios.Get("http://localhost:4000/GetAllNotes", res => setNotes(res.data));
+  }, [state.render]);
 
   const displayNotes = notes.map((e, i) => {
     searchValue = searchValue.toLowerCase();
     if(e.title.toLowerCase().includes(searchValue) || e.content.toLowerCase().includes(searchValue)){
-      console.log(e._id)
       return <Card
         data={e}
         key={e._id}
-        ReRenderBoard={ReRenderBoard}
+        ReRender={state.ReRender}
       />
     }else{
       return null

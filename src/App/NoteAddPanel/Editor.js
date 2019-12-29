@@ -82,7 +82,7 @@ const FinishButton = styled.button`
   }
 `;
 
-const Editor = props => {
+const Editor = ({state,...props}) => {
   const isNew = props.location.state.isNew;
   const PassedData = isNew
     ? {
@@ -130,6 +130,7 @@ const Editor = props => {
   };
 
   const BackToNotePanel = () =>{
+    state.ReRender()
     props.history.push("/User/NotesPanel");
   }
 

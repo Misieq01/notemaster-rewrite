@@ -72,7 +72,7 @@ const Label = styled.div`
 
 const Card = ({
   data,
-  ReRenderBoard,
+  ReRender,
   ...props
 }) => {
   const [displayIcons, setdisplayIcons] = useState(false);
@@ -112,11 +112,11 @@ const Card = ({
       return e._id
     })
     console.log(data)
-    axios.Post("http://localhost:4000/NewNote", copiedData, ReRenderBoard);
+    axios.Post("http://localhost:4000/NewNote", copiedData, ReRender);
   };
   const DeleteNote = event => {
     event.preventDefault();
-    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,ReRenderBoard);
+    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,ReRender);
   };
 
   const ColorPickerHandler = event => {
@@ -137,7 +137,7 @@ const Card = ({
       <ColorPicker
         parent={colorIconRef.current}
         id={data._id}
-        ReRender={ReRenderBoard}
+        ReRender={ReRender}
         Close={() => setDisplayColorPicker(false)}
       />
     </Portal>
@@ -148,7 +148,7 @@ const Card = ({
       <LabelsPicker
         parent={labelsIconRef.current}
         id={data._id}
-        ReRender={ReRenderBoard}
+        ReRender={ReRender}
         labels={data.labels}
         Close={() => setDisplayLabelsPicker(false)}
       />
@@ -158,7 +158,7 @@ const Card = ({
   return (
     <Link
       to={{
-        pathname: "/User/EditNote/" + data._id,
+        pathname: "/User/NotesPanel/EditNote/" + data._id,
         state: { type: data.type, isNew: false, data: data }
       }}
     >

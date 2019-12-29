@@ -1,7 +1,7 @@
-import React, { useMemo,useState,useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
 import * as axios from "../../utils/axiosHandler";
-import {GetToken} from '../../utils/tokenHandler'
+import { GetToken } from "../../utils/tokenHandler";
 
 import CheckedBodIcon from "../../Icons/Labels/square-check.svg";
 import UnCheckedBodIcon from "../../Icons/Labels/square-uncheck.svg";
@@ -79,13 +79,12 @@ const Icon = styled.img`
 `;
 
 const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
+  const [allLabels, setAllLabels] = useState([]);
+  const [noteLabels, setNoteLabels] = useState(labels.map(e => e.name));
 
-  const [allLabels,setAllLabels] = useState([])
-  const [noteLabels,setNoteLabels] = useState(labels.map(e=>e.name))
-
-  useEffect(()=>{
-    axios.Get('http://localhost:4000/Labels',res=>setAllLabels(res.data))
-  },[])
+  useEffect(() => {
+    axios.Get("http://localhost:4000/Labels", res => setAllLabels(res.data));
+  }, []);
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -99,16 +98,24 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
     return [y, x];
   }, [parent]);
 
-  const AddLabelToNote = label =>{
-    axios.Patch("http://localhost:4000/NoteAddLabel/" + id, {label},ReRender)
-  }
+  const AddLabelToNote = label => {
+    axios.Patch(
+      "http://localhost:4000/NoteAddLabel/" + id,
+      { label },
+      ReRender
+    );
+  };
 
-  const DeleteLabelFromNote = label =>{
-        axios.Patch("http://localhost:4000/NoteDeleteLabel/" + id, {label},ReRender)
-  }
+  const DeleteLabelFromNote = label => {
+    axios.Patch(
+      "http://localhost:4000/NoteDeleteLabel/" + id,
+      { label },
+      ReRender
+    );
+  };
 
-  const displayedLabels = allLabels.map((e,i)=>{
-    const isAdded = noteLabels.includes(e.name)
+  const displayedLabels = allLabels.map((e, i) => {
+    const isAdded = noteLabels.includes(e.name);
     return (
       <LabelWrapper key={e._id}>
         <Label>{e.name}</Label>
@@ -127,18 +134,20 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
         )}
       </LabelWrapper>
     );
-  })
+  });
 
   return (
     <Absolute top={top} left={left}>
-      <Container onClick={event=>{event.stopPropagation()}}>
+      <Container
+        onClick={event => {
+          event.stopPropagation();
+        }}
+      >
         <InputWrapper>
-          <Input placeholder='Search label' />
+          <Input placeholder="Search label" />
           <Icon src={SearchIcon} />
         </InputWrapper>
-        <LabelsBox>
-          {displayedLabels}
-        </LabelsBox>
+        <LabelsBox>{displayedLabels}</LabelsBox>
       </Container>
     </Absolute>
   );

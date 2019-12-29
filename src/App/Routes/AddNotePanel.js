@@ -1,12 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 
+import GlobalState from '../../Components/GlobalState'
 import Background from "../../Components/Background";
 import Editor from "../NoteAddPanel/Editor";
-import NotesPanel from "./NotesPanel";
 import {withRouter} from 'react-router-dom'
-
-import Portal from "../../Components/ReactPortal";
 
 const AddNotePanel = props => {
 
@@ -15,13 +12,14 @@ const AddNotePanel = props => {
   }
 
   return (
-    <>
-      <Portal>
-        <NotesPanel />
-      </Portal>
-      <Background onClick={ClosePanel}/>
-      <Editor />
-    </>
+    <GlobalState.Consumer>
+      {value => (
+        <>
+          <Background onClick={ClosePanel} />
+          <Editor state={value}/>
+        </>
+      )}
+    </GlobalState.Consumer>
   );
 };
 

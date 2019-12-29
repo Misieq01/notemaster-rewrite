@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon src/server/server"
+    "server": "nodemon src/server/server"
   },
   "eslintConfig": {
     "extends": "react-app"
