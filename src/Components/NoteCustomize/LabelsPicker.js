@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect,useRef } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
 import * as axios from "../../utils/axiosHandler";
 
@@ -80,29 +80,12 @@ const Icon = styled.img`
 const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
   const [allLabels, setAllLabels] = useState([]);
   const [noteLabels, setNoteLabels] = useState(labels.map(e => e.name));
+  const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
     axios.Get("http://localhost:4000/Labels", res => setAllLabels(res.data));
   }, []);
 
-
-  const [top, left] = useMemo(() => {
-    const rect = parent.getBoundingClientRect();
-    let y;
-    let x;
-
-    let containerHeight = 30
-    allLabels.forEach(()=>{
-      containerHeight += 35
-    })
-
-    console.log(containerHeight)
-
-    y = rect.top + rect.height + window.scrollY - containerHeight;
-    x = rect.left + (rect.width - 40) / 2;
-
-    return [y, x];
-  }, [parent,allLabels]);
 
   const AddLabelToNote = label => {
     axios.Patch(
@@ -133,26 +116,47 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
 
   const displayedLabels = allLabels.map((e, i) => {
     const isAdded = noteLabels.includes(e.name);
-    return (
-      <LabelWrapper key={e._id}>
-        <Label>{e.name}</Label>
-        {isAdded ? (
-          <Icon
-            src={CheckedBodIcon}
-            cursor="pointer"
-            onClick={() => DeleteLabelFromNote(e)}
-          />
-        ) : (
-          <Icon
-            src={UnCheckedBodIcon}
-            cursor="pointer"
-            onClick={() => AddLabelToNote(e)}
-          />
-        )}
-      </LabelWrapper>
-    );
+    if(e.name.toLowerCase().includes(searchValue.toLowerCase())){
+          return (
+            <LabelWrapper key={e._id}>
+              <Label>{e.name}</Label>
+              {isAdded ? (
+                <Icon
+                  src={CheckedBodIcon}
+                  cursor="pointer"
+                  onClick={() => DeleteLabelFromNote(e)}
+                />
+              ) : (
+                <Icon
+                  src={UnCheckedBodIcon}
+                  cursor="pointer"
+                  onClick={() => AddLabelToNote(e)}
+                />
+              )}
+            </LabelWrapper>
+          );
+    }else{
+      return null
+    }
+
   });
 
+    const [top, left] = useMemo(() => {
+      console.log(displayedLabels)
+      const rect = parent.getBoundingClientRect();
+      let y;
+      let x;
+      let containerHeight = 30;
+      displayedLabels.filter(e=> e !== null).forEach(() => {
+        containerHeight += 35;
+      });
+
+      y = rect.top + rect.height + window.scrollY - containerHeight;
+      x = rect.left + (rect.width - 40) / 2;
+
+      return [y, x];
+    }, [parent, displayedLabels]);
+    console.log(top,left)
   return (
     <Absolute top={top} left={left}>
       <Container
@@ -161,7 +165,7 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
         }}
       >
         <InputWrapper>
-          <Input placeholder="Search label" />
+          <Input placeholder="Search label" value={searchValue} onChange={event=>setSearchValue(event.target.value)} />
           <Icon src={SearchIcon} />
         </InputWrapper>
         <LabelsBox>{displayedLabels}</LabelsBox>
