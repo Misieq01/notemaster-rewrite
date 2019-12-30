@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
 import * as axios from "../../../../utils/axiosHandler";
 
+import GlobalState from '../../../../Components/GlobalState'
 import SearchIcon from "../../../../Icons/Labels/search.svg";
 import AddIcon from "../../../../Icons/Labels/plus.svg";
 
@@ -85,25 +86,22 @@ const Labels = ({ parent, ...props }) => {
     axios.Post("http://localhost:4000/NewLabel",{name:inputValue},()=>setInputValue(''));
   };
 
-  const RemoveLabel = id => {
-    axios.Delete("http://localhost:4000/DeleteLabel/" + id);
-  };
-
   const ChangeLabel = (id, name) => {
     axios.Patch("http://localhost:4000/ChangeLabel/" + id, {name});
   };
 
   const displayedLabels = labels.map((e, i) => {
     return (
-      <Label
-        value={e.name}
-        id={e._id}
-        Remove={RemoveLabel}
-        Change={ChangeLabel}
-        editSlot={editSlot}
-        SetEditSlot={setEditSlot}
-        key={e._id}
-      ></Label>
+<GlobalState.Consumer key={e._id}>
+  {value => <Label
+          name={e.name}
+          id={e._id}
+          state={value}
+          Change={ChangeLabel}
+          editSlot={editSlot}
+          SetEditSlot={setEditSlot}
+        />}
+</GlobalState.Consumer>
     );
   });
 

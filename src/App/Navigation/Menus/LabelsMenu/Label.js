@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import * as axios from "../../../../utils/axiosHandler";
 
-import DeleteIcon from '../../../../Icons/Labels/delete.svg'
-import AcceptIcon from '../../../../Icons/Labels/accept.svg'
+import DeleteIcon from "../../../../Icons/Labels/delete.svg";
+import AcceptIcon from "../../../../Icons/Labels/accept.svg";
 
 const Container = styled.div`
   height: 30px;
@@ -35,19 +36,31 @@ const Icon = styled.img`
   cursor: pointer;
 `;
 
-const Labels = ({value,id,editSlot,SetEditSlot,Remove,Change,...props }) => {
+const Labels = ({
+  name,
+  id,
+  editSlot,
+  state,
+  SetEditSlot,
+  Change,
+  ...props
+}) => {
+  const [editValue, setEditValue] = useState(name);
 
-  const [editValue,setEditValue] = useState(value)
+  const StartEditing = () => {
+    SetEditSlot(name);
+  };
 
-  const StartEditing = () =>{
-    SetEditSlot(value)
-  }
+  console.log('gryka')
 
+  const Remove = id => {
+    axios.Delete("http://localhost:4000/DeleteLabel/" + id, state.ReRender);
+  };
 
-  const FinishEditing = () =>{
-    Change(id,editValue)
-    SetEditSlot('')
-  }
+  const FinishEditing = () => {
+    Change(id, editValue);
+    SetEditSlot("");
+  };
 
   const PreventPropagation = event => {
     event.stopPropagation();
@@ -55,13 +68,19 @@ const Labels = ({value,id,editSlot,SetEditSlot,Remove,Change,...props }) => {
 
   return (
     <Container onClick={event => PreventPropagation(event)}>
-      {editSlot === value ? <>
-        <LabelInput value={editValue} onChange={event=>setEditValue(event.target.value)}  autoFocus />
-        <Icon src={AcceptIcon} onClick={FinishEditing} />
-      </> : (
+      {editSlot === name ? (
+        <>
+          <LabelInput
+            value={editValue}
+            onChange={event => setEditValue(event.target.value)}
+            autoFocus
+          />
+          <Icon src={AcceptIcon} onClick={FinishEditing} />
+        </>
+      ) : (
         <>
           <Label onClick={StartEditing}>{editValue}</Label>
-          <Icon src={DeleteIcon} onClick={()=>Remove(id)} />
+          <Icon src={DeleteIcon} onClick={() => Remove(id)} />
         </>
       )}
     </Container>
