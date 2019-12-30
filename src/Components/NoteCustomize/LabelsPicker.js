@@ -1,7 +1,6 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect,useRef } from "react";
 import styled from "styled-components";
 import * as axios from "../../utils/axiosHandler";
-import { GetToken } from "../../utils/tokenHandler";
 
 import CheckedBodIcon from "../../Icons/Labels/square-check.svg";
 import UnCheckedBodIcon from "../../Icons/Labels/square-uncheck.svg";
@@ -86,17 +85,24 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
     axios.Get("http://localhost:4000/Labels", res => setAllLabels(res.data));
   }, []);
 
+
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
-    console.log(rect);
     let y;
     let x;
 
-    y = rect.top + rect.height + 10;
-    x = rect.left - 100 + rect.width / 2;
+    let containerHeight = 30
+    allLabels.forEach(()=>{
+      containerHeight += 35
+    })
+
+    console.log(containerHeight)
+
+    y = rect.top + rect.height + window.scrollY - containerHeight;
+    x = rect.left + (rect.width - 40) / 2;
 
     return [y, x];
-  }, [parent]);
+  }, [parent,allLabels]);
 
   const AddLabelToNote = label => {
     axios.Patch(

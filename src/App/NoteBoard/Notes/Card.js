@@ -131,13 +131,13 @@ const Card = ({
     setDisplayLabelsPicker(true);
   };
 
-  const colorIconRef = useRef();
+  const cardRef = useRef();
   const labelsIconRef = useRef();
 
   const colorPicker = displayColorPicker ? (
     <Portal setState={() => setDisplayColorPicker(false)}>
       <ColorPicker
-        parent={colorIconRef.current}
+        parent={cardRef.current}
         id={data._id}
         ReRender={ReRender}
         Close={() => setDisplayColorPicker(false)}
@@ -166,6 +166,7 @@ const Card = ({
     >
       <Container
         color={data.color}
+        ref={cardRef}
         onMouseEnter={() => setdisplayIcons(true)}
         onMouseLeave={() => setdisplayIcons(false)}
       >
@@ -185,7 +186,6 @@ const Card = ({
             src={ColorIcon}
             title="Change Color"
             opacity={displayIcons ? "0.65" : "0"}
-            ref={colorIconRef}
             onClick={event => ColorPickerHandler(event)}
           />
           {colorPicker}

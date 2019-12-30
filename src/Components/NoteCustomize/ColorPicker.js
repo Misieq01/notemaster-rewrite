@@ -34,11 +34,9 @@ const Color = styled.div`
 const ColorPicker = ({ parent, id, ReRender, ApplyColor, Close, ...props }) => {
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
-    let y;
-    let x;
 
-    y = rect.top + rect.height + 10;
-    x = rect.left - 100 + rect.width / 2;
+    const y = rect.top + rect.height + window.scrollY - 45;
+    const x = rect.left + ((rect.width - 250) / 2);
 
     return [y, x];
   }, [parent]);
