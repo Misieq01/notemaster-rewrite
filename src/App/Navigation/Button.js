@@ -27,7 +27,7 @@ const Button = ({ svg, buttonTitle, menu=false, MenuContent, onClick, ...props }
 
   const PortalElement = portalActive ? (
     <Portal setState={() => setPortalActive(false)}>
-      <MenuContent parent={ButtonRef.current} history={props.history} Close={()=>setPortalActive(false)}/>
+      <MenuContent parent={ButtonRef.current} Close={()=>setPortalActive(false)}/>
     </Portal>
   ) : null;
 
