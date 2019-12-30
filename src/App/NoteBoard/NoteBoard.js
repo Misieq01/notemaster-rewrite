@@ -14,9 +14,9 @@ const Container = styled.div`
 
 
 const MasonryDisplay = styled(Masonry)`
-  margin: 0 auto;
   text-align: center;
   position: relative;
+  display: inline-block;
 `;
 
 const NoteBoard = ({ searchValue,state, ...props }) => {
