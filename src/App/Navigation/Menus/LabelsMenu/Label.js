@@ -43,6 +43,7 @@ const Labels = ({
   state,
   SetEditSlot,
   Change,
+  FetchLabels,
   ...props
 }) => {
   const [editValue, setEditValue] = useState(name);
@@ -54,11 +55,14 @@ const Labels = ({
   console.log('gryka')
 
   const Remove = id => {
-    axios.Delete("http://localhost:4000/DeleteLabel/" + id, state.ReRender);
+    axios.Delete("http://localhost:4000/DeleteLabel/" + id, ()=>{
+      FetchLabels()
+      state.ReRender()
+    });
   };
 
   const FinishEditing = () => {
-    Change(id, editValue);
+    Change(id, editValue,state.ReRender);
     SetEditSlot("");
   };
 
