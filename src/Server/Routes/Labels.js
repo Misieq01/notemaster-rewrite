@@ -1,5 +1,6 @@
 const express = require('express')
 const Label = require('../Schemas/Labels')
+const Note = require('../Schemas/Notes')
 const AuthMiddleware = require('../Middleware/auth')
 
 const router = express.Router()
@@ -24,8 +25,10 @@ router.get('/Labels',AuthMiddleware,async (req,res)=>{
 })
 
 router.delete('/DeleteLabel/:id',AuthMiddleware,async (req,res)=>{
+    const id = req.params.id
     try {
-        await Label.findByIdAndDelete(req.params.id)
+        await Label.findByIdAndDelete(id)
+        await Note.ClearLabels(id)
         res.send()
     } catch (error) {
         res.send(error.message)

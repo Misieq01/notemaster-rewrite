@@ -1,13 +1,23 @@
 const mongoose = require('mongoose')
 
 const NoteSchema = mongoose.Schema({
-    title: {type: String,require:true,},
+    title: {type: String,require:true},
     type: {type: String},
     content: {type: Object},
     labels: [{type: mongoose.Schema.Types.ObjectId,ref: 'Label'}
     ],
     color: {type: String, default: 'rgb(255,223,186)'}
 },{timestamps:true})
+
+
+NoteSchema.statics.ClearLabels = async (labelId) =>{
+    const notes = await Note.find({})
+    notes.forEach(async note=>{
+        const index = note.labels.indexOf(labelId)
+        note.labels.splice(index,1)
+        await note.save()
+    })
+}
 
 const Note = mongoose.model('Note',NoteSchema);
 

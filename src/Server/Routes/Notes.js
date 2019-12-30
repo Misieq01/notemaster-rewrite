@@ -8,7 +8,6 @@ const router = express.Router();
 router.post("/NewNote", AuthMiddleware, async (req, res) => {
   
   const note = new Note(req.body);
-  console.log(req.body);
   try {
     await note.save();
     req.user.notes.push(note._id);
@@ -76,6 +75,7 @@ router.delete("/DeleteNote/:id", AuthMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
     await Note.findByIdAndDelete(id);
+    await req.user.DeleteNote(id)
     res.send();
   } catch (error) {
     res.send(error);

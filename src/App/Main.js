@@ -1,5 +1,4 @@
 import React,{useState} from 'react'
-import styled from 'styled-components'
 
 import {withRouter,Route} from 'react-router-dom'
 import GlobalState from '../Components/GlobalState'
