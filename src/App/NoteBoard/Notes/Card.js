@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { withRouter, Link } from "react-router-dom";
-import { GetToken } from "../../../utils/tokenHandler";
 import * as axios from "../../../utils/axiosHandler";
 
 import List from "./List";
@@ -29,6 +28,11 @@ const Container = styled.div`
   }
   text-align: center;
 `;
+
+const EditLink = styled(Link)`
+  transition: all 0.35s ease-in-out;
+`
+
 const Title = styled.h2`
     width:90%;
     height: 10%;
@@ -158,7 +162,7 @@ const Card = ({
   ) : null;
 
   return (
-    <Link
+    <EditLink
       to={{
         pathname: "/User/NotesPanel/EditNote/" + data._id,
         state: { type: data.type, isNew: false, data: data }
@@ -203,7 +207,7 @@ const Card = ({
           />
         </IconsWrapper>
       </Container>
-    </Link>
+    </EditLink>
   );
 };
 
