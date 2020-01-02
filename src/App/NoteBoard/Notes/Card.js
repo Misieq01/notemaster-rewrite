@@ -31,7 +31,7 @@ const Container = styled.div`
 `;
 const Title = styled.h2`
     width:90%;
-    height: 10%
+    height: 10%;
     padding: 10px;
     margin:0;
     font-size: 18px;
@@ -63,7 +63,7 @@ const Icon = styled.img`
 const Label = styled.div`
   font-size: 12px;
   padding: 2px;
-  margin: 5px 3px
+  margin: 5px 3px;
   border-radius: 5px;
   display: inline-block;
   background:none;

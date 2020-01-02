@@ -14,6 +14,7 @@ const Text = styled(TextArea)`
 `;
 
 const NoteEditor = ({ background, GetInputData, content,TitleShadowHandler, ...props }) => {
+
   return (
     <Text
       onChange={GetInputData}

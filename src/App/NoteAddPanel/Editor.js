@@ -55,9 +55,9 @@ const OptionsWrapper = styled.div`
 `;
 
 const OptionButton = styled.img`
-  height: 20px;
-  width: 20px;
-  opacity: 0.7;
+  height: 17px;
+  width: 17px;
+  opacity: 0.6;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   :hover {
@@ -69,20 +69,20 @@ const FinishButton = styled.button`
   height: 40%;
   width: 37%;
   cursor: pointer;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   outline: none;
-  background: none;
+  background: rgba(0, 0, 0, 0);
   text-decoration: none;
   border-radius: 5px;
   transition: all 0.2s ease-in-out;
   font-size: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  color: rgba(0, 0, 0, 0.75);
   :hover {
-    transform: scale(1.05);
+    box-shadow:0 0 3px rgba(0, 0, 0, 0.1);
   }
 `;
 
-const Editor = ({state,...props}) => {
+const Editor = ({ state, ...props }) => {
   const isNew = props.location.state.isNew;
   const PassedData = isNew
     ? {
@@ -129,26 +129,33 @@ const Editor = ({state,...props}) => {
     setData({ ...data, [fieldName]: event.target.value });
   };
 
-  const BackToNotePanel = () =>{
-    state.ReRender()
+  const BackToNotePanel = () => {
+    state.ReRender();
     props.history.push("/User/NotesPanel");
-  }
+  };
 
   const FinishHandler = () => {
     if (isNew) {
-      axios.Post("http://localhost:4000/NewNote", data,BackToNotePanel);
+      axios.Post("http://localhost:4000/NewNote", data, BackToNotePanel);
     } else if (!isNew) {
-      axios.Patch("http://localhost:4000/UpdateNote/" + data._id,data,BackToNotePanel);
+      axios.Patch(
+        "http://localhost:4000/UpdateNote/" + data._id,
+        data,
+        BackToNotePanel
+      );
     }
   };
 
   const DeleteNote = () => {
-    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,BackToNotePanel);
+    axios.Delete(
+      "http://localhost:4000/DeleteNote/" + data._id,
+      BackToNotePanel
+    );
   };
 
   const CopyNote = () => {
     delete data._id;
-    axios.Post("http://localhost:4000/NewNote",data,BackToNotePanel);
+    axios.Post("http://localhost:4000/NewNote", data, BackToNotePanel);
   };
 
   const ShowColorPicker = () => {
@@ -204,13 +211,14 @@ const Editor = ({state,...props}) => {
           onClick={ShowColorPicker}
         />
         {colorPicker}
-        <FinishButton onClick={FinishHandler}>Finish</FinishButton>
+
         <OptionButton src={CopyIcon} title="Copy note" onClick={CopyNote} />
         <OptionButton
           src={DeleteIcon}
           title="Delete note"
           onClick={DeleteNote}
         />
+        <FinishButton onClick={FinishHandler} >Finish</FinishButton>
       </OptionsWrapper>
     </Container>
   );
