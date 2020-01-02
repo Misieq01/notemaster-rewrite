@@ -40,6 +40,7 @@ const Title = styled.input`
   border-radius: 8px 8px 0px 0px;
   box-shadow: ${props => props.boxShadow || "none"};
   transition: all 0.2s ease-in-out;
+  z-index: 100;
   :focus {
     color: rgba(0, 0, 0, 1);
   }
@@ -172,7 +173,7 @@ const Editor = ({ state, ...props }) => {
     if (top === 0) {
       setTitleShadow("none");
     } else if (top !== 0) {
-      setTitleShadow("0 2px 3px rgba(0, 0, 0, 0.4)");
+      setTitleShadow("0 2px 4px rgba(0, 0, 0, 0.2)");
     }
   };
 
