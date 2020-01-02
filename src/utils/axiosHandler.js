@@ -1,14 +1,17 @@
 import axios from "axios";
 import { GetToken } from "./tokenHandler";
 
-const token = GetToken();
-const options = {
-  headers: { Authorization: "Bearer " + token }
+const setOptions = token => {
+  return {
+    headers: { Authorization: "Bearer " + token }
+  };
 };
 
 export const Get = (path, callback) => {
+  const token = GetToken();
+  const options = setOptions(token);
   axios
-    .get(path,options)
+    .get(path, options)
     .then(response => {
       callback(response);
     })
@@ -16,9 +19,11 @@ export const Get = (path, callback) => {
       console.log(error.message);
     });
 };
-export const Post = (path,body,callback) => {
+export const Post = (path, body, callback) => {
+  const token = GetToken();
+  const options = setOptions(token);
   axios
-    .post(path,body,options)
+    .post(path, body, options)
     .then(response => {
       callback(response);
     })
@@ -26,9 +31,11 @@ export const Post = (path,body,callback) => {
       console.log(error.message);
     });
 };
-export const Patch = (path,body,callback) => {
+export const Patch = (path, body, callback) => {
+  const token = GetToken();
+  const options = setOptions(token);
   axios
-    .patch(path,body,options)
+    .patch(path, body, options)
     .then(response => {
       callback(response);
     })
@@ -37,8 +44,10 @@ export const Patch = (path,body,callback) => {
     });
 };
 export const Delete = (path, callback) => {
+  const token = GetToken();
+  const options = setOptions(token);
   axios
-    .delete(path,options)
+    .delete(path, options)
     .then(response => {
       callback(response);
     })

@@ -84,41 +84,41 @@ const Login = props => {
   const LoginHandler = () => {
     axios.Post("http://localhost:4000/Login", data, response => {
       SetToken(response.data);
-      props.history.push("/User/NotesPanel");
+      props.history.replace("/User/NotesPanel");
     });
   };
 
   return (
     <Container>
-      <Title>
-        <Title>Login</Title>
-        <InputWrapper>
-          <Input
-            label="Email:"
-            placeholder="Type your Email"
-            icon={<LoginIcon />}
-            inputType="text"
-            onChange={event => DataUpdate(event, "email")}
-          />
-          <Input
-            label="Password:"
-            placeholder="Type your password"
-            icon={<PasswordIcon />}
-            inputType="password"
-            onChange={event => DataUpdate(event, "password")}
-          />
-          <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
-            <ForgotPassword>Forgot password ?</ForgotPassword>
-          </Link>
-        </InputWrapper>
-        <Button text="Login" onClick={LoginHandler} />
-        <div>
-          <Text>Don't have account yet ?</Text>
-          <Link to="/Signup">
-            <Singup>Singup</Singup>
-          </Link>
-        </div>
-      </Title>
+        <Form>
+          <Title>Login</Title>
+          <InputWrapper>
+            <Input
+              label="Email:"
+              placeholder="Type your Email"
+              icon={<LoginIcon />}
+              inputType="text"
+              onChange={event => DataUpdate(event, "email")}
+            />
+            <Input
+              label="Password:"
+              placeholder="Type your password"
+              icon={<PasswordIcon />}
+              inputType="password"
+              onChange={event => DataUpdate(event, "password")}
+            />
+            <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
+              <ForgotPassword>Forgot password ?</ForgotPassword>
+            </Link>
+          </InputWrapper>
+          <Button text="Login" onClick={LoginHandler} />
+          <div>
+            <Text>Don't have account yet ?</Text>
+            <Link to="/Signup">
+              <Singup>Singup</Singup>
+            </Link>
+          </div>
+        </Form>
     </Container>
   );
 };
