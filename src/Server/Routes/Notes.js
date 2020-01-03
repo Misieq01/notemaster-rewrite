@@ -35,6 +35,16 @@ router.get("/GetAllNotes", AuthMiddleware, async (req, res) => {
   }
 });
 
+router.get('/OneNote/:id',AuthMiddleware,async(req,res)=>{
+  const id = req.params.id
+  try {
+    const note = await Note.findOne({_id:id})
+    res.send(note)
+  } catch (error) {
+    res.send(error);
+  }
+})
+
 router.patch("/UpdateNote/:id", AuthMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
