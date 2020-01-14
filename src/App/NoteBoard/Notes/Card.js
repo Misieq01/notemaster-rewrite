@@ -1,7 +1,10 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { withRouter, Link } from "react-router-dom";
-import * as axios from "../../../utils/axiosHandler";
+
+import {useDispatch} from 'react-redux'
+import {DeleteNote,CopyNote} from '../../Store/Actions/notesActions'
+import {} from '../../Store/Selectors/notesSelectors'
 
 import List from "./List";
 import Note from "./Note";
@@ -76,24 +79,22 @@ const Label = styled.div`
 
 const Card = ({
   data,
-  ReRender,
   ...props
 }) => {
+  const dispatch = useDispatch()
+  // const test = useSelector(state => getNoteById(state,data._id))
+  console.log(data.labels)
   const [displayIcons, setdisplayIcons] = useState(false);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
-
-  console.log('chuj')
-
   const MAX_LABELS_LENGTH = 4;
   const MAX_LABELS_TEXT_LENGTH = 12;
-
   const TruncateText = (t, len) => {
     if (t.length > len) t = t.slice(0, len) + "...";
     return t;
   };
 
-  const truncatedLabels = useMemo(() => {
+  const truncateLabels = () => {
     return [...data.labels]
       .slice(0, MAX_LABELS_LENGTH)
       .map(e => (
@@ -101,7 +102,9 @@ const Card = ({
           {TruncateText(e.name, MAX_LABELS_TEXT_LENGTH)}
         </Label>
       ));
-  }, [data.labels]);
+  }
+
+  const Labels = truncateLabels()
 
   const Content =
     data.type === "note" ? (
@@ -110,19 +113,13 @@ const Card = ({
       <List content={data.content} color={data.color} />
     );
 
-  const CopyNote = event => {
+  const CopyNoteHandler = event => {
     event.preventDefault();
-    const copiedData = {...data}
-    delete copiedData._id
-    copiedData.labels.map(e=>{
-      return e._id
-    })
-    console.log(data)
-    axios.Post("http://localhost:4000/NewNote", copiedData, ReRender);
+    dispatch(CopyNote(data._id));
   };
-  const DeleteNote = event => {
+  const DeleteNoteHandler = event => {
     event.preventDefault();
-    axios.Delete("http://localhost:4000/DeleteNote/" + data._id,ReRender);
+    dispatch(DeleteNote(data._id))
   };
 
   const ColorPickerHandler = event => {
@@ -143,7 +140,6 @@ const Card = ({
       <ColorPicker
         parent={cardRef.current}
         id={data._id}
-        ReRender={ReRender}
         Close={() => setDisplayColorPicker(false)}
       />
     </Portal>
@@ -154,7 +150,6 @@ const Card = ({
       <LabelsPicker
         parent={labelsIconRef.current}
         id={data._id}
-        ReRender={ReRender}
         labels={data.labels}
         Close={() => setDisplayLabelsPicker(false)}
       />
@@ -163,10 +158,7 @@ const Card = ({
 
   return (
     <EditLink
-      to={{
-        pathname: "/User/NotesPanel/EditNote/" + data._id,
-        state: { type: data.type, isNew: false, data: data }
-      }}
+      to={"/User/NotesPanel/Edit/" + data._id}
     >
       <Container
         color={data.color}
@@ -176,7 +168,7 @@ const Card = ({
       >
         <Title>{data.title}</Title>
         {Content}
-        {truncatedLabels}
+        {Labels}
         <IconsWrapper>
           <Icon
             src={LabelIcon}
@@ -196,13 +188,13 @@ const Card = ({
           <Icon
             src={CopyIcon}
             title="Copy"
-            onClick={event => CopyNote(event)}
+            onClick={event => CopyNoteHandler(event)}
             opacity={displayIcons ? "0.65" : "0"}
           />
           <Icon
             src={DeleteIcon}
             title="Delete"
-            onClick={event => DeleteNote(event)}
+            onClick={event => DeleteNoteHandler(event)}
             opacity={displayIcons ? "0.65" : "0"}
           />
         </IconsWrapper>

@@ -1,29 +1,30 @@
-import React,{useState} from 'react'
+import React,{useEffect} from "react";
 
-import {withRouter,Route} from 'react-router-dom'
-import GlobalState from '../Components/GlobalState'
+import { Route } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import {fetchAllNotes} from './Store/Actions/notesActions'
+import {FetchLabels} from './Store/Actions/labelsActions'
 
-import NotesPanel from './Routes/NotesPanel'
-import UserPanel from './Routes/UserPanel'
-import AddNotePanel from './Routes/AddNotePanel'
+import NotesPanel from "./Routes/NotesPanel";
+import UserPanel from "./Routes/UserPanel";
+import NoteEditor from "./NoteEditors/Editor";
 
-const Main = props =>{
+const Main = props => {
 
-const [render,ReRender] = useState(false)
+  const dispatch = useDispatch()
 
-const state = {
-  render,
-  ReRender: () => ReRender(!render)
-}
+  useEffect(()=>{
+    dispatch(fetchAllNotes())
+    dispatch(FetchLabels())
+  },[dispatch])
 
-return (
-  <GlobalState.Provider value={state} >
-    <Route path="/User/NotesPanel" component={NotesPanel} />
-    <Route path="/User/NotesPanel/AddNote" exact component={AddNotePanel} />
-    <Route path="/User/NotesPanel/EditNote/:id" exact component={AddNotePanel} />
-    <Route path="/User/Account" exact component={UserPanel} />
-  </GlobalState.Provider>
-);
-}
+  return (
+    <>
+      <Route path="/User/NotesPanel" component={NotesPanel} />
+      <Route path="/User/NotesPanel/Edit/:id" exact component={NoteEditor} />
+      <Route path="/User/Account" exact component={UserPanel} />
+    </>
+  );
+};
 
-export default withRouter(Main)
+export default Main;

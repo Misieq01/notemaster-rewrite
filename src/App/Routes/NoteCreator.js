@@ -1,8 +1,7 @@
 import React from "react";
 
-import GlobalState from '../../Components/GlobalState'
 import Background from "../../Components/Background";
-import Editor from "../NoteAddPanel/Editor";
+import Editor from "../NoteEditors/Creator";
 import {withRouter} from 'react-router-dom'
 
 const AddNotePanel = props => {
@@ -12,14 +11,10 @@ const AddNotePanel = props => {
   }
 
   return (
-    <GlobalState.Consumer>
-      {value => (
         <>
           <Background onClick={ClosePanel} />
-          <Editor state={value}/>
+          <Editor/>
         </>
-      )}
-    </GlobalState.Consumer>
   );
 };
 

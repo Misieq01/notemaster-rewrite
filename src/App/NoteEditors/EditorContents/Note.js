@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import TextArea from "../../Components/ExpandingTextArea";
+import TextArea from "../../../Components/ExpandingTextArea";
 
 const Text = styled(TextArea)`
   z-index: 100;
@@ -14,7 +14,6 @@ const Text = styled(TextArea)`
 `;
 
 const NoteEditor = ({ background, GetInputData, content,TitleShadowHandler, ...props }) => {
-
   return (
     <Text
       onChange={GetInputData}

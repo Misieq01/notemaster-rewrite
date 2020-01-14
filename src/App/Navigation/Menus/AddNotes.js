@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import mongoose from 'mongoose'
+import {useDispatch} from 'react-redux'
+import {AddNote} from '../../Store/Actions/notesActions'
 
 const Container = styled.div`
   width: 200px;
@@ -12,7 +15,7 @@ const Container = styled.div`
   top: ${props => props.top + "px"};
   left: ${props => props.left + "px"};
   text-align: center;
-  background: rgb(250,250,250);
+  background: rgb(250, 250, 250);
 `;
 
 const Element = styled.div`
@@ -23,7 +26,7 @@ const Element = styled.div`
 `;
 
 const AddNotes = ({ parent, ...props }) => {
-
+  const dispatch = useDispatch()
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
     let y;
@@ -35,24 +38,19 @@ const AddNotes = ({ parent, ...props }) => {
     return [y, x];
   }, [parent]);
 
+  const AddNoteHandler = type =>{
+    const id = mongoose.Types.ObjectId().toHexString()
+    console.log(id)
+    dispatch(AddNote(id,type)).then(()=>{
+        props.Close();
+        props.history.push("/User/NotesPanel/Edit/" + id);
+    })
+  }
+
   return (
     <Container top={top} left={left}>
-      <Link
-        to={{
-          pathname: "/User/NotesPanel/AddNote",
-          state: { type: "note", isNew: true }
-        }}
-      >
-        <Element onClick={props.Close}>Note</Element>
-      </Link>
-      <Link
-        to={{
-          pathname: "/User/NotesPanel/AddNote",
-          state: { type: "list", isNew: true }
-        }}
-      >
-        <Element onClick={props.Close}>List</Element>
-      </Link>
+      <Element onClick={() => AddNoteHandler("note")}>Note</Element>
+      <Element onClick={() => AddNoteHandler("list")}>List</Element>
     </Container>
   );
 };

@@ -19,6 +19,16 @@ NoteSchema.statics.ClearLabels = async (labelId) =>{
     })
 }
 
+NoteSchema.statics.Copy = async (noteId) =>{
+    const note = await Note.findById(noteId)
+    note._id = mongoose.Types.ObjectId();
+    note.isNew = true;
+    note.save()
+    return note
+}
+
+
+
 const Note = mongoose.model('Note',NoteSchema);
 
 

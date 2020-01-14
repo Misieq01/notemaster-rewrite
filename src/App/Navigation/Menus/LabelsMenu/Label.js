@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import * as axios from "../../../../utils/axiosHandler";
+
+import {useDispatch} from 'react-redux'
+import {UpdateLabel,DeleteLabel} from '../../../Store/Actions/labelsActions'
 
 import DeleteIcon from "../../../../Icons/Labels/delete.svg";
 import AcceptIcon from "../../../../Icons/Labels/accept.svg";
@@ -40,30 +42,22 @@ const Labels = ({
   name,
   id,
   editSlot,
-  state,
   SetEditSlot,
-  Change,
-  FetchLabels,
   ...props
 }) => {
+  const dispatch = useDispatch()
   const [editValue, setEditValue] = useState(name);
-
   const StartEditing = () => {
     SetEditSlot(name);
   };
 
-  console.log('gryka')
-
-  const Remove = id => {
-    axios.Delete("http://localhost:4000/DeleteLabel/" + id, ()=>{
-      FetchLabels()
-      state.ReRender()
-    });
+  const Remove = () => {
+    dispatch(DeleteLabel(id))
   };
 
   const FinishEditing = () => {
-    Change(id, editValue,state.ReRender);
-    SetEditSlot("");
+    dispatch(UpdateLabel(id,editValue))
+    SetEditSlot('')
   };
 
   const PreventPropagation = event => {
@@ -84,7 +78,7 @@ const Labels = ({
       ) : (
         <>
           <Label onClick={StartEditing}>{editValue}</Label>
-          <Icon src={DeleteIcon} onClick={() => Remove(id)} />
+          <Icon src={DeleteIcon} onClick={Remove} />
         </>
       )}
     </Container>

@@ -1,8 +1,10 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import * as axios from "../../../../utils/axiosHandler";
 
-import GlobalState from "../../../../Components/GlobalState";
+import {useSelector,useDispatch} from 'react-redux'
+import {AddLabel} from '../../../Store/Actions/labelsActions'
+import {GetAllLabels} from '../../../Store/Selectors/labelsSelectors'
+
 import SearchIcon from "../../../../Icons/Labels/search.svg";
 import AddIcon from "../../../../Icons/Labels/plus.svg";
 
@@ -63,16 +65,11 @@ const Icon = styled.img`
 `;
 
 const Labels = ({ parent, ...props }) => {
-  const [labels, setLabels] = useState([]);
+  const dispatch = useDispatch()
+  const labels = useSelector(state => GetAllLabels(state))
   const [inputValue, setInputValue] = useState("");
   const [editSlot, setEditSlot] = useState("");
 
-  const FetchLabels = () => {
-    axios.Get("http://localhost:4000/Labels", res => setLabels(res.data));
-  };
-
-  useEffect(FetchLabels, []);
-  console.log('geru')
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
     let y;
@@ -84,33 +81,22 @@ const Labels = ({ parent, ...props }) => {
     return [y, x];
   }, [parent]);
 
-  const AddLabel = () => {
-    axios.Post("http://localhost:4000/NewLabel", { name: inputValue }, () => {
-      FetchLabels();
+  const AddLabelHandler = () => {
+    dispatch(AddLabel(inputValue))
       setInputValue("");
-    });
-  };
+    };
 
-  const ChangeLabel = (id, name,callback) => {
-    axios.Patch("http://localhost:4000/ChangeLabel/" + id, { name },callback);
-  };
 
   const displayedLabels = labels.map((e, i) => {
     if (e.name.toLowerCase().includes(inputValue.toLowerCase())) {
       return (
-        <GlobalState.Consumer key={e._id}>
-          {value => (
             <Label
+              key={e._id}
               name={e.name}
               id={e._id}
-              state={value}
-              Change={ChangeLabel}
               editSlot={editSlot}
               SetEditSlot={setEditSlot}
-              FetchLabels={FetchLabels}
             />
-          )}
-        </GlobalState.Consumer>
       );
     } else {
       return null;
@@ -131,7 +117,7 @@ const Labels = ({ parent, ...props }) => {
               src={AddIcon}
               cursor="pointer"
               size="18px"
-              onClick={AddLabel}
+              onClick={AddLabelHandler}
             />
           ) : (
             <Icon src={SearchIcon} />

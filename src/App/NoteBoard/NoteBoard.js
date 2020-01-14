@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import * as axios from "../../utils/axiosHandler";
-import { withRouter } from "react-router-dom";
-import Masonry from 'react-masonry-component'
+import Masonry from "react-masonry-component";
+
+import { useSelector } from "react-redux";
+import {getAllNotes} from '../Store/Selectors/notesSelectors'
 
 import Card from "./Notes/Card";
 
@@ -12,16 +13,15 @@ const Container = styled.div`
   text-align: center;
 `;
 
-
 const MasonryDisplay = styled(Masonry)`
   text-align: center;
   position: relative;
   display: inline-block;
 `;
 
-const NoteBoard = ({ searchValue,state, ...props }) => {
-  const [notes, setNotes] = useState([]);
-
+const NoteBoard = ({ searchValue, ...props }) => {
+  const notes =  useSelector(state => getAllNotes(state));
+  console.log('updated')
   const MasonryOptions = {
     columnWidth: 264,
     transitionDuration: 0,
@@ -29,20 +29,15 @@ const NoteBoard = ({ searchValue,state, ...props }) => {
     gutter: 20
   };
 
-  useEffect(() => {
-    axios.Get("http://localhost:4000/GetAllNotes", res => setNotes(res.data));
-  }, [state.render]);
-
   const displayNotes = notes.map((e, i) => {
     searchValue = searchValue.toLowerCase();
-    if(e.title.toLowerCase().includes(searchValue) || e.content.toLowerCase().includes(searchValue)){
-      return <Card
-        data={e}
-        key={e._id}
-        ReRender={state.ReRender}
-      />
-    }else{
-      return null
+    if (
+      e.title.toLowerCase().includes(searchValue) ||
+      e.content.toLowerCase().includes(searchValue)
+    ) {
+      return <Card data={e} key={e._id} />;
+    } else {
+      return null;
     }
   });
 
@@ -53,4 +48,4 @@ const NoteBoard = ({ searchValue,state, ...props }) => {
   );
 };
 
-export default withRouter(NoteBoard);
+export default NoteBoard;

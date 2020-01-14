@@ -55,9 +55,9 @@ userSchema.methods.GetFullName = function() {
 
 userSchema.methods.DeleteNote = async function(noteId) {
   const user = this;
-  console.log(user)
   const index = user.notes.indexOf(noteId);
   user.notes.splice(index, 1);
+  await user.save()
   return user;
 };
 

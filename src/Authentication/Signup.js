@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, withRouter} from "react-router-dom";
 import * as axios from "../utils/axiosHandler";
 import { SetToken } from "../utils/tokenHandler";
 
@@ -77,9 +77,8 @@ const SignUp = props => {
   };
 
   const SignUpHandler = () => {
-    delete data.passwordConf
-
     if (data.password === data.passwordConf) {
+      delete data.passwordConf;
       axios.Post("http://localhost:4000/Signup", data, res => {
         SetToken(res.data);
         props.history.push("/User/NotesPanel");
@@ -140,4 +139,4 @@ const SignUp = props => {
   );
 };
 
-export default SignUp;
+export default withRouter(SignUp);

@@ -6,7 +6,7 @@ const AuthMiddleware = require("../Middleware/auth");
 const router = express.Router();
 
 router.post("/NewNote", AuthMiddleware, async (req, res) => {
-  
+  console.log(req.body)
   const note = new Note(req.body);
   try {
     await note.save();
@@ -17,6 +17,19 @@ router.post("/NewNote", AuthMiddleware, async (req, res) => {
     res.send(error);
   }
 });
+
+router.post('/CopyNote:id',AuthMiddleware,async(req,res)=>{
+  const id = req.params.id
+  try {
+    const note = await Note.Copy(id)
+    req.user.notes.push(note._id)
+    await req.user.save()
+    await Note.populate(note,{path:'labels',model:'Label'})
+    res.status(201).send(note)
+  } catch (error) {
+    res.send(error)
+  }
+})
 
 router.get("/GetAllNotes", AuthMiddleware, async (req, res) => {
   try {

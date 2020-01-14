@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import GlobalState from "../../Components/GlobalState";
 import Navigation from "../Navigation/Navigation";
 import NoteBoard from "../NoteBoard/NoteBoard";
 
@@ -16,17 +15,10 @@ const NotesPanel = () => {
   const GetSearchValue = event => {
     setSearchValue(event.target.value);
   };
-
   return (
     <Container>
-      <GlobalState.Consumer>
-        {value => (
-          <>
             <Navigation GetSearchValue={GetSearchValue} />
-            <NoteBoard searchValue={searchValue} state={value} />
-          </>
-        )}
-      </GlobalState.Consumer>
+            <NoteBoard searchValue={searchValue}/>
     </Container>
   );
 };

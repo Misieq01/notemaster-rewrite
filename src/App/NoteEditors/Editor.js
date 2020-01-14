@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
-import * as axios from "../../utils/axiosHandler";
+import { withRouter,useParams } from "react-router-dom";
 
-import NoteEditor from "./NoteEditor";
-import ListEditor from "./ListEditor";
+import {useSelector,useDispatch} from 'react-redux'
+import {getNoteById, getAllNotes,} from '../Store/Selectors/notesSelectors'
+import {ChangeNoteFieldValue,CopyNote,DeleteNote,PostUpdatedNote} from '../Store/Actions/notesActions'
+
+import Background from '../../Components/Background'
+import Body from './EditorContents/BodyType'
 import Portal from "../../Components/ReactPortal";
 import ColorPicker from "../../Components/NoteCustomize/ColorPicker";
 
@@ -26,6 +29,7 @@ const Container = styled.div`
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.2s ease-in-out;
 `;
 
 const Title = styled.input`
@@ -84,21 +88,12 @@ const FinishButton = styled.button`
   }
 `;
 
-const Editor = ({ state, ...props }) => {
-  const isNew = props.location.state.isNew;
-  const PassedData = isNew
-    ? {
-        title: "",
-        content: "",
-        color: "rgb(255,223,186)",
-        type: props.location.state.type
-      }
-    : props.location.state.data;
-
-  const [data, setData] = useState(PassedData);
+const Editor = props => {
+  const dispatch = useDispatch()
+  const {id} = useParams()
+  const data = useSelector(state => getNoteById(state,id));
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [titleShadow, setTitleShadow] = useState("none");
-
   useEffect(() => {
     document.body.style.overflowY = "hidden";
   }, []);
@@ -109,55 +104,26 @@ const Editor = ({ state, ...props }) => {
     };
   }, []);
 
-  const WhichEditor = type => {
-    switch (type) {
-      case "note":
-        return (
-          <NoteEditor
-            GetInputData={GetInputData}
-            content={data.content}
-            background={data.color}
-            TitleShadowHandler={TitleShadowHandler}
-          />
-        );
-      case "list":
-        return <ListEditor />;
-      default:
-        return null;
-    }
-  };
-
-  const GetInputData = (event, fieldName) => {
-    setData({ ...data, [fieldName]: event.target.value });
-  };
-
   const BackToNotePanel = () => {
-    state.ReRender();
     props.history.push("/User/NotesPanel");
+  };
+  
+  const GetInputData = (event, fieldName) => {
+    dispatch(ChangeNoteFieldValue(data._id,fieldName,event.target.value))
   };
 
   const FinishHandler = () => {
-    if (isNew) {
-      axios.Post("http://localhost:4000/NewNote", data, BackToNotePanel);
-    } else if (!isNew) {
-      axios.Patch(
-        "http://localhost:4000/UpdateNote/" + data._id,
-        data,
-        BackToNotePanel
-      );
+      dispatch(PostUpdatedNote(data._id))
+      BackToNotePanel()
     }
+  const DeleteNoteHandler = () => {
+    dispatch(DeleteNote(data._id))
+    BackToNotePanel()
   };
 
-  const DeleteNote = () => {
-    axios.Delete(
-      "http://localhost:4000/DeleteNote/" + data._id,
-      BackToNotePanel
-    );
-  };
-
-  const CopyNote = () => {
-    delete data._id;
-    axios.Post("http://localhost:4000/NewNote", data, BackToNotePanel);
+  const CopyNoteHandler = () => {
+    dispatch(CopyNote(data._id))
+    BackToNotePanel()
   };
 
   const ShowColorPicker = () => {
@@ -165,9 +131,6 @@ const Editor = ({ state, ...props }) => {
   };
   const HideColorPicker = () => {
     setDisplayColorPicker(false);
-  };
-  const ChangeColor = color => {
-    setData({ ...data, color: color });
   };
 
   const TitleShadowHandler = top => {
@@ -179,50 +142,54 @@ const Editor = ({ state, ...props }) => {
   };
 
   const colorIconRef = useRef();
-  const titleRef = useRef();
 
   const colorPicker = displayColorPicker ? (
     <Portal setState={HideColorPicker}>
       <ColorPicker
         parent={colorIconRef.current}
-        Close={HideColorPicker}
-        id={data.id}
-        ApplyColor={ChangeColor}
+        id={data._id}
       />
     </Portal>
   ) : null;
 
-  const Editor = WhichEditor(props.location.state.type);
 
   return (
-    <Container background={data.color}>
-      <Title
-        placeholder="Title"
-        onChange={event => GetInputData(event, "title")}
-        value={data.title}
-        boxShadow={titleShadow}
-        ref={titleRef}
-      />
-      {Editor}
-      <OptionsWrapper>
-        <OptionButton src={LabelIcon} title="Edit labels" />
-        <OptionButton
-          src={ColorIcon}
-          title="Change color"
-          ref={colorIconRef}
-          onClick={ShowColorPicker}
+<>
+      <Background onClick={FinishHandler} />
+      <Container background={data.color}>
+        <Title
+          placeholder="Title"
+          onChange={event => GetInputData(event, "title")}
+          value={data.title}
+          boxShadow={titleShadow}
         />
-        {colorPicker}
-
-        <OptionButton src={CopyIcon} title="Copy note" onClick={CopyNote} />
-        <OptionButton
-          src={DeleteIcon}
-          title="Delete note"
-          onClick={DeleteNote}
+        <Body
+          type={data.type}
+          GetInputData={GetInputData}
+          content={data.content}
+          background={data.color}
+          TitleShadowHandler={TitleShadowHandler}
         />
-        <FinishButton onClick={FinishHandler} >Finish</FinishButton>
-      </OptionsWrapper>
-    </Container>
+        <OptionsWrapper>
+          <OptionButton src={LabelIcon} title="Edit labels" />
+          <OptionButton
+            src={ColorIcon}
+            title="Change color"
+            ref={colorIconRef}
+            onClick={ShowColorPicker}
+          />
+          {colorPicker}
+  
+          <OptionButton src={CopyIcon} title="Copy note" onClick={CopyNoteHandler} />
+          <OptionButton
+            src={DeleteIcon}
+            title="Delete note"
+            onClick={DeleteNoteHandler}
+          />
+          <FinishButton onClick={FinishHandler}>Finish</FinishButton>
+        </OptionsWrapper>
+      </Container>
+</>
   );
 };
 

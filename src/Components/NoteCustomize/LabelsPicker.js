@@ -1,6 +1,10 @@
 import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
-import * as axios from "../../utils/axiosHandler";
+
+import {useSelector,useDispatch} from 'react-redux'
+import {GetAllLabels} from '../../App/Store/Selectors/labelsSelectors'
+import {getNoteById} from '../../App/Store/Selectors/notesSelectors'
+import {AddLabelToNote,DeleteLabelFromNote} from '../../App/Store/Actions/notesStuffActions'
 
 import CheckedBodIcon from "../../Icons/Labels/square-check.svg";
 import UnCheckedBodIcon from "../../Icons/Labels/square-uncheck.svg";
@@ -77,45 +81,23 @@ const Icon = styled.img`
   cursor: ${props => props.cursor || "default"};
 `;
 
-const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
-  const [allLabels, setAllLabels] = useState([]);
-  const [noteLabels, setNoteLabels] = useState(labels.map(e => e.name));
+const LabelsPicker = ({ parent, id, ...props }) => {
+  const dispatch = useDispatch()
+  const labels = useSelector(state=>GetAllLabels(state))
+  const noteLabels = useSelector(state=>getNoteById(state,id).labels)
+  console.log(noteLabels)
   const [searchValue, setSearchValue] = useState('')
 
-  useEffect(() => {
-    axios.Get("http://localhost:4000/Labels", res => setAllLabels(res.data));
-  }, []);
-
-
-  const AddLabelToNote = label => {
-    axios.Patch(
-      "http://localhost:4000/NoteAddLabel/" + id,
-      { label : label._id },
-      ()=>{
-        const newNoteLabels = [...noteLabels]
-        newNoteLabels.push(label.name)
-        setNoteLabels(newNoteLabels)
-        ReRender()
-      }
-    );
+  const AddLabelToNoteHandler = label => {
+    dispatch(AddLabelToNote(id,label))
   };
 
-  const DeleteLabelFromNote = label => {
-    axios.Patch(
-      "http://localhost:4000/NoteDeleteLabel/" + id,
-      { label: label._id },
-      () => {
-        const newNoteLabels = [...noteLabels];
-        const index = newNoteLabels.indexOf(label.name)
-        newNoteLabels.splice(index,1);
-        setNoteLabels(newNoteLabels);
-        ReRender();
-      }
-    );
+  const DeleteLabelFromNoteHandler = label => {
+    dispatch(DeleteLabelFromNote(id,label._id))
   };
 
-  const displayedLabels = allLabels.map((e, i) => {
-    const isAdded = noteLabels.includes(e.name);
+  const displayedLabels = labels.map((e, i) => {
+    const isAdded = noteLabels.map(el=>el.name).includes(e.name);
     if(e.name.toLowerCase().includes(searchValue.toLowerCase())){
           return (
             <LabelWrapper key={e._id}>
@@ -124,13 +106,13 @@ const LabelsPicker = ({ parent, id, labels, ReRender, ...props }) => {
                 <Icon
                   src={CheckedBodIcon}
                   cursor="pointer"
-                  onClick={() => DeleteLabelFromNote(e)}
+                  onClick={() => DeleteLabelFromNoteHandler(e)}
                 />
               ) : (
                 <Icon
                   src={UnCheckedBodIcon}
                   cursor="pointer"
-                  onClick={() => AddLabelToNote(e)}
+                  onClick={() => AddLabelToNoteHandler(e)}
                 />
               )}
             </LabelWrapper>

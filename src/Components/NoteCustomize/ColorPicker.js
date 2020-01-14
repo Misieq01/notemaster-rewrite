@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import * as axios from "../../utils/axiosHandler";
+import {ChangeNoteColor} from '../../App/Store/Actions/notesStuffActions'
+import {useDispatch} from 'react-redux'
 
 const Container = styled.div`
   width: 250px;
@@ -31,7 +33,8 @@ const Color = styled.div`
   }
 `;
 
-const ColorPicker = ({ parent, id, ReRender, ApplyColor, Close, ...props }) => {
+const ColorPicker = ({ parent, id, ...props }) => {
+  const dispatch = useDispatch()
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
 
@@ -42,15 +45,7 @@ const ColorPicker = ({ parent, id, ReRender, ApplyColor, Close, ...props }) => {
   }, [parent]);
 
   const UpdateColor = color => {
-    axios.Patch("http://localhost:4000/UpdateNote/" + id, { color }, () => {
-      if (ReRender !== undefined) {
-        ReRender();
-      }
-      if (ApplyColor !== undefined) {
-        ApplyColor(color);
-      }
-      Close();
-    });
+    dispatch(ChangeNoteColor(id,color))
   };
 
   return (
