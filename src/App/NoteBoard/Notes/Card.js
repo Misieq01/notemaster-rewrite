@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { withRouter, Link } from "react-router-dom";
 
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 import {DeleteNote,CopyNote} from '../../Store/Actions/notesActions'
-import {} from '../../Store/Selectors/notesSelectors'
+import {getNoteById} from '../../Store/Selectors/notesSelectors'
 
 import List from "./List";
 import Note from "./Note";
@@ -78,12 +78,12 @@ const Label = styled.div`
 `;
 
 const Card = ({
-  data,
+  _id,
   ...props
 }) => {
   const dispatch = useDispatch()
-  // const test = useSelector(state => getNoteById(state,data._id))
-  console.log(data.labels)
+  const data = useSelector(state => getNoteById(state,_id))
+  console.log('card')
   const [displayIcons, setdisplayIcons] = useState(false);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
@@ -203,4 +203,4 @@ const Card = ({
   );
 };
 
-export default withRouter(Card);
+export default Card;

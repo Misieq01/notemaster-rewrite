@@ -85,7 +85,7 @@ const LabelsPicker = ({ parent, id, ...props }) => {
   const dispatch = useDispatch()
   const labels = useSelector(state=>GetAllLabels(state))
   const noteLabels = useSelector(state=>getNoteById(state,id).labels)
-  console.log(noteLabels)
+ 
   const [searchValue, setSearchValue] = useState('')
 
   const AddLabelToNoteHandler = label => {
@@ -124,7 +124,7 @@ const LabelsPicker = ({ parent, id, ...props }) => {
   });
 
     const [top, left] = useMemo(() => {
-      console.log(displayedLabels)
+     
       const rect = parent.getBoundingClientRect();
       let y;
       let x;
@@ -138,7 +138,7 @@ const LabelsPicker = ({ parent, id, ...props }) => {
 
       return [y, x];
     }, [parent, displayedLabels]);
-    console.log(top,left)
+   
   return (
     <Absolute top={top} left={left}>
       <Container

@@ -8,19 +8,19 @@ const initialState = {
 const labels = (state=initialState,action) =>{
     switch (action.type) {
         case FETCH_LABELS.SUCCESS:
-            return {...state,labels: action.payload}
+            return {...state,labels: action.labels}
         case FETCH_LABELS.FAILED:
             return {...state,error: 'Loading labels failed'}
         case ADD_LABEL.SUCCESS:
-            return {...state,labels: action.payload}
+            return {...state,labels: action.labels}
         case ADD_LABEL.FAILED:
             return {...state,error: 'Failed to add label'}
         case UPDATE_LABEL.SUCCESS:
-            return {...state,labels: action.payload}
+            return {...state,labels: action.labels}
         case UPDATE_LABEL.FAILED:
             return {...state,error: 'Failed to update label'}
         case DELETE_LABEL.SUCCESS:
-            return {...state,labels: action.payload}
+            return {...state,labels: action.labels}
         case DELETE_LABEL.FAILED:
             return {...state,error: 'Failed to delete label'}
         default:

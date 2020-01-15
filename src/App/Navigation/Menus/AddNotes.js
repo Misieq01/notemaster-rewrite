@@ -40,7 +40,6 @@ const AddNotes = ({ parent, ...props }) => {
 
   const AddNoteHandler = type =>{
     const id = mongoose.Types.ObjectId().toHexString()
-    console.log(id)
     dispatch(AddNote(id,type)).then(()=>{
         props.Close();
         props.history.push("/User/NotesPanel/Edit/" + id);

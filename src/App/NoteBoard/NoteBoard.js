@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useMemo} from "react";
 import styled from "styled-components";
 import Masonry from "react-masonry-component";
 
@@ -19,9 +19,9 @@ const MasonryDisplay = styled(Masonry)`
   display: inline-block;
 `;
 
-const NoteBoard = ({ searchValue, ...props }) => {
+const NoteBoard = React.memo(({ searchValue, ...props }) => {
   const notes =  useSelector(state => getAllNotes(state));
-  console.log('updated')
+  console.log('noteboard')
   const MasonryOptions = {
     columnWidth: 264,
     transitionDuration: 0,
@@ -35,7 +35,7 @@ const NoteBoard = ({ searchValue, ...props }) => {
       e.title.toLowerCase().includes(searchValue) ||
       e.content.toLowerCase().includes(searchValue)
     ) {
-      return <Card data={e} key={e._id} />;
+      return <Card _id={e._id} key={e._id} />;
     } else {
       return null;
     }
@@ -46,6 +46,6 @@ const NoteBoard = ({ searchValue, ...props }) => {
       <MasonryDisplay options={MasonryOptions}>{displayNotes}</MasonryDisplay>
     </Container>
   );
-};
+});
 
 export default NoteBoard;

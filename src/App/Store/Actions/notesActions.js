@@ -32,11 +32,11 @@ export const ChangeNoteFieldValue = (id, field, value) => (
   getState
 ) => {
   const state = getState();
-  const notes = [...getAllNotes(state)];
+  const notes = getAllNotes(state);
   const index = GetNoteIndex(state, id);
   const note = {...getNoteById(state, id),[field]:value};
   notes[index] = note;
-  dispatch({ type: CHANGE_NOTE_FIELD_VALUE, payload: notes });
+  dispatch({ type: CHANGE_NOTE_FIELD_VALUE, notes: notes });
 };
 
 export const CopyNote = id => (dispatch, getState) => {
@@ -47,7 +47,7 @@ export const CopyNote = id => (dispatch, getState) => {
     null,
     response => {
       notes.push(response.data);
-      dispatch({ type: COPY_NOTE.SUCCESS, payload: notes });
+      dispatch({ type: COPY_NOTE.SUCCESS, notes: notes });
     },
     () => dispatch({ type: COPY_NOTE.FAILED })
   );
@@ -59,7 +59,7 @@ export const DeleteNote = id => (dispatch, getState) => {
   notes.splice(index, 1);
   axios.Delete(
     "http://localhost:4000/DeleteNote/" + id,
-    () => dispatch({ type: DELETE_NOTE.SUCCESS, payload: notes }),
+    () => dispatch({ type: DELETE_NOTE.SUCCESS, notes: notes }),
     () => dispatch({ type: DELETE_NOTE.FAILED })
   );
 };
@@ -92,7 +92,7 @@ export const AddNote = (id, type) => (dispatch, getState) => {
       note,
       () => {
         notes.push(note);
-        dispatch({ type: ADD_NOTE.SUCCESS, payload: notes });
+        dispatch({ type: ADD_NOTE.SUCCESS, notes: notes });
       },
       () => dispatch({ type: ADD_NOTE.FAILED }))
 };
