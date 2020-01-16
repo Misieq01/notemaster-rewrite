@@ -9,8 +9,8 @@ import {getAllNotes} from '../Store/Selectors/notesSelectors'
 import Card from "./Notes/Card";
 
 const Container = styled.div`
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: 85%;
   text-align: center;
 `;
 
@@ -28,7 +28,7 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
     columnWidth: 264,
     transitionDuration: 0,
     fitWidth: true,
-    gutter: 20
+    gutter: 20,
   };
 
   const displayNotes = notes.map((e, i) => {

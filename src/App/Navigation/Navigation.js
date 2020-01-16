@@ -13,22 +13,23 @@ import Labels from './Menus/LabelsMenu/Labels'
 import AddNoteIcon from '../../Icons/Navigation/add-note.svg'
 import LogoutIcon from '../../Icons/Navigation/logout.svg'
 import LabelsIcon from '../../Icons/Navigation/labels.svg'
+import MenuIcon from '../../Icons/Navigation/three-lines.svg'
 
 const Container = styled.div`
-  width: 80vw;
-  margin: 0 10vw;
+  width: 100vw;
   height: 120px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items:center;
 `
-const ButtonsWrapper = styled.div`
-  width: 20%;
-  height: auto;
+const Wrapper = styled.div`
+  width: ${props => props.width || '40%'};
+  height: 80px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
+  align-items: center;
 `
 
 const Navigation = ({GetSearchValue,...props}) => {
@@ -42,15 +43,16 @@ const Logout = () =>{
 
   return (
     <Container>
-      <ButtonsWrapper>
+      <Wrapper width='10%'><Button svg={MenuIcon}/></Wrapper>
+      <Wrapper width='60%'>
+        <SearchBar GetSearchValue={GetSearchValue} />
+      </Wrapper>
+      
+      <Wrapper>
         <Button svg={AddNoteIcon} buttonTitle='Add note' menu={true} MenuContent={AddMenu} />
         <Button svg={LabelsIcon} buttonTitle='Labels' menu={true} MenuContent={Labels} />
-      </ButtonsWrapper>
-      <SearchBar GetSearchValue={GetSearchValue} />
-      <ButtonsWrapper>
-        <Button />
         <Button svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/>
-      </ButtonsWrapper>
+      </Wrapper>
     </Container>
   );
 };

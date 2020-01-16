@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const SearchInput = styled.input`
   padding: 10px 16px 10px 24px;
-  width: 35%;
+  width: 65%;
   height: 45px;
   font-size: 21px;
   display: inline-block;

@@ -158,6 +158,7 @@ const Card = ({
           id={data._id}
           labels={data.labels}
           Close={() => setDisplayLabelsPicker(false)}
+          componentType='card'
         />
       </Portal>
     ) : null;

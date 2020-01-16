@@ -41,7 +41,7 @@ const Container = styled.div`
 const Title = styled.input`
   width: 92%;
   font-size: 24px;
-  color: rgba(0, 0, 0, 0.65);
+  opacity: 0.75;
   line-height: 30px;
   font-weight: bold;
   padding: 4% 4% 2% 4%;
@@ -53,7 +53,7 @@ const Title = styled.input`
   transition: all 0.2s ease-in-out;
   z-index: 100;
   :focus {
-    color: rgba(0, 0, 0, 0.85);
+    opacity: 1;
   }
 `;
 
