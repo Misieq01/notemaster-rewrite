@@ -20,7 +20,7 @@ const Container = styled.div`
   height: 120px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items:center;
 `
 const Wrapper = styled.div`
@@ -43,16 +43,17 @@ const Logout = () =>{
 
   return (
     <Container>
-      <Wrapper width='10%'><Button svg={MenuIcon}/></Wrapper>
-      <Wrapper width='60%'>
+      <Wrapper width='7vw'><Button svg={MenuIcon}/></Wrapper>
+      <Wrapper width='50vw'>
         <SearchBar GetSearchValue={GetSearchValue} />
       </Wrapper>
       
-      <Wrapper>
+      <Wrapper width='36vw'>
         <Button svg={AddNoteIcon} buttonTitle='Add note' menu={true} MenuContent={AddMenu} />
         <Button svg={LabelsIcon} buttonTitle='Labels' menu={true} MenuContent={Labels} />
-        <Button svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/>
+        
       </Wrapper>
+      <Wrapper width='7vw'><Button svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/></Wrapper>
     </Container>
   );
 };

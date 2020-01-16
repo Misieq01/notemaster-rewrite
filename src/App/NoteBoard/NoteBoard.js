@@ -10,11 +10,13 @@ import Card from "./Notes/Card";
 
 const Container = styled.div`
   display: inline-block;
-  width: 85%;
+  width: 86vw;
+  margin: 0 7vw;
   text-align: center;
 `;
 
 const MasonryDisplay = styled(Masonry)`
+  margin-top: 40px;
   text-align: center;
   position: relative;
   display: inline-block;
