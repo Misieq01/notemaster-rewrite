@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { withRouter,useParams } from "react-router-dom";
+import { withRouter, useParams } from "react-router-dom";
 
-import {useSelector,useDispatch} from 'react-redux'
-import {getNoteById, getAllNotes,} from '../Store/Selectors/notesSelectors'
-import {ChangeNoteFieldValue,CopyNote,DeleteNote,PostUpdatedNote} from '../Store/Actions/notesActions'
+import { useSelector, useDispatch } from "react-redux";
+import { getNoteById } from "../Store/Selectors/notesSelectors";
+import {
+  ChangeNoteFieldValue,
+  CopyNote,
+  DeleteNote,
+  PostUpdatedNote
+} from "../Store/Actions/notesActions";
 
-import Background from '../../Components/Background'
-import Body from './EditorContents/BodyType'
+import Background from "../../Components/Background";
+import Body from "./EditorContents/BodyType";
 import Portal from "../../Components/ReactPortal";
 import ColorPicker from "../../Components/NoteCustomize/ColorPicker";
+import LabelsPicker from "../../Components/NoteCustomize/LabelsPicker";
 
 import DeleteIcon from "../../Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../Icons/NoteOptions/copy.svg";
@@ -20,7 +26,7 @@ const Container = styled.div`
   width: 600px;
   min-height: 60px;
   position: fixed;
-  z-index: 1000;
+  z-index: 150;
   top: 100px;
   right: 0;
   left: 0;
@@ -84,19 +90,35 @@ const FinishButton = styled.button`
   font-size: 20px;
   color: rgba(0, 0, 0, 0.75);
   :hover {
-    box-shadow:0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   }
 `;
 
+const Label = styled.div`
+  font-size: 15px;
+  padding: 3px;
+  margin: 2px;
+  border-radius: 5px;
+  display: inline-block;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  cursor: default;
+`;
+const LabelsWrapper = styled.div`
+  height: 20px;
+  width: 100%;
+`;
+
 const Editor = props => {
-  const dispatch = useDispatch()
-  const {id} = useParams()
-  const data = useSelector(state => getNoteById(state,id));
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const data = useSelector(state => getNoteById(state, id));
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
   const [titleShadow, setTitleShadow] = useState("none");
   useEffect(() => {
     document.body.style.overflowY = "hidden";
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     return () => {
@@ -107,23 +129,23 @@ const Editor = props => {
   const BackToNotePanel = () => {
     props.history.push("/User/NotesPanel");
   };
-  
+
   const GetInputData = (event, fieldName) => {
-    dispatch(ChangeNoteFieldValue(data._id,fieldName,event.target.value))
+    dispatch(ChangeNoteFieldValue(data._id, fieldName, event.target.value));
   };
 
   const FinishHandler = () => {
-      dispatch(PostUpdatedNote(data._id))
-      BackToNotePanel()
-    }
+    dispatch(PostUpdatedNote(data._id));
+    BackToNotePanel();
+  };
   const DeleteNoteHandler = () => {
-    dispatch(DeleteNote(data._id))
-    BackToNotePanel()
+    dispatch(DeleteNote(data._id));
+    BackToNotePanel();
   };
 
   const CopyNoteHandler = () => {
-    dispatch(CopyNote(data._id))
-    BackToNotePanel()
+    dispatch(CopyNote(data._id));
+    BackToNotePanel();
   };
 
   const ShowColorPicker = () => {
@@ -131,6 +153,12 @@ const Editor = props => {
   };
   const HideColorPicker = () => {
     setDisplayColorPicker(false);
+  };
+  const ShowLabelsPicker = () => {
+    setDisplayLabelsPicker(true);
+  };
+  const HideLabelsPicker = () => {
+    setDisplayLabelsPicker(false);
   };
 
   const TitleShadowHandler = top => {
@@ -142,54 +170,92 @@ const Editor = props => {
   };
 
   const colorIconRef = useRef();
+  const labelsIconRef = useRef();
 
-  const colorPicker = displayColorPicker ? (
-    <Portal setState={HideColorPicker}>
-      <ColorPicker
-        parent={colorIconRef.current}
-        id={data._id}
-      />
-    </Portal>
-  ) : null;
+  const ColorPickerPopout = () => {
+    return displayColorPicker ? (
+      <Portal setState={HideColorPicker} eventType="move">
+        <ColorPicker
+          parent={colorIconRef.current}
+          id={data._id}
+          Close={HideColorPicker}
+          componentType="editor"
+        />
+      </Portal>
+    ) : null;
+  };
+  const LabelsPickerPopout = () => {
+    return displayLabelsPicker ? (
+      <Portal setState={HideLabelsPicker} eventType="move">
+        <LabelsPicker
+          parent={labelsIconRef.current}
+          id={data._id}
+          Close={HideLabelsPicker}
+          componentType="editor"
+        />
+      </Portal>
+    ) : null;
+  };
 
+  const Labels = () => {
+    return <LabelsWrapper>
+      {data.labels.map(e => <Label>{e.name}</Label>)}
+    </LabelsWrapper>
+  }
 
   return (
-<>
-      <Background onClick={FinishHandler} />
-      <Container background={data.color}>
-        <Title
-          placeholder="Title"
-          onChange={event => GetInputData(event, "title")}
-          value={data.title}
-          boxShadow={titleShadow}
-        />
-        <Body
-          type={data.type}
-          GetInputData={GetInputData}
-          content={data.content}
-          background={data.color}
-          TitleShadowHandler={TitleShadowHandler}
-        />
-        <OptionsWrapper>
-          <OptionButton src={LabelIcon} title="Edit labels" />
-          <OptionButton
-            src={ColorIcon}
-            title="Change color"
-            ref={colorIconRef}
-            onClick={ShowColorPicker}
-          />
-          {colorPicker}
-  
-          <OptionButton src={CopyIcon} title="Copy note" onClick={CopyNoteHandler} />
-          <OptionButton
-            src={DeleteIcon}
-            title="Delete note"
-            onClick={DeleteNoteHandler}
-          />
-          <FinishButton onClick={FinishHandler}>Finish</FinishButton>
-        </OptionsWrapper>
-      </Container>
-</>
+    <>
+      {data !== undefined ? (
+        <>
+          {" "}
+          <Background onClick={FinishHandler} />
+          <Container background={data.color}>
+            <Title
+              placeholder="Title"
+              onChange={event => GetInputData(event, "title")}
+              value={data.title}
+              boxShadow={titleShadow}
+            />
+            <Body
+              type={data.type}
+              GetInputData={GetInputData}
+              content={data.content}
+              background={data.color}
+              TitleShadowHandler={TitleShadowHandler}
+            />
+            <Labels/>
+            <OptionsWrapper>
+              <OptionButton
+                src={LabelIcon}
+                title="Edit labels"
+                ref={labelsIconRef}
+                onClick={ShowLabelsPicker}
+              />
+              <LabelsPickerPopout/>
+              <OptionButton
+                src={ColorIcon}
+                title="Change color"
+                ref={colorIconRef}
+                onClick={ShowColorPicker}
+              />
+              <ColorPickerPopout />
+
+              <OptionButton
+                src={CopyIcon}
+                title="Copy note"
+                onClick={CopyNoteHandler}
+              />
+              <OptionButton
+                src={DeleteIcon}
+                title="Delete note"
+                onClick={DeleteNoteHandler}
+              />
+              <FinishButton onClick={FinishHandler}>Finish</FinishButton>
+            </OptionsWrapper>
+          </Container>
+        </>
+      ) : null}
+    </>
   );
 };
 

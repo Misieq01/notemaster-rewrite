@@ -23,7 +23,6 @@ const Main = props => {
       <Switch>
         <Route path="/User/NotesPanel" exact component={NotesPanel} />
         <Route path="/User/NotesPanel/Edit/:id" exact component={NotesPanel} />
-        <Route path="/User/NotesPanel/xxx" exact component={NotesPanel} />
       </Switch>
       <Route path="/User/NotesPanel/Edit/:id" exact component={NoteEditor} />
       <Route path="/User/Account" exact component={UserPanel} />

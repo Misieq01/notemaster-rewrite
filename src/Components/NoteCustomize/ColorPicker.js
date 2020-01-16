@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import * as axios from "../../utils/axiosHandler";
-import {ChangeNoteColor} from '../../App/Store/Actions/notesStuffActions'
-import {useDispatch} from 'react-redux'
+import { ChangeNoteColor } from "../../App/Store/Actions/notesStuffActions";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div`
   width: 250px;
@@ -33,19 +33,24 @@ const Color = styled.div`
   }
 `;
 
-const ColorPicker = ({ parent, id, ...props }) => {
-  const dispatch = useDispatch()
+const ColorPicker = ({ parent, id, componentType,Close, ...props }) => {
+  const dispatch = useDispatch();
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
-
-    const y = rect.top + rect.height + window.scrollY - 45;
-    const x = rect.left + ((rect.width - 250) / 2);
-
-    return [y, x];
-  }, [parent]);
+    if (componentType === "card") {
+      const y = rect.top + rect.height + window.scrollY - 45;
+      const x = rect.left + (rect.width - 250) / 2;
+      return [y, x];
+    } else if (componentType === "editor") {
+      const y = rect.top - rect.height / 2;
+      const x = rect.left - (250 - rect.width) /2;
+      return [y, x];
+    }
+  }, [parent, componentType]);
 
   const UpdateColor = color => {
-    dispatch(ChangeNoteColor(id,color))
+    dispatch(ChangeNoteColor(id, color));
+    Close()
   };
 
   return (

@@ -104,14 +104,16 @@ const Card = ({
       ));
   }
 
-  const Labels = truncateLabels()
+  const Labels = () => truncateLabels()
 
-  const Content =
-    data.type === "note" ? (
+  const Content = () =>{
+    return data.type === "note" ? (
       <Note content={data.content} />
     ) : (
       <List content={data.content} color={data.color} />
     );
+  }
+
 
   const CopyNoteHandler = event => {
     event.preventDefault();
@@ -135,26 +137,31 @@ const Card = ({
   const cardRef = useRef();
   const labelsIconRef = useRef();
 
-  const colorPicker = displayColorPicker ? (
-    <Portal setState={() => setDisplayColorPicker(false)}>
-      <ColorPicker
-        parent={cardRef.current}
-        id={data._id}
-        Close={() => setDisplayColorPicker(false)}
-      />
-    </Portal>
-  ) : null;
+  const ColorPickerPopout = () =>{
+    return displayColorPicker ? (
+      <Portal setState={() => setDisplayColorPicker(false)} eventType="move">
+        <ColorPicker
+          parent={cardRef.current}
+          id={data._id}
+          Close={() => setDisplayColorPicker(false)}
+          componentType="card"
+        />
+      </Portal>
+    ) : null;
+  }
 
-  const labelsPicker = displayLabelsPicker ? (
-    <Portal setState={() => setDisplayLabelsPicker(false)}>
-      <LabelsPicker
-        parent={labelsIconRef.current}
-        id={data._id}
-        labels={data.labels}
-        Close={() => setDisplayLabelsPicker(false)}
-      />
-    </Portal>
-  ) : null;
+  const LabelsPickerPopout = () =>{
+    return displayLabelsPicker ? (
+      <Portal setState={() => setDisplayLabelsPicker(false)} eventType="move">
+        <LabelsPicker
+          parent={labelsIconRef.current}
+          id={data._id}
+          labels={data.labels}
+          Close={() => setDisplayLabelsPicker(false)}
+        />
+      </Portal>
+    ) : null;
+  }
 
   return (
     <EditLink
@@ -167,8 +174,8 @@ const Card = ({
         onMouseLeave={() => setdisplayIcons(false)}
       >
         <Title>{data.title}</Title>
-        {Content}
-        {Labels}
+        <Content/>
+        <Labels/>
         <IconsWrapper>
           <Icon
             src={LabelIcon}
@@ -177,14 +184,14 @@ const Card = ({
             ref={labelsIconRef}
             onClick={LabelsPickerHandler}
           />
-          {labelsPicker}
+          <LabelsPickerPopout/>
           <Icon
             src={ColorIcon}
             title="Change Color"
             opacity={displayIcons ? "0.65" : "0"}
             onClick={event => ColorPickerHandler(event)}
           />
-          {colorPicker}
+          <ColorPickerPopout/>
           <Icon
             src={CopyIcon}
             title="Copy"

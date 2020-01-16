@@ -1,9 +1,10 @@
-import React,{useMemo} from "react";
+import React from "react";
 import styled from "styled-components";
 import Masonry from "react-masonry-component";
 
 import { useSelector } from "react-redux";
 import {getAllNotes} from '../Store/Selectors/notesSelectors'
+
 
 import Card from "./Notes/Card";
 
@@ -22,6 +23,7 @@ const MasonryDisplay = styled(Masonry)`
 const NoteBoard = React.memo(({ searchValue, ...props }) => {
   const notes =  useSelector(state => getAllNotes(state));
   console.log('noteboard')
+
   const MasonryOptions = {
     columnWidth: 264,
     transitionDuration: 0,

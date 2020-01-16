@@ -15,6 +15,7 @@ const Absolute = styled.div`
   margin: auto;
   top: ${props => props.top + "px"};
   left: ${props => props.left + "px"};
+  z-index: 200;
 `;
 
 const Container = styled.div`
@@ -24,6 +25,7 @@ const Container = styled.div`
   background: rgb(250, 250, 250);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
   border-radius: 8px;
+
 `;
 
 const LabelsBox = styled.div`
@@ -81,7 +83,7 @@ const Icon = styled.img`
   cursor: ${props => props.cursor || "default"};
 `;
 
-const LabelsPicker = ({ parent, id, ...props }) => {
+const LabelsPicker = ({ parent, id,componentType, ...props }) => {
   const dispatch = useDispatch()
   const labels = useSelector(state=>GetAllLabels(state))
   const noteLabels = useSelector(state=>getNoteById(state,id).labels)
@@ -132,12 +134,19 @@ const LabelsPicker = ({ parent, id, ...props }) => {
       displayedLabels.filter(e=> e !== null).forEach(() => {
         containerHeight += 35;
       });
-
+      if(componentType === 'card'){
       y = rect.top + rect.height + window.scrollY - containerHeight;
       x = rect.left + (rect.width - 40) / 2;
 
       return [y, x];
-    }, [parent, displayedLabels]);
+      }else if (componentType === 'editor'){
+              y = rect.top + rect.height + window.scrollY - containerHeight;
+              x = rect.left + (rect.width - 40) / 2;
+
+              return [y, x];
+      }
+
+    }, [parent, displayedLabels,componentType]);
    
   return (
     <Absolute top={top} left={left}>
