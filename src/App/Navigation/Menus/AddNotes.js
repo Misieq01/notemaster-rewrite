@@ -1,9 +1,13 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
+import styled,{keyframes} from "styled-components";
 import { withRouter } from "react-router-dom";
 import mongoose from 'mongoose'
 import {useDispatch} from 'react-redux'
 import {AddNote} from '../../Store/Actions/notesActions'
+import {zoomIn,zoomOut} from 'react-animations'
+
+const zoomInAnimation = keyframes`${zoomIn}`
+const zoomOutAnimation = keyframes`${zoomOut}`
 
 const Container = styled.div`
   width: 200px;
@@ -16,6 +20,7 @@ const Container = styled.div`
   left: ${props => props.left + "px"};
   text-align: center;
   background: rgb(250, 250, 250);
+  animation: 0.4s ${props => props.animation};
 `;
 
 const Element = styled.div`
@@ -25,8 +30,9 @@ const Element = styled.div`
   cursor: pointer;
 `;
 
-const AddNotes = ({ parent, ...props }) => {
+const AddNotes = ({ parent,whichAnimation,UnMountAnimation,UnMount, ...props }) => {
   const dispatch = useDispatch()
+
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
     let y;
@@ -46,8 +52,14 @@ const AddNotes = ({ parent, ...props }) => {
     })
   }
 
+  const CloseHandler = () => {
+    if(!whichAnimation){
+      UnMount()
+    }
+  }
+
   return (
-    <Container top={top} left={left}>
+    <Container top={top} left={left} animation={whichAnimation ? zoomInAnimation : zoomOutAnimation} onAnimationEnd={CloseHandler}>
       <Element onClick={() => AddNoteHandler("note")}>Note</Element>
       <Element onClick={() => AddNoteHandler("list")}>List</Element>
     </Container>

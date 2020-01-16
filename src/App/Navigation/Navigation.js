@@ -49,7 +49,7 @@ const Logout = () =>{
       </Wrapper>
       
       <Wrapper width='36vw'>
-        <Button svg={AddNoteIcon} buttonTitle='Add note' menu={true} MenuContent={AddMenu} />
+        <Button svg={AddNoteIcon} buttonTitle='Add note' menu={true} MenuContent={AddMenu}/>
         <Button svg={LabelsIcon} buttonTitle='Labels' menu={true} MenuContent={Labels} />
         
       </Wrapper>

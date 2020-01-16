@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Portal from "../../Components/ReactPortal";
 
 const ButtonContainer = styled.button`
@@ -11,7 +11,7 @@ const ButtonContainer = styled.button`
   transition: all 0.2s ease-in-out;
   :hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.32);
-  };
+  }
 `;
 
 const Icon = styled.img`
@@ -20,24 +20,60 @@ const Icon = styled.img`
   opacity: 0.7;
 `;
 
-const Button = ({ svg, buttonTitle, menu=false, MenuContent, onClick, ...props }) => {
+const Button = ({
+  svg,
+  buttonTitle,
+  menu = false,
+  MenuContent,
+  onClick,
+  ...props
+}) => {
+  // Manage display of menu component
   const [portalActive, setPortalActive] = useState(false);
+  // Manage animation of menu component
+  // false = UnMountAnimation
+  // true = MountAnimation
+  const [animation, setAnimation] = useState(false);
 
+  const MountAnimation = () => {
+    setAnimation(true);
+  };
+  const UnMountAnimation = () => {
+    setAnimation(false);
+  };
+
+  const Mount = () => {
+    setPortalActive(true);
+  };
+
+  const UnMount = () => {
+    setPortalActive(false);
+  };
+
+  // Reference to buttom DOM element
   const ButtonRef = useRef();
 
-  const PortalElement = portalActive ? (
-    <Portal setState={() => setPortalActive(false)}>
-      <MenuContent parent={ButtonRef.current} Close={()=>setPortalActive(false)}/>
-    </Portal>
-  ) : null;
+  const PortalElement = () => {
+    return portalActive ? (
+      <Portal setState={UnMountAnimation}>
+        <MenuContent
+          parent={ButtonRef.current}
+          whichAnimation={animation}
+          UnMountAnimation={UnMountAnimation}
+          UnMount={UnMount}
+        />
+      </Portal>
+    ) : null;
+  };
 
-  const ClickHandler = () =>{
-    if(menu){
-      setPortalActive(true)
-    }else{
-      onClick()
+  const ClickHandler = () => {
+    if (menu) {
+      Mount();
+      MountAnimation();
+    } else {
+      onClick();
     }
-  }
+  };
 
   return (
     <>
@@ -48,7 +84,7 @@ const Button = ({ svg, buttonTitle, menu=false, MenuContent, onClick, ...props }
       >
         <Icon src={svg} />
       </ButtonContainer>
-      {PortalElement}
+      <PortalElement/>
     </>
   );
 };

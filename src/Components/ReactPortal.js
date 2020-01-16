@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 const Portal = ({ children, setState, eventType, DOMrender, DOMevent, ...props }) => {
   const event = DOMevent || document.getElementById("root");
   const portal = DOMrender || document.getElementById("portal");
-  console.log(eventType)
   useEffect(() => {
     if(eventType === 'move'){
       event.addEventListener("mousemove", setState);

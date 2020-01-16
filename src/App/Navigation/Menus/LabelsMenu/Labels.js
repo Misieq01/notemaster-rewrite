@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import styled from "styled-components";
+import styled,{keyframes} from "styled-components";
 
 import {useSelector,useDispatch} from 'react-redux'
 import {AddLabel} from '../../../Store/Actions/labelsActions'
@@ -9,6 +9,10 @@ import SearchIcon from "../../../../Icons/Labels/search.svg";
 import AddIcon from "../../../../Icons/Labels/plus.svg";
 
 import Label from "./Label";
+import {zoomIn,zoomOut} from 'react-animations' 
+
+const zoomInAnimation = keyframes`${zoomIn}`;
+const zoomOutAnimation = keyframes`${zoomOut}`;
 
 const Absolute = styled.div`
   position: absolute;
@@ -24,6 +28,7 @@ const Container = styled.div`
   background: rgb(250, 250, 250);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
   border-radius: 8px;
+  animation: 0.4s ${props => props.animation};
 `;
 
 const LabelsWrapper = styled.div`
@@ -64,7 +69,7 @@ const Icon = styled.img`
   cursor: ${props => props.cursor || "default"};
 `;
 
-const Labels = ({ parent, ...props }) => {
+const Labels = ({ parent,whichAnimation,UnMountAnimation,UnMount, ...props }) => {
   const dispatch = useDispatch()
   const labels = useSelector(state => GetAllLabels(state))
   const [inputValue, setInputValue] = useState("");
@@ -103,9 +108,16 @@ const Labels = ({ parent, ...props }) => {
     }
   });
 
+   const CloseHandler = () => {
+     if (!whichAnimation) {
+       UnMount();
+     }
+   };
+
+
   return (
     <Absolute top={top} left={left}>
-      <Container onClick={() => setEditSlot("")}>
+      <Container onClick={() => setEditSlot("")} animation={whichAnimation ? zoomInAnimation : zoomOutAnimation} onAnimationEnd={CloseHandler}>
         <InputWrapper>
           <Input
             placeholder="Type label"
