@@ -16,7 +16,7 @@ import * as axios from "../../../utils/axiosHandlerRedux";
 export const FetchLabels = () => dispatch => {
   axios.Get(
     "http://localhost:4000/Labels",
-    res => dispatch({ type: FETCH_LABELS.SUCCESS, labels: res.data }),
+    res => setTimeout(()=>dispatch({ type: FETCH_LABELS.SUCCESS, labels: res.data })),
     () => dispatch({ type: FETCH_LABELS.FAILED })
   );
 };

@@ -3,12 +3,13 @@ import {FETCH_NOTES,CHANGE_NOTE_FIELD_VALUE,COPY_NOTE,DELETE_NOTE,POST_UPDATED_N
 const initialState = {
     notes: [],
     error: '',
+    loading: true
 }
 
 const notes = (state=initialState,action) =>{
     switch(action.type){
         case FETCH_NOTES.SUCCESS:
-            return {...state,notes:action.payload}
+            return {...state,notes:action.payload,loading:false}
         case FETCH_NOTES.FAILED:
             return {...state,error: 'We couldnt get your notes'}
         case CHANGE_NOTE_FIELD_VALUE:

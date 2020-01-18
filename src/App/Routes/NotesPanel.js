@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled,{keyframes} from "styled-components";
+import {fadeIn} from 'react-animations'
 
 import Navigation from "../Navigation/Navigation";
 import NoteBoard from "../NoteBoard/NoteBoard";
+
+const fadeInAnimation = keyframes`${fadeIn}`;
 
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   background: rgb(250, 250, 250);
   text-align:center;
+  animation: 1s ${fadeInAnimation};
 `;
 
 const NotesPanel = () => {

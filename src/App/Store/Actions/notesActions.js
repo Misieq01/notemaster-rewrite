@@ -19,7 +19,7 @@ export const fetchAllNotes = () => dispatch => {
   axios.Get(
     "http://localhost:4000/GetAllNotes",
     response => {
-      dispatch({ type: FETCH_NOTES.SUCCESS, payload: response.data });
+      setTimeout(()=>dispatch({ type: FETCH_NOTES.SUCCESS, payload: response.data }),1000);
     },
     () => {
       dispatch({ type: FETCH_NOTES.FAILED });

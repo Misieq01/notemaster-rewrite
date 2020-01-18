@@ -2,13 +2,14 @@ import {FETCH_LABELS,ADD_LABEL,UPDATE_LABEL,DELETE_LABEL} from '../Types'
 
 const initialState = {
     labels: [],
-    error:''
+    error:'',
+    loading: true
 }
 
 const labels = (state=initialState,action) =>{
     switch (action.type) {
         case FETCH_LABELS.SUCCESS:
-            return {...state,labels: action.labels}
+            return {...state,labels: action.labels, loading: false}
         case FETCH_LABELS.FAILED:
             return {...state,error: 'Loading labels failed'}
         case ADD_LABEL.SUCCESS:
