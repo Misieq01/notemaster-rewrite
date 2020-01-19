@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Portal from "../../Components/ReactPortal";
 
 const ButtonContainer = styled.button`
@@ -68,8 +68,10 @@ const Button = ({
 
   const ClickHandler = () => {
     if (menu) {
-      Mount();
-      MountAnimation();
+      if(!portalActive){
+        MountAnimation();
+        Mount();
+      }
     } else {
       onClick();
     }

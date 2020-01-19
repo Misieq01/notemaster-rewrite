@@ -1,18 +1,15 @@
-import React, { useMemo, useState } from "react";
-import styled,{keyframes} from "styled-components";
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { gsap } from "gsap";
 
-import {useSelector,useDispatch} from 'react-redux'
-import {AddLabel} from '../../../Store/Actions/labelsActions'
-import {GetAllLabels} from '../../../Store/Selectors/labelsSelectors'
+import { useSelector, useDispatch } from "react-redux";
+import { AddLabel } from "../../../Store/Actions/labelsActions";
+import { GetAllLabels } from "../../../Store/Selectors/labelsSelectors";
 
 import SearchIcon from "../../../../Icons/Labels/search.svg";
 import AddIcon from "../../../../Icons/Labels/plus.svg";
 
 import Label from "./Label";
-import {zoomIn,zoomOut} from 'react-animations' 
-
-const zoomInAnimation = keyframes`${zoomIn}`;
-const zoomOutAnimation = keyframes`${zoomOut}`;
 
 const Absolute = styled.div`
   position: absolute;
@@ -28,7 +25,6 @@ const Container = styled.div`
   background: rgb(250, 250, 250);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
   border-radius: 8px;
-  animation: 0.4s ${props => props.animation};
 `;
 
 const LabelsWrapper = styled.div`
@@ -69,11 +65,39 @@ const Icon = styled.img`
   cursor: ${props => props.cursor || "default"};
 `;
 
-const Labels = ({ parent,whichAnimation,UnMountAnimation,UnMount, ...props }) => {
-  const dispatch = useDispatch()
-  const labels = useSelector(state => GetAllLabels(state))
+const Labels = ({
+  parent,
+  whichAnimation,
+  UnMountAnimation,
+  UnMount,
+  ...props
+}) => {
+  const dispatch = useDispatch();
+  const labels = useSelector(state => GetAllLabels(state));
   const [inputValue, setInputValue] = useState("");
   const [editSlot, setEditSlot] = useState("");
+  const [animate, setAnimation] = useState(false)
+  const componentRef = useRef();
+  const child1Ref = useRef();
+  const child2Ref = useRef();
+  console.log(labels)
+  useEffect(() => {
+    if (animate) {
+      if (whichAnimation) {
+        gsap.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 85,y:-60,borderRadius: '25px'}).then(()=>{
+          componentRef.current.style.height = 'auto'
+        });
+        gsap.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+        gsap.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+      } else if (!whichAnimation) {
+        gsap.to(child1Ref.current, 0.1, { opacity: 0 });
+        gsap.to(child2Ref.current, 0.1, { opacity: 0 });
+        gsap
+          .to(componentRef.current, 0.3, { height: '50px',width: '50px',x:85,y:-60,borderRadius: '25px',zIndex:0,padding:0})
+          .then((UnMount));
+      }
+    } else if(!animate){setAnimation(true)};
+  }, [whichAnimation, UnMount, animate]);
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -81,63 +105,62 @@ const Labels = ({ parent,whichAnimation,UnMountAnimation,UnMount, ...props }) =>
     let x;
 
     y = rect.top + rect.height + 10;
-    x = rect.left - 100 + rect.width / 2;
+    x = rect.left - 100 + 15;
 
     return [y, x];
   }, [parent]);
 
   const AddLabelHandler = () => {
-    dispatch(AddLabel(inputValue))
-      setInputValue("");
-    };
+    dispatch(AddLabel(inputValue));
+    setInputValue("");
+  };
 
-
-  const displayedLabels = labels.map((e, i) => {
-    if (e.name.toLowerCase().includes(inputValue.toLowerCase())) {
-      return (
-            <Label
-              key={e._id}
-              name={e.name}
-              id={e._id}
-              editSlot={editSlot}
-              SetEditSlot={setEditSlot}
-            />
-      );
-    } else {
-      return null;
-    }
-  });
-
-   const CloseHandler = () => {
-     if (!whichAnimation) {
-       UnMount();
-     }
-   };
-
+  const DisplayedLabels = () =>{
+    return labels.map((e, i) => {
+      if (e.name.toLowerCase().includes(inputValue.toLowerCase())) {
+        return (
+          <Label
+            key={e._id}
+            name={e.name}
+            id={e._id}
+            editSlot={editSlot}
+            SetEditSlot={setEditSlot}
+          />
+        );
+      } else {
+        return null;
+      }
+    })};
 
   return (
-    <Absolute top={top} left={left}>
-      <Container onClick={() => setEditSlot("")} animation={whichAnimation ? zoomInAnimation : zoomOutAnimation} onAnimationEnd={CloseHandler}>
-        <InputWrapper>
-          <Input
-            placeholder="Type label"
-            value={inputValue}
-            onChange={event => setInputValue(event.target.value)}
-          />
-          {inputValue ? (
-            <Icon
-              src={AddIcon}
-              cursor="pointer"
-              size="18px"
-              onClick={AddLabelHandler}
-            />
-          ) : (
-            <Icon src={SearchIcon} />
-          )}
-        </InputWrapper>
-        <LabelsWrapper>{displayedLabels}</LabelsWrapper>
-      </Container>
-    </Absolute>
+    <>
+      {animate? (
+        <Absolute top={top} left={left}>
+          <Container onClick={() => setEditSlot("")} ref={componentRef}>
+            <InputWrapper ref={child1Ref}>
+              <Input
+                placeholder="Type label"
+                value={inputValue}
+                onChange={event => setInputValue(event.target.value)}
+              />
+              {inputValue ? (
+                <Icon
+                  src={AddIcon}
+                  cursor="pointer"
+                  size="18px"
+                  onClick={AddLabelHandler}
+                />
+              ) : (
+                <Icon src={SearchIcon} />
+              )}
+            </InputWrapper>
+            <LabelsWrapper ref={child2Ref}>
+              <DisplayedLabels />
+            </LabelsWrapper>
+          </Container>
+        </Absolute>
+      ) : null}
+    </>
   );
 };
 
