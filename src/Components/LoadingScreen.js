@@ -28,20 +28,20 @@ const LoadingScreen = () => {
     useEffect(()=>{
         //Creating array of clean dom objects refs (So i won't need to write 'current' every time)
         const objects = circles.current.map(e=>e.current)
-        TweenMax.to(objects[0],0.8,{y:-70,yoyo: true,repeat:-1,ease:Power3.easeIn})
-        TweenMax.to(objects[1],0.8,{y:70,yoyo: true,repeat:-1,ease:Power3.easeIn})
-        TweenMax.to(objects[2],0.8,{y:-70,yoyo: true,repeat:-1,ease:Power3.easeIn})
-        TweenMax.to(objects[3],0.8,{y:70,yoyo: true,repeat:-1,ease:Power3.easeIn})
-        TweenMax.to(objects[4],0.8,{y:-70,yoyo: true,repeat:-1,ease:Power3.easeIn})
+        TweenMax.to(objects[0],1,{y:-100,yoyo: true,repeat:-1,ease:Power3.easeIn})
+        TweenMax.to(objects[1],1,{y:-100,yoyo: true,repeat:-1,ease:Power3.easeIn,delay:0.3})
+        TweenMax.to(objects[2],1,{y:-100,yoyo: true,repeat:-1,ease:Power3.easeIn,delay:0.6})
+        TweenMax.to(objects[3],1,{y:-100,yoyo: true,repeat:-1,ease:Power3.easeIn,delay:0.9})
+        TweenMax.to(objects[4],1,{y:-100,yoyo: true,repeat:-1,ease:Power3.easeIn,delay:1.2})
     },[])
 
     return (
       <Container>
-            <Circle background="rgb(255,179,186)" ref={circles.current[0]} right='200px' bottom='-70px'/>
-            <Circle background="rgb(255,223,186)" ref={circles.current[1]} right='100px' bottom='70px'/>
-            <Circle background="rgb(255,255,186)" ref={circles.current[2]} right='0px' bottom='-70px'/>
-            <Circle background="rgb(186,255,201)" ref={circles.current[3]} right='-100px' bottom='70px'/>
-            <Circle background="rgb(186,225,255)" ref={circles.current[4]} right='-200px' bottom='-70px'/>
+            <Circle background="rgb(255,179,186)" ref={circles.current[0]} right='300px' bottom='-100px'/>
+            <Circle background="rgb(255,223,186)" ref={circles.current[1]} right='150px' bottom='-100px'/>
+            <Circle background="rgb(255,255,186)" ref={circles.current[2]} right='0px' bottom='-100px'/>
+            <Circle background="rgb(186,255,201)" ref={circles.current[3]} right='-150px' bottom='-100px'/>
+            <Circle background="rgb(186,225,255)" ref={circles.current[4]} right='-300px' bottom='-100px'/>
       </Container>
     );
 }
