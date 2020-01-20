@@ -61,7 +61,7 @@ const AddNotes = ({
     let y;
     let x;
 
-    y = rect.top + rect.height + 10;
+    y = rect.top + rect.height + 10 + window.scrollY;
     x = rect.left - 100 + rect.width / 2;
 
     return [y, x];

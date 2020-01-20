@@ -80,12 +80,13 @@ const Labels = ({
   const componentRef = useRef();
   const child1Ref = useRef();
   const child2Ref = useRef();
-  console.log(labels)
+  
   useEffect(() => {
     if (animate) {
       if (whichAnimation) {
         gsap.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 85,y:-60,borderRadius: '25px'}).then(()=>{
           componentRef.current.style.height = 'auto'
+          componentRef.current.style.transition ="all 0.2s ease-in-out";
         });
         gsap.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
         gsap.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
@@ -104,7 +105,7 @@ const Labels = ({
     let y;
     let x;
 
-    y = rect.top + rect.height + 10;
+    y = rect.top + rect.height + 10 + window.scrollY;
     x = rect.left - 100 + 15;
 
     return [y, x];
