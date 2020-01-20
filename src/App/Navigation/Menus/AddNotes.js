@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
-import { gsap } from "gsap";
+import { TweenMax } from "gsap";
 
 const Container = styled.div`
   width: 200px;
@@ -43,13 +43,13 @@ const AddNotes = ({
   useEffect(() => {
     if (animate) {
       if (whichAnimation) {
-        gsap.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 75,y:-60,borderRadius: '25px'});
-        gsap.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
-        gsap.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+        TweenMax.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 75,y:-60,borderRadius: '25px'});
+        TweenMax.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+        TweenMax.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
       } else if (!whichAnimation) {
-        gsap.to(child1Ref.current, 0.1, { opacity: 0 });
-        gsap.to(child2Ref.current, 0.1, { opacity: 0 });
-        gsap
+        TweenMax.to(child1Ref.current, 0.1, { opacity: 0 });
+        TweenMax.to(child2Ref.current, 0.1, { opacity: 0 });
+        TweenMax
           .to(componentRef.current, 0.3, { height: '50px',width: '50px',x: 75,y:-60,borderRadius: '25px',zIndex:0})
           .then(UnMount);
       }

@@ -14,9 +14,8 @@ const Main = props => {
 
   const dispatch = useDispatch()
   const notesLoading = useSelector(state => state.notes.loading)
-  const labelsLoading = useSelector(state => state.labels.loading)
-  const isLoading = notesLoading || labelsLoading ? true : false
-  console.log(notesLoading)
+  // const labelsLoading = useSelector(state => state.labels.loading)
+  const isLoading = notesLoading 
   useEffect(()=>{
     dispatch(fetchAllNotes())
     dispatch(FetchLabels())
