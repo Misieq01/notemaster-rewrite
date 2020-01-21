@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { TweenMax } from "gsap";
 
 import { useSelector, useDispatch } from "react-redux";
 import { AddLabel } from "../../../Store/Actions/labelsActions";
@@ -68,32 +69,36 @@ const Labels = ({
   parent,
   whichAnimation,
   UnMountAnimation,
-  MountAnimation,
   UnMount,
-  Close,
   ...props
 }) => {
   const dispatch = useDispatch();
   const labels = useSelector(state => GetAllLabels(state));
   const [inputValue, setInputValue] = useState("");
   const [editSlot, setEditSlot] = useState("");
-  const [animate, setAnimation] = useState(false);
+  const [animate, setAnimation] = useState(false)
   const componentRef = useRef();
-  const contentRef = useRef();
-
+  const child1Ref = useRef();
+  const child2Ref = useRef();
+  
   useEffect(() => {
     if (animate) {
       if (whichAnimation) {
-        MountAnimation(componentRef.current,contentRef.current,85,()=>{
+        TweenMax.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 85,y:-60,borderRadius: '25px'}).then(()=>{
           componentRef.current.style.height = 'auto'
-        })
+          componentRef.current.style.transition ="all 0.2s ease-in-out";
+        });
+        TweenMax.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+        TweenMax.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
       } else if (!whichAnimation) {
-        UnMountAnimation(componentRef.current, contentRef.current,85);
+        TweenMax.to(child1Ref.current, 0.1, { opacity: 0 });
+        TweenMax.to(child2Ref.current, 0.1, { opacity: 0 });
+        TweenMax
+          .to(componentRef.current, 0.3, { height: '50px',width: '50px',x:85,y:-60,borderRadius: '25px',zIndex:0,padding:0})
+          .then((UnMount));
       }
-    } else if (!animate) {
-      setAnimation(true);
-    }
-  }, [whichAnimation, animate,MountAnimation,UnMountAnimation]);
+    } else if(!animate){setAnimation(true)};
+  }, [whichAnimation, UnMount, animate]);
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -111,7 +116,7 @@ const Labels = ({
     setInputValue("");
   };
 
-  const DisplayedLabels = () => {
+  const DisplayedLabels = () =>{
     return labels.map((e, i) => {
       if (e.name.toLowerCase().includes(inputValue.toLowerCase())) {
         return (
@@ -126,36 +131,33 @@ const Labels = ({
       } else {
         return null;
       }
-    });
-  };
+    })};
 
   return (
     <>
-      {animate ? (
+      {animate? (
         <Absolute top={top} left={left}>
           <Container onClick={() => setEditSlot("")} ref={componentRef}>
-           <div ref={contentRef}>
-              <InputWrapper>
-                <Input
-                  placeholder="Type label"
-                  value={inputValue}
-                  onChange={event => setInputValue(event.target.value)}
+            <InputWrapper ref={child1Ref}>
+              <Input
+                placeholder="Type label"
+                value={inputValue}
+                onChange={event => setInputValue(event.target.value)}
+              />
+              {inputValue ? (
+                <Icon
+                  src={AddIcon}
+                  cursor="pointer"
+                  size="18px"
+                  onClick={AddLabelHandler}
                 />
-                {inputValue ? (
-                  <Icon
-                    src={AddIcon}
-                    cursor="pointer"
-                    size="18px"
-                    onClick={AddLabelHandler}
-                  />
-                ) : (
-                  <Icon src={SearchIcon} />
-                )}
-              </InputWrapper>
-              <LabelsWrapper>
-                <DisplayedLabels />
-              </LabelsWrapper>
-           </div>
+              ) : (
+                <Icon src={SearchIcon} />
+              )}
+            </InputWrapper>
+            <LabelsWrapper ref={child2Ref}>
+              <DisplayedLabels />
+            </LabelsWrapper>
           </Container>
         </Absolute>
       ) : null}

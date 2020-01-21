@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
+import { TweenMax } from "gsap";
 
 const Container = styled.div`
   width: 200px;
@@ -29,28 +30,31 @@ const AddNotes = ({
   parent,
   whichAnimation,
   UnMountAnimation,
-  MountAnimation,
   UnMount,
-  Close,
   ...props
 }) => {
   const dispatch = useDispatch();
   const componentRef = useRef();
-  const contentRef = useRef();
+  const child1Ref = useRef();
+  const child2Ref = useRef();
 
   const [animate, setAnimation] = useState(false);
 
   useEffect(() => {
     if (animate) {
       if (whichAnimation) {
-        MountAnimation(componentRef.current,contentRef.current,75)
+        TweenMax.from(componentRef.current, 0.3, { height: '50px',width: '50px',x: 75,y:-60,borderRadius: '25px'});
+        TweenMax.from(child1Ref.current, 0.5, { opacity: 0, delay: 0.2 });
+        TweenMax.from(child2Ref.current, 0.5, { opacity: 0, delay: 0.2 });
       } else if (!whichAnimation) {
-        UnMountAnimation(componentRef.current,contentRef.current,75)
+        TweenMax.to(child1Ref.current, 0.1, { opacity: 0 });
+        TweenMax.to(child2Ref.current, 0.1, { opacity: 0 });
+        TweenMax
+          .to(componentRef.current, 0.3, { height: '50px',width: '50px',x: 75,y:-60,borderRadius: '25px',zIndex:0})
+          .then(UnMount);
       }
-    } else if (!animate) {
-      setAnimation(true);
-    }
-  }, [whichAnimation, animate,UnMountAnimation,MountAnimation]);
+    } else if(!animate){setAnimation(true)};
+  }, [whichAnimation, UnMount, animate]);
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -66,7 +70,7 @@ const AddNotes = ({
   const AddNoteHandler = type => {
     const id = mongoose.Types.ObjectId().toHexString();
     dispatch(AddNote(id, type)).then(() => {
-      Close();
+      UnMount();
       props.history.push("/User/NotesPanel/Edit/" + id);
     });
   };
@@ -74,12 +78,12 @@ const AddNotes = ({
     <>
       {animate ? (
         <Container top={top} left={left} ref={componentRef}>
-          <div ref={contentRef}>
-            <Element onClick={() => AddNoteHandler("note")}>Note</Element>
-            <Element onClick={() => AddNoteHandler("list")}>
-              List
-            </Element>
-          </div>
+          <Element onClick={() => AddNoteHandler("note")} ref={child1Ref}>
+            Note
+          </Element>
+          <Element onClick={() => AddNoteHandler("list")} ref={child2Ref}>
+            List
+          </Element>
         </Container>
       ) : null}
       }
