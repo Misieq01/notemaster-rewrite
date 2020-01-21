@@ -1,19 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import Masonry from "react-masonry-component";
-
+import SideMenu from '../SideMenu/SideMenu'
 import { useSelector } from "react-redux";
 import {getAllNotes} from '../Store/Selectors/notesSelectors'
 
 
 import Card from "./Notes/Card";
 
+const Wrapper = styled.div`
+  width: 100vw;
+  height: auto;
+  display:flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items:center;
+`
 const Container = styled.div`
-  display: inline-block;
-  width: 86vw;
-  margin: 0 7vw;
-  text-align: center;
-`;
+  width: calc(100vw - 300px);
+  height: auto;
+  
+`
 
 const MasonryDisplay = styled(Masonry)`
   margin-top: 40px;
@@ -24,6 +31,7 @@ const MasonryDisplay = styled(Masonry)`
 
 const NoteBoard = React.memo(({ searchValue, ...props }) => {
   const notes =  useSelector(state => getAllNotes(state));
+  const sideMenuDisplay = useSelector(state => state.others.sideMenu);
   console.log('noteboard')
 
   const MasonryOptions = {
@@ -46,9 +54,10 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
   });
 
   return (
-    <Container>
-      <MasonryDisplay options={MasonryOptions}>{displayNotes}</MasonryDisplay>
-    </Container>
+<Wrapper>
+      {sideMenuDisplay ? <SideMenu/> : false}
+        <Container><MasonryDisplay options={MasonryOptions}>{displayNotes}</MasonryDisplay></Container>
+</Wrapper>
   );
 });
 

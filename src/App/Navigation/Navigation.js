@@ -3,6 +3,8 @@ import styled from "styled-components";
 import * as axios from '../../utils/axiosHandler';
 import {withRouter} from 'react-router-dom'
 import {RemoveToken} from '../../utils/tokenHandler'
+import {useDispatch} from 'react-redux'
+import {ChangeDisplaySideMenu} from '../Store/Actions/othersActions'
 
 import SearchBar from './SeachBar'
 import ClickButton from './Buttons/ClickButton'
@@ -35,7 +37,7 @@ const Wrapper = styled.div`
 `
 
 const Navigation = ({GetSearchValue,...props}) => {
-
+const dispatch = useDispatch()
 const Logout = () =>{
   axios.Post("http://localhost:4000/Logout",'',()=>{
     RemoveToken()
@@ -45,7 +47,7 @@ const Logout = () =>{
 
   return (
     <Container>
-      <Wrapper width='7vw'><ClickButton svg={MenuIcon} buttonTitle='Open menu' /></Wrapper>
+      <Wrapper width='7vw'><ClickButton svg={MenuIcon} buttonTitle='Open menu' onClick={()=>dispatch(ChangeDisplaySideMenu())} /></Wrapper>
       <Wrapper width='50vw'>
         <SearchBar GetSearchValue={GetSearchValue} />
       </Wrapper>
