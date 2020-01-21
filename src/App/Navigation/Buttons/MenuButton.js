@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import Portal from "../../Components/ReactPortal";
+import Portal from "../../../Components/ReactPortal";
 
 const ButtonContainer = styled.button`
   width: 50px;
@@ -23,9 +23,7 @@ const Icon = styled.img`
 const Button = ({
   svg,
   buttonTitle,
-  menu = false,
   MenuContent,
-  onClick,
   ...props
 }) => {
   // Manage display of menu component
@@ -67,14 +65,10 @@ const Button = ({
   };
 
   const ClickHandler = () => {
-    if (menu) {
-      if(!portalActive){
+      if (!portalActive) {
         MountAnimation();
         Mount();
       }
-    } else {
-      onClick();
-    }
   };
 
   return (
@@ -86,7 +80,7 @@ const Button = ({
       >
         <Icon src={svg} />
       </ButtonContainer>
-      <PortalElement/>
+      <PortalElement />
     </>
   );
 };

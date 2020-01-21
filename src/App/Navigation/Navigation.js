@@ -5,7 +5,9 @@ import {withRouter} from 'react-router-dom'
 import {RemoveToken} from '../../utils/tokenHandler'
 
 import SearchBar from './SeachBar'
-import Button from './Button'
+import ClickButton from './Buttons/ClickButton'
+import MenuButton from './Buttons/MenuButton'
+
 
 import AddMenu from './Menus/AddNotes'
 import Labels from './Menus/LabelsMenu/Labels'
@@ -43,17 +45,17 @@ const Logout = () =>{
 
   return (
     <Container>
-      <Wrapper width='7vw'><Button svg={MenuIcon}/></Wrapper>
+      <Wrapper width='7vw'><ClickButton svg={MenuIcon} buttonTitle='Open menu' /></Wrapper>
       <Wrapper width='50vw'>
         <SearchBar GetSearchValue={GetSearchValue} />
       </Wrapper>
       
       <Wrapper width='36vw'>
-        <Button svg={AddNoteIcon} buttonTitle='Add note' menu={true} MenuContent={AddMenu}/>
-        <Button svg={LabelsIcon} buttonTitle='Labels' menu={true} MenuContent={Labels} />
+        <MenuButton svg={AddNoteIcon} buttonTitle='Add note' MenuContent={AddMenu}/>
+        <MenuButton svg={LabelsIcon} buttonTitle='Labels' MenuContent={Labels} />
         
       </Wrapper>
-      <Wrapper width='7vw'><Button svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/></Wrapper>
+      <Wrapper width='7vw'><ClickButton svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/></Wrapper>
     </Container>
   );
 };
