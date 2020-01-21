@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import Portal from "../../../Components/ReactPortal";
+import { TweenMax } from "gsap";
 
 const ButtonContainer = styled.button`
   width: 50px;
@@ -20,12 +21,7 @@ const Icon = styled.img`
   opacity: 0.7;
 `;
 
-const Button = ({
-  svg,
-  buttonTitle,
-  MenuContent,
-  ...props
-}) => {
+const Button = ({ svg, buttonTitle, MenuContent, ...props }) => {
   // Manage display of menu component
   const [portalActive, setPortalActive] = useState(false);
   // Manage animation of menu component
@@ -33,11 +29,27 @@ const Button = ({
   // true = MountAnimation
   const [animation, setAnimation] = useState(false);
 
-  const MountAnimation = () => {
-    setAnimation(true);
+  const MountAnimation = (component, content,x,callback) => {
+    TweenMax.from(component, 0.3, {
+      height: "50px",
+      width: "50px",
+      x: x,
+      y: -60,
+      borderRadius: "25px"
+    }).then(callback);
+    TweenMax.from(content, 0.5, { opacity: 0, delay: 0.2 });
   };
-  const UnMountAnimation = () => {
-    setAnimation(false);
+  const UnMountAnimation = (component, content,x) => {
+    TweenMax.to(content, 0.1, { opacity: 0 });
+    TweenMax.to(component, 0.3, {
+      height: "50px",
+      width: "50px",
+      x: x,
+      y: -60,
+      borderRadius: "25px",
+      zIndex: 0,
+      padding:0
+    }).then(UnMount);
   };
 
   const Mount = () => {
@@ -53,22 +65,24 @@ const Button = ({
 
   const PortalElement = () => {
     return portalActive ? (
-      <Portal setState={UnMountAnimation}>
+      <Portal setState={() => setAnimation(false)}>
         <MenuContent
           parent={ButtonRef.current}
           whichAnimation={animation}
           UnMountAnimation={UnMountAnimation}
-          UnMount={UnMount}
+          MountAnimation={MountAnimation}
+          UnMount={() => setAnimation(false)}
+          Close={UnMount}
         />
       </Portal>
     ) : null;
   };
 
   const ClickHandler = () => {
-      if (!portalActive) {
-        MountAnimation();
-        Mount();
-      }
+    if (!portalActive) {
+      setAnimation(true)
+      Mount();
+    }
   };
 
   return (
