@@ -52,9 +52,11 @@ const MasonryOptions = {
 };
 
 const NoteBoard = React.memo(({ searchValue, ...props }) => {
-  const importantNotes = useSelector(state => getImportantNotes(state));
-  const nonImportantNotes = useSelector(state => getNonImportantNotes(state));
+  const allNotes = useSelector(state => getAllNotes(state));
+  const importantNotes = allNotes.filter(e=> e.important === true)
+  const nonImportantNotes = allNotes.filter(e => e.important === false);
   const sideMenuDisplay = useSelector(state => state.others.sideMenu);
+  console.log('dd')
 
   const RenderNotes = notes => {
     return notes.map(e => {

@@ -83,6 +83,11 @@ const Label = styled.div`
   border: 1px solid rgba(0,0,0,0.5);
 `;
 
+const LabelsWrapper = styled.div`
+  height: 30px;
+  width: 100%;
+`
+
 const Card = ({
   _id,
   ...props
@@ -99,17 +104,17 @@ const Card = ({
     return t;
   };
 
-  const truncateLabels = () => {
-    return [...data.labels]
+  const TruncatedLabels = () => {
+    const labels = [...data.labels]
       .slice(0, MAX_LABELS_LENGTH)
       .map(e => (
         <Label key={e.name}>
           {TruncateText(e.name, MAX_LABELS_TEXT_LENGTH)}
         </Label>
       ));
-  }
 
-  const Labels = () => truncateLabels()
+    return labels.length > 0 ? labels : <LabelsWrapper/>
+  }
 
   const Content = () =>{
     return data.type === "note" ? (
@@ -174,13 +179,12 @@ const Card = ({
       </Portal>
     ) : null;
   }
-
   return (
     <EditLink to={"/User/NotesPanel/Edit/" + data._id}>
       <Container
         color={data.color}
         ref={cardRef}
-        onMouseEnter={() => setdisplayIcons(true)}
+        onMouseOver={() => setdisplayIcons(true)}
         onMouseLeave={() => setdisplayIcons(false)}
       >
         <CornerIconPlacer
@@ -188,7 +192,7 @@ const Card = ({
           corner="topLeft"
           yPos={14}
           xPos={4}
-          size={20}
+          size={18}
           opacity={displayIcons ? "0.45" : "0"}
           onClick={event=>ChangeImportance(event)}
         />
@@ -201,7 +205,7 @@ const Card = ({
         /> */}
         <Title>{data.title}</Title>
         <Content />
-        <Labels />
+        <TruncatedLabels />
         <IconsWrapper>
           <Icon
             src={LabelIcon}

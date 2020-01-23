@@ -26,7 +26,7 @@ export const ChangeNoteColor = (id, color) => (dispatch, getState) => {
 
 export const AddLabelToNote = (noteId, label) => (dispatch, getState) => {
   const state = getState();
-  const notes = [...getAllNotes(state)];
+  const notes = getAllNotes(state);
   const note = {...getNoteById(state,noteId)}
   const index = GetNoteIndex(state, noteId);
   note.labels.push(label)
@@ -41,7 +41,7 @@ export const AddLabelToNote = (noteId, label) => (dispatch, getState) => {
 };
 export const DeleteLabelFromNote = (noteId, labelId) => (dispatch, getState) => {
   const state = getState();
-  const notes = [...getAllNotes(state)];
+  const notes = getAllNotes(state);
   const note = {...getNoteById(state,noteId)}
   const noteIndex = GetNoteIndex(state, noteId);
   const labelIndex = notes[noteIndex].labels.map(e=>e._id).indexOf(labelId)
