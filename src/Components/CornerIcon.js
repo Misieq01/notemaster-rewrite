@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import IdleIcon from "../Icons/circle-cross-white.svg";
-
 const Icon = styled.img`
   position: absolute;
   top: ${props => props.top};
@@ -11,18 +9,19 @@ const Icon = styled.img`
   left: ${props => props.left};
   margin: 0 auto;
   border-radius: 12px;
-  width: 24px;
-  height: 24px;
+  width: ${props => props.size + 'px'};
+  height: ${props => props.size + 'px'};
   background: ${props => props.background || "none"};
+  opacity: ${props => props.opacity};
   cursor: pointer;
-  z-index: 200;
+  z-index: 50;
   transition: all 0.3s ease-in-out;
   :hover {
     transform: scale(1.1);
   }
 `;
 
-const CornerCross = ({icon, background, corner, xPos,yPos, onClick, ...props }) => {
+const CornerIcon = ({icon, background, corner, xPos=0,yPos=0,size = 24,opacity = 1, onClick, ...props }) => {
   const setPosition = corner => {
 
     const x = xPos + 'px'
@@ -43,7 +42,6 @@ const CornerCross = ({icon, background, corner, xPos,yPos, onClick, ...props }) 
   };
   const [top, right, bottom, left] = setPosition(corner);
 
-  console.log(top, right, bottom, left);
 
   return (
     <Icon
@@ -54,8 +52,10 @@ const CornerCross = ({icon, background, corner, xPos,yPos, onClick, ...props }) 
       right={right}
       bottom={bottom}
       left={left}
+      size={size}
+      opacity={opacity}
     />
   );
 };
 
-export default CornerCross;
+export default CornerIcon;

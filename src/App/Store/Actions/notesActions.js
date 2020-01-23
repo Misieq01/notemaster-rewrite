@@ -82,6 +82,7 @@ export const AddNote = (id, type) => (dispatch, getState) => {
     _id: id,
     labels: [],
     color: "rgb(255,255,186)",
+    important: false,
     title: "",
     content: "",
     type: type

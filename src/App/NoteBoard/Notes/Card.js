@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {useDispatch,useSelector} from 'react-redux'
-import {DeleteNote,CopyNote} from '../../Store/Actions/notesActions'
+import {DeleteNote,CopyNote,ChangeNoteFieldValue,PostUpdatedNote} from '../../Store/Actions/notesActions'
 import {getNoteById} from '../../Store/Selectors/notesSelectors'
 
 import List from "./List";
@@ -11,11 +11,17 @@ import Note from "./Note";
 import Portal from "../../../Components/ReactPortal";
 import ColorPicker from "../../../Components/NoteCustomize/ColorPicker";
 import LabelsPicker from "../../../Components/NoteCustomize/LabelsPicker";
+import CornerIconPlacer from '../../../Components/CornerIcon'
 
 import DeleteIcon from "../../../Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../../Icons/NoteOptions/copy.svg";
 import ColorIcon from "../../../Icons/NoteOptions/color.svg";
 import LabelIcon from "../../../Icons/NoteOptions/label.svg";
+import ImportantFalseIcon from "../../../Icons/NoteOptions/important-false.svg";
+import ImportantTrueIcon from "../../../Icons/NoteOptions/important-true.svg";
+import CheckedIcon from "../../../Icons/NoteOptions/checked.svg";
+import UnCheckedIcon from "../../../Icons/NoteOptions/unchecked.svg";
+
 
 const Container = styled.div`
   width: 240px;
@@ -40,7 +46,7 @@ const Title = styled.h2`
     width:90%;
     height: 10%;
     padding: 10px;
-    margin:0;
+    margin:5px 0 0 0;
     font-size: 18px;
     text-transform: uppercase;
     text-align: left;
@@ -83,7 +89,6 @@ const Card = ({
 }) => {
   const dispatch = useDispatch()
   const data = useSelector(state => getNoteById(state,_id))
-  console.log('card')
   const [displayIcons, setdisplayIcons] = useState(false);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
@@ -134,6 +139,12 @@ const Card = ({
     setDisplayLabelsPicker(true);
   };
 
+  const ChangeImportance = event => {
+    event.preventDefault()
+    dispatch(ChangeNoteFieldValue(data._id,'important',!data.important))
+    dispatch(PostUpdatedNote(data._id))
+  }
+
   const cardRef = useRef();
   const labelsIconRef = useRef();
 
@@ -165,18 +176,32 @@ const Card = ({
   }
 
   return (
-    <EditLink
-      to={"/User/NotesPanel/Edit/" + data._id}
-    >
+    <EditLink to={"/User/NotesPanel/Edit/" + data._id}>
       <Container
         color={data.color}
         ref={cardRef}
         onMouseEnter={() => setdisplayIcons(true)}
         onMouseLeave={() => setdisplayIcons(false)}
       >
+        <CornerIconPlacer
+          icon={data.important ? ImportantTrueIcon : ImportantFalseIcon}
+          corner="topLeft"
+          yPos={14}
+          xPos={4}
+          size={20}
+          opacity={displayIcons ? "0.45" : "0"}
+          onClick={event=>ChangeImportance(event)}
+        />
+        {/* <CornerIconPlacer
+          icon={UnCheckedIcon}
+          corner="topRight"
+          xPos={-6}
+          size={24}
+          opacity={displayIcons ? "1" : "0"}
+        /> */}
         <Title>{data.title}</Title>
-        <Content/>
-        <Labels/>
+        <Content />
+        <Labels />
         <IconsWrapper>
           <Icon
             src={LabelIcon}
@@ -185,14 +210,14 @@ const Card = ({
             ref={labelsIconRef}
             onClick={LabelsPickerHandler}
           />
-          <LabelsPickerPopout/>
+          <LabelsPickerPopout />
           <Icon
             src={ColorIcon}
             title="Change Color"
             opacity={displayIcons ? "0.65" : "0"}
             onClick={event => ColorPickerHandler(event)}
           />
-          <ColorPickerPopout/>
+          <ColorPickerPopout />
           <Icon
             src={CopyIcon}
             title="Copy"
