@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import {useDispatch,useSelector} from 'react-redux'
-import {DeleteNote,CopyNote,ChangeNoteFieldValue,PostUpdatedNote} from '../../Store/Actions/notesActions'
+import {DeleteNote,CopyNote,ChangeImportance} from '../../Store/Actions/notesActions'
 import {getNoteById} from '../../Store/Selectors/notesSelectors'
 
 import List from "./List";
@@ -144,10 +144,9 @@ const Card = ({
     setDisplayLabelsPicker(true);
   };
 
-  const ChangeImportance = event => {
+  const ChangeImportanceHandler = event => {
     event.preventDefault()
-    dispatch(ChangeNoteFieldValue(data._id,'important',!data.important))
-    dispatch(PostUpdatedNote(data._id))
+    dispatch(ChangeImportance(data._id,!data.important))
   }
 
   const cardRef = useRef();
@@ -194,7 +193,7 @@ const Card = ({
           xPos={4}
           size={18}
           opacity={displayIcons ? "0.45" : "0"}
-          onClick={event=>ChangeImportance(event)}
+          onClick={event=>ChangeImportanceHandler(event)}
         />
         {/* <CornerIconPlacer
           icon={UnCheckedIcon}
