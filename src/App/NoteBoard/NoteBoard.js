@@ -22,13 +22,25 @@ const Wrapper = styled.div`
 const Container = styled.div`
   width: calc(100vw - 300px);
   height: auto;
+  display: flex;
+  justify-content:center;
 `;
 
 const MasonryDisplay = styled(Masonry)`
   margin: 60px 0;
-  text-align: center;
-  position: relative;
-  display: inline-block;
+  width: 580px;
+  @media (min-width: 860px) {
+    width: 792px;
+  }
+  @media (min-width: 1140px) {
+    width: 792px;
+  }
+  @media (min-width: 1420px) {
+    width: 1056px;
+  }
+  @media (min-width: 1700px) {
+    width: 1400px;
+  }
 `;
 
 const SeperatingLine = styled.div`
@@ -47,7 +59,6 @@ const LineText = styled.span`
 const MasonryOptions = {
   columnWidth: 264,
   transitionDuration: 0,
-  fitWidth: true,
   gutter: 20
 };
 
