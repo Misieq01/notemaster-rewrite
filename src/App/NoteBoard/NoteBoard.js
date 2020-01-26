@@ -4,11 +4,9 @@ import Masonry from "react-masonry-component";
 import SideMenu from "../SideMenu/SideMenu";
 import { useSelector } from "react-redux";
 import {
-  getAllNotes,
-  getImportantNotes,
-  getNonImportantNotes
+  getAllNotes
 } from "../Store/Selectors/notesSelectors";
-
+import {motion} from 'framer-motion'
 import Card from "./Notes/Card";
 
 const Wrapper = styled.div`
@@ -19,11 +17,19 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
 `;
-const Container = styled.div`
+
+const ContainerVariants = {
+  open: {marginLeft:300},
+  closed: {marginLeft: 0},
+}
+
+const Container = styled(motion.div)`
   width: calc(100vw - 300px);
   height: auto;
   display: flex;
-  justify-content:center;
+  flex-flow: column nowrap;
+  justify-content:space-around;
+  align-items:center;
 `;
 
 const MasonryDisplay = styled(Masonry)`
@@ -35,7 +41,7 @@ const MasonryDisplay = styled(Masonry)`
   @media (min-width: 1140px) {
     width: 792px;
   }
-  @media (min-width: 1420px) {
+  @media (min-width: 1400px) {
     width: 1056px;
   }
   @media (min-width: 1700px) {
@@ -44,7 +50,7 @@ const MasonryDisplay = styled(Masonry)`
 `;
 
 const SeperatingLine = styled.div`
-  width: calc(100vw - 300px);
+  width: inherit;
   height: auto;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   text-align: left;
@@ -80,10 +86,16 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
     const notes = RenderNotes(notesArr);
     return notes.length > 0 ? (
       <>
-{importantNotes.length !== 0 ? <SeperatingLine>
-          <LineText>{text}</LineText>
-        </SeperatingLine>: null}
-        <Container>
+        <Container
+        animate={sideMenuDisplay ? "open" : "closed"}
+        variants={ContainerVariants}
+        transition={{duration: 0.3}}
+        >
+          {importantNotes.length !== 0 ? (
+            <SeperatingLine>
+              <LineText>{text}</LineText>
+            </SeperatingLine>
+          ) : null}
           <MasonryDisplay options={MasonryOptions}>{notes}</MasonryDisplay>
         </Container>
       </>
@@ -92,7 +104,7 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
 
   return (
     <Wrapper>
-      {sideMenuDisplay ? <SideMenu /> : false}
+      <SideMenu />
       <div>
         <RenderedNotes notesArr={importantNotes} text="Star-Notes" />
         <RenderedNotes notesArr={nonImportantNotes} text="Regular-Notes" />
