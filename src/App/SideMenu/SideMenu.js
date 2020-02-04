@@ -11,6 +11,16 @@ const Container = styled(motion.div)`
     align-self: flex-start;
     position:fixed;
 `
+const transition = {
+  transition: { duration: 0.3, ease: "easeInOut" }
+};
+
+const Variants = {
+  initial: { left: -300 },
+  exit: { left: -300, ...transition },
+  open: { left: 0, ...transition }
+};
+
 
 const SideMenu = () =>{
       const sideMenuDisplay = useSelector(state => state.others.sideMenu);
@@ -20,10 +30,8 @@ const SideMenu = () =>{
         {sideMenuDisplay && (
           <Container
             key="container"
-            initial={{ left: -300 }}
-            animate={{ left: 0 }}
-            exit={{ left: -300 }}
-            transition={{duration: 0.3}}
+            exit='exit'
+            variants={Variants}
           >
             SideMenu
           </Container>

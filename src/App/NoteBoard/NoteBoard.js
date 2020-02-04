@@ -9,7 +9,7 @@ import {
 import {motion} from 'framer-motion'
 import Card from "./Notes/Card";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   width: 100vw;
   height: auto;
   display: flex;
@@ -17,11 +17,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
 `;
-
-const ContainerVariants = {
-  open: {marginLeft:300},
-  closed: {marginLeft: 0},
-}
 
 const Container = styled(motion.div)`
   width: calc(100vw - 300px);
@@ -62,10 +57,25 @@ const LineText = styled.span`
   color: rgba(0, 0, 0, 0.35);
 `;
 
+const Test = styled(motion.div)`
+  width: 10px;
+  height: 100px;
+`
+
 const MasonryOptions = {
   columnWidth: 264,
   transitionDuration: 0,
   gutter: 20
+};
+
+const transition = {
+  transition: { duration: 0.3, ease: "easeInOut" }
+};
+
+const ContainerVariants = {
+  initial: { width: 0 },
+  close: { width: 0, ...transition },
+  open: { width: 300, ...transition }
 };
 
 const NoteBoard = React.memo(({ searchValue, ...props }) => {
@@ -73,7 +83,8 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
   const importantNotes = allNotes.filter(e=> e.important === true)
   const nonImportantNotes = allNotes.filter(e => e.important === false);
   const sideMenuDisplay = useSelector(state => state.others.sideMenu);
-  console.log('dd')
+
+
 
   const RenderNotes = notes => {
     return notes.map(e => {
@@ -82,14 +93,10 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
   };
 
 
-  const RenderedNotes = ({ notesArr, text, ...props }) => {
+  const RenderedNotes = ({ notesArr, text,key, ...props }) => {
     const notes = RenderNotes(notesArr);
     return notes.length > 0 ? (
-      <>
         <Container
-        animate={sideMenuDisplay ? "open" : "closed"}
-        variants={ContainerVariants}
-        transition={{duration: 0.3}}
         >
           {importantNotes.length !== 0 ? (
             <SeperatingLine>
@@ -98,16 +105,16 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
           ) : null}
           <MasonryDisplay options={MasonryOptions}>{notes}</MasonryDisplay>
         </Container>
-      </>
     ) : null;
   };
 
   return (
-    <Wrapper>
+    <Wrapper initial='initial' animate={sideMenuDisplay ? 'open' : 'close'}>
       <SideMenu />
+      <Test variants={ContainerVariants}/>
       <div>
-        <RenderedNotes notesArr={importantNotes} text="Star-Notes" />
-        <RenderedNotes notesArr={nonImportantNotes} text="Regular-Notes" />
+          <RenderedNotes notesArr={importantNotes} text="Star-Notes"/>
+          <RenderedNotes notesArr={nonImportantNotes} text="Regular-Notes"/>
       </div>
     </Wrapper>
   );

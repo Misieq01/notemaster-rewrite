@@ -20,6 +20,7 @@ const NotesPanel = () => {
   const GetSearchValue = event => {
     setSearchValue(event.target.value);
   };
+  console.log('chuuuuu')
   return (
     <Container>
             <Navigation GetSearchValue={GetSearchValue} />
