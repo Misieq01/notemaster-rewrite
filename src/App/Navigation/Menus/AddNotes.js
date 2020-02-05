@@ -1,11 +1,12 @@
-import React, { useMemo, useRef, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
+import {motion} from 'framer-motion'
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   width: 200px;
   height: auto;
   border-radius: 5px;
@@ -25,32 +26,57 @@ const Element = styled.div`
   cursor: pointer;
 `;
 
+const transition = {
+  transition: {
+    duration: 0.35,
+    ease: "easeOut"
+  }
+};
+
+const containerVariants = {
+  initial: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    x: 75,
+    y: -60
+  },
+  open: {
+    height: "auto",
+    width: 200,
+    borderRadius: 5,
+    x: 0,
+    y: 0,
+    ...transition
+  },
+  close: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    x: 75,
+    y: -60,
+    ...transition
+  }
+};
+
+const elementVariants = {
+  initial: {
+    opacity: 0
+  },
+  open: {
+    opacity:1, transition: {duration: 0.3,delay: 0.4}
+  },
+  close: {
+    opacity:0, transition: {duration: 0.1}
+  }
+}
+
 const AddNotes = ({
   parent,
-  whichAnimation,
-  UnMountAnimation,
-  MountAnimation,
-  UnMount,
   Close,
-  ...props
 }) => {
   const dispatch = useDispatch();
-  const componentRef = useRef();
-  const contentRef = useRef();
-
-  const [animate, setAnimation] = useState(false);
-
-  useEffect(() => {
-    if (animate) {
-      if (whichAnimation) {
-        MountAnimation(componentRef.current,contentRef.current,75)
-      } else if (!whichAnimation) {
-        UnMountAnimation(componentRef.current,contentRef.current,75)
-      }
-    } else if (!animate) {
-      setAnimation(true);
-    }
-  }, [whichAnimation, animate,UnMountAnimation,MountAnimation]);
+  const history = useHistory()
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -67,24 +93,17 @@ const AddNotes = ({
     const id = mongoose.Types.ObjectId().toHexString();
     dispatch(AddNote(id, type)).then(() => {
       Close();
-      props.history.push("/User/NotesPanel/Edit/" + id);
+      history.push("/User/NotesPanel/Edit/" + id);
     });
   };
-  return (
-    <>
-      {animate ? (
-        <Container top={top} left={left} ref={componentRef}>
-          <div ref={contentRef}>
+  return <Container top={top} left={left} variants={containerVariants} initial='initial' animate='open' exit='close'>
+          <motion.div variants={elementVariants}>
             <Element onClick={() => AddNoteHandler("note")}>Note</Element>
             <Element onClick={() => AddNoteHandler("list")}>
               List
             </Element>
-          </div>
+          </motion.div>
         </Container>
-      ) : null}
-      }
-    </>
-  );
 };
 
-export default withRouter(AddNotes);
+export default AddNotes;

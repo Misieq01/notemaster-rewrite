@@ -1,5 +1,6 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
+import {motion} from 'framer-motion'
 
 import { useSelector, useDispatch } from "react-redux";
 import { AddLabel } from "../../../Store/Actions/labelsActions";
@@ -10,14 +11,14 @@ import AddIcon from "../../../../Icons/Labels/plus.svg";
 
 import Label from "./Label";
 
-const Absolute = styled.div`
+const Absolute = styled(motion.div)`
   position: absolute;
   top: ${props => props.top + "px"};
   left: ${props => props.left + "px"};
   margin: auto;
 `;
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   height: auto;
   width: 200px;
   padding: 0 10px;
@@ -64,36 +65,70 @@ const Icon = styled.img`
   cursor: ${props => props.cursor || "default"};
 `;
 
+const transition = {
+  transition: {
+    duration: 0.35,
+    ease: "easeOut"
+  }
+};
+const absoluteVariants = {
+  initial: {
+    x: 75,
+    y: -60
+  },
+  open: {
+    x: 0,
+    y: 0,
+    ...transition
+  },
+  close: {
+    x: 85,
+    y: -60,
+    ...transition
+  }
+};
+const containerVariants = {
+  initial: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+  },
+  open: {
+    height: "auto",
+    width: 200,
+    borderRadius: 5,
+    ...transition
+  },
+  close: {
+    height: 50,
+    width: 30,
+    borderRadius: 25,
+    ...transition
+  }
+};
+
+const contentVariants = {
+  initial: {
+    opacity: 0
+  },
+  open: {
+    opacity: 1,
+    transition: { duration: 0.3, delay: 0.4 }
+  },
+  close: {
+    opacity: 0,
+    transition: { duration: 0.1 }
+  }
+};
+
 const Labels = ({
   parent,
-  whichAnimation,
-  UnMountAnimation,
-  MountAnimation,
-  UnMount,
   Close,
-  ...props
 }) => {
   const dispatch = useDispatch();
   const labels = useSelector(state => GetAllLabels(state));
   const [inputValue, setInputValue] = useState("");
   const [editSlot, setEditSlot] = useState("");
-  const [animate, setAnimation] = useState(false);
-  const componentRef = useRef();
-  const contentRef = useRef();
-
-  useEffect(() => {
-    if (animate) {
-      if (whichAnimation) {
-        MountAnimation(componentRef.current,contentRef.current,85,()=>{
-          componentRef.current.style.height = 'auto'
-        })
-      } else if (!whichAnimation) {
-        UnMountAnimation(componentRef.current, contentRef.current,85);
-      }
-    } else if (!animate) {
-      setAnimation(true);
-    }
-  }, [whichAnimation, animate,MountAnimation,UnMountAnimation]);
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -129,12 +164,9 @@ const Labels = ({
     });
   };
 
-  return (
-    <>
-      {animate ? (
-        <Absolute top={top} left={left}>
-          <Container onClick={() => setEditSlot("")} ref={componentRef}>
-           <div ref={contentRef}>
+  return <Absolute top={top} left={left} variants={absoluteVariants} initial='initial' animate='open' exit='close'>
+          <Container onClick={() => setEditSlot("")} variants={containerVariants}>
+           <motion.div variants={contentVariants}>
               <InputWrapper>
                 <Input
                   placeholder="Type label"
@@ -155,12 +187,9 @@ const Labels = ({
               <LabelsWrapper>
                 <DisplayedLabels />
               </LabelsWrapper>
-           </div>
+           </motion.div>
           </Container>
         </Absolute>
-      ) : null}
-    </>
-  );
 };
 
 export default Labels;
