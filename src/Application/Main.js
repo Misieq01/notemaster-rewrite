@@ -1,13 +1,13 @@
 import React,{useEffect} from "react";
 
-import { Route,Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import {useDispatch,useSelector} from 'react-redux'
 import {fetchAllNotes} from './Store/Actions/notesActions'
 import {FetchLabels} from './Store/Actions/labelsActions'
 
-import NotesPanel from "./Routes/NotesPanel";
-import UserPanel from "./Routes/UserPanel";
-import NoteEditor from "./NoteEditors/Editor";
+import NotesPanel from "./Panels/Notes";
+import UserPanel from "./Panels/Account";
+import NoteEditor from "./Panels/Editor";
 import LoadingScreen from './Components/LoadingScreen'
 import CustomRoute from '../Components/CustomRoute'
 

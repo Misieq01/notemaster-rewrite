@@ -9,8 +9,8 @@ import {getNoteById} from '../../Store/Selectors/notesSelectors'
 import List from "./List";
 import Note from "./Note";
 import Portal from "../../Components/ReactPortal";
-import ColorPicker from "../../Components/NoteCustomize/ColorPicker";
-import LabelsPicker from "../../Components/NoteCustomize/LabelsPicker";
+import ColorPicker from "../../Components/Pickers/Colors";
+import LabelsPicker from "../../Components/Pickers/Labels";
 import CornerIconPlacer from '../../Components/CornerIcon'
 
 import DeleteIcon from "../../../Assets/Icons/NoteOptions/delete.svg";

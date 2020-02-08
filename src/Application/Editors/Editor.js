@@ -11,11 +11,11 @@ import {
   PostUpdatedNote
 } from "../Store/Actions/notesActions";
 
-import Background from "../../Components/Background";
-import Body from "./EditorContents/BodyType";
+// import Background from "../../Components/Background";
+import Body from "./BodyType";
 import Portal from "../Components/ReactPortal";
-import ColorPicker from "../Components/NoteCustomize/ColorPicker";
-import LabelsPicker from "../Components/NoteCustomize/LabelsPicker";
+import ColorPicker from "../Components/Pickers/Colors";
+import LabelsPicker from "../Components/Pickers/Labels";
 
 import DeleteIcon from "../../Assets/Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../Assets/Icons/NoteOptions/copy.svg";
@@ -206,9 +206,6 @@ const Editor = props => {
   return (
     <>
       {data !== undefined ? (
-        <>
-          {" "}
-          <Background onClick={FinishHandler} />
           <Container background={data.color}>
             <Title
               placeholder="Title"
@@ -253,7 +250,6 @@ const Editor = props => {
               <FinishButton onClick={FinishHandler}>Finish</FinishButton>
             </OptionsWrapper>
           </Container>
-        </>
       ) : null}
     </>
   );

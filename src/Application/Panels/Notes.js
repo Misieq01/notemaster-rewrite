@@ -3,7 +3,7 @@ import styled,{keyframes} from "styled-components";
 import {fadeIn} from 'react-animations'
 
 import Navigation from "../Navigation/Navigation";
-import NoteBoard from "../NoteBoard/NoteBoard";
+import NoteBoard from "../Board/Board";
 
 const fadeInAnimation = keyframes`${fadeIn}`;
 

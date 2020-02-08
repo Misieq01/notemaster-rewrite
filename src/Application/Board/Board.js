@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Masonry from "react-masonry-component";
-import SideMenu from "../SideMenu/SideMenu";
+import SideMenu from "../Navigation/SideMenu/SideMenu";
 import { useSelector } from "react-redux";
 import {
   getAllNotes
