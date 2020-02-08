@@ -1,24 +1,42 @@
-import React from 'react';
-import {HashRouter as Router, Route} from 'react-router-dom'
-import NoAuthRoute from './Components/NoAuthRoute'
-import AuthRoute from './Components/AuthRoute'
+import React from "react";
+import { HashRouter as Router, Route,Switch } from "react-router-dom";
+import CustomRoute from "./Components/CustomRoute";
+import { GetToken } from "./utils/tokenHandler";
 
-import Home from './Homepage/Pages/Home'
-import Login from './Authentication/Login'
-import Signup from './Authentication/Signup'
-import PasswordReset from './Authentication/PasswordReset'
-import Main from './App/Main'
+import { Home, Login, Signup, PasswordReset, Error } from "./Pages/index";
+import Main from "./Application/Main";
 
-const App = () =>{
+const App = () => {
+
   return (
     <Router>
-      <Route exact path="/" component={Home} />
-      <AuthRoute path="/Login" component={Login} />
-      <AuthRoute path="/Signup" component={Signup} />
-      <AuthRoute path="/Reset" component={PasswordReset} />
-      <NoAuthRoute path="/User" component={Main} />
+<Switch>
+        <Route exact path="/" component={Home} />
+        <CustomRoute
+          path="/Login"
+          redirectPath="/User/NotesPanel"
+          component={Login}
+        />
+        <CustomRoute
+          path="/Signup"
+          redirectPath="/User/NotesPanel"
+          component={Signup}
+        />
+        <CustomRoute
+          path="/Reset"
+          redirectPath="/User/NotesPanel"
+          component={PasswordReset}
+        />
+        <CustomRoute
+          path="/User"
+          redirectPath="/Login"
+          component={Main}
+          isPrivate={true}
+        />
+        <Route component={Error} />
+</Switch>
     </Router>
   );
-}
+};
 
 export default App;

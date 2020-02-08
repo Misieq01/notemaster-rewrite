@@ -7,51 +7,55 @@ const setOptions = token => {
   };
 };
 
-export const Get = (path, callback) => {
+export const Get = async(path, success,failed) => {
   const token = GetToken();
   const options = setOptions(token);
-  axios
-    .get(path, options)
+  return axios
+    .get(path,options)
     .then(response => {
-      callback(response);
+      success(response);
     })
     .catch(error => {
-      console.log(error.message);
+      console.log(error.response);
+      failed(error)
     });
 };
-export const Post = (path, body, callback) => {
-  const token = GetToken();
-  const options = setOptions(token);
-  axios
-    .post(path, body, options)
-    .then(response => {
-      callback(response);
-    })
-    .catch(error => {
-      console.log(error.message);
-    });
-};
-export const Patch = (path, body, callback) => {
-  const token = GetToken();
-  const options = setOptions(token);
-  axios
-    .patch(path, body, options)
-    .then(response => {
-      callback(response);
-    })
-    .catch(error => {
-      console.log(error.message);
-    });
-};
-export const Delete = (path, callback) => {
-  const token = GetToken();
-  const options = setOptions(token);
-  axios
-    .delete(path, options)
-    .then(response => {
-      callback(response);
-    })
-    .catch(error => {
-      console.log(error.message);
-    });
-};
+export const Post = async(path, body, success, failed) => {
+         const token = GetToken();
+         const options = setOptions(token);
+         return axios
+           .post(path, body, options)
+           .then(response => {
+             success(response);
+           })
+           .catch(error => {
+             console.log(error.response);
+             failed(error)
+           });
+       };
+export const Patch = async(path, body, success, failed) => {
+         const token = GetToken();
+         const options = setOptions(token);
+         return axios
+           .patch(path, body, options)
+           .then(response => {
+             success(response);
+           })
+           .catch(error => {
+             console.log(error.response);
+             failed(error)
+           });
+       };
+export const Delete = async(path, success, failed) => {
+         const token = GetToken();
+         const options = setOptions(token);
+         return axios
+           .delete(path, options)
+           .then(response => {
+             success(response);
+           })
+           .catch(error => {
+             console.log(error.response);
+             failed(error)
+           });
+       };
