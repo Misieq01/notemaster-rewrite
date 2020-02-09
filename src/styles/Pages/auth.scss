@@ -61,7 +61,7 @@
   color: rgb(250, 250, 250);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  :hover {
+  &:hover {
     transform: scale(1.02);
   }
 }
