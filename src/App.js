@@ -1,7 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Route,Switch } from "react-router-dom";
 import CustomRoute from "./Components/CustomRoute";
-import { GetToken } from "./utils/tokenHandler";
 
 import { Home, Login, Signup, PasswordReset, Error } from "./Pages/index";
 import Main from "./Application/Main";

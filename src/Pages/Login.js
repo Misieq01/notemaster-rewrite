@@ -1,125 +1,65 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import * as axios from "../utils/axiosHandler";
-import { SetToken } from "../utils/tokenHandler";
+import { Link,useHistory } from "react-router-dom";
+import {setToken} from '../utils/tokenHandler'
+import * as axios from '../utils/axiosHandler'
 
-import Input from "../Components/InputComponent";
-import Button from "../Components/ButtonComponent";
+import Input from "../Components/Input";
 
-import { ReactComponent as LoginIcon } from "../Assets/Icons/Auth/login.svg";
-import { ReactComponent as PasswordIcon } from "../Assets/Icons/Auth/password.svg";
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(to left, #ff5f6d, #ffc371);
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Form = styled.div`
-  width: 420px;
-  height: 640px;
-  background: rgb(245, 245, 245);
-  border: 4px solid rgb(250, 250, 250);
-  border-radius: 8px;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 100;
-`;
-
-const Title = styled.p`
-  font-size: 38px;
-  font-weight: bold;
-`;
-const ForgotPassword = styled.p`
-  font-size: 14px;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  :hover {
-    color: rgba(0, 0, 0, 0.9);
-  }
-`;
-
-const Singup = styled.p`
-  font-size: 16px;
-  text-align: center;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: all 0.2s ease-in-out;
-  :hover {
-    color: rgba(0, 0, 0, 0.9);
-  }
-`;
-
-const Text = styled.p`
-  font-size: 12px;
-  text-align: center;
-`;
-
-const InputWrapper = styled.div`
-  height: auto;
-  width: 80%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-`;
+import {LoginIcon,PasswordIcon} from '../Assets/Icons/index'
 
 const Login = props => {
+  const history = useHistory()
+
   const [data, setData] = useState({
     email: "",
     password: ""
   });
 
-  const DataUpdate = (event, property) => {
+  const dataUpdate = (event, property) => {
     setData({ ...data, [property]: event.target.value });
   };
 
-  const LoginHandler = () => {
+  const loginHandler = () => {
     axios.Post("http://localhost:4000/Login", data, response => {
-      SetToken(response.data);
-      props.history.replace("/User/NotesPanel");
-    });
+     setToken(response.data);
+      history.push("/User/NotesPanel");
+    },err=>console.log(err));
   };
 
   return (
-    <Container>
-        <Form>
-          <Title>Login</Title>
-          <InputWrapper>
-            <Input
-              label="Email:"
-              placeholder="Type your Email"
-              icon={<LoginIcon />}
-              inputType="text"
-              onChange={event => DataUpdate(event, "email")}
-            />
-            <Input
-              label="Password:"
-              placeholder="Type your password"
-              icon={<PasswordIcon />}
-              inputType="password"
-              onChange={event => DataUpdate(event, "password")}
-            />
-            <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
-              <ForgotPassword>Forgot password ?</ForgotPassword>
-            </Link>
-          </InputWrapper>
-          <Button text="Login" onClick={LoginHandler} />
-          <div>
-            <Text>Don't have account yet ?</Text>
-            <Link to="/Signup">
-              <Singup>Singup</Singup>
-            </Link>
-          </div>
-        </Form>
-    </Container>
+    <div className="auth__container">
+      <div className="auth__loginForm">
+        <h2 className="auth__title">Login</h2>
+        <div className="auth__inputWrapper">
+          <Input
+            label="Email:"
+            placeholder="Type your Email"
+            icon={LoginIcon}
+            inputType="text"
+            onChange={event => dataUpdate(event, "email")}
+          />
+          <Input
+            label="Password:"
+            placeholder="Type your password"
+            icon={PasswordIcon}
+            inputType="password"
+            onChange={event => dataUpdate(event, "password")}
+          />
+          <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
+            <p className="login__forgotPassword">Forgot password ?</p>
+          </Link>
+        </div>
+        <button className="auth__button" onClick={loginHandler}>
+          Login
+        </button>
+        <div>
+          <p className="auth__text">Don't have account yet ?</p>
+          <Link to="/Signup">
+            <p className="auth__changeAuth">Singup</p>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -16,6 +16,6 @@ const Button = styled.button`
 `;
 
 const ButtonComponent = ({text,onClick,...props}) =>{
-return <Button onClick={onClick}>{text}</Button>
+return <button className='button' onClick={onClick}>{text}</button>
 }
 export default ButtonComponent

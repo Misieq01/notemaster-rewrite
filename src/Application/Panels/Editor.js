@@ -10,7 +10,6 @@ const AddNotePanel = props => {
 
   const dispatch = useDispatch()
   const {id} = useParams()
-  console.log(id)
 
   const ClosePanel = () =>{
     dispatch(PostUpdatedNote(id))

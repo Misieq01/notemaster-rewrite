@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import * as axios from '../../utils/axiosHandler';
 import {withRouter} from 'react-router-dom'
-import {RemoveToken} from '../../utils/tokenHandler'
+import {removeToken} from '../../utils/tokenHandler'
 import {useDispatch} from 'react-redux'
 import {ChangeDisplaySideMenu} from '../Store/Actions/othersActions'
 
@@ -40,7 +40,7 @@ const Navigation = ({GetSearchValue,...props}) => {
 const dispatch = useDispatch()
 const Logout = () =>{
   axios.Post("http://localhost:4000/Logout",'',()=>{
-    RemoveToken()
+    removeToken()
     props.history.push("/Login")
   });
 }

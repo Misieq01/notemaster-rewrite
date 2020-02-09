@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetToken } from "./tokenHandler";
+import { getToken } from "./tokenHandler";
 
 const setOptions = token => {
   return {
@@ -8,7 +8,7 @@ const setOptions = token => {
 };
 
 export const Get = async(path, success,failed) => {
-  const token = GetToken();
+  const token = getToken();
   const options = setOptions(token);
   return axios
     .get(path,options)
@@ -21,7 +21,7 @@ export const Get = async(path, success,failed) => {
     });
 };
 export const Post = async(path, body, success, failed) => {
-         const token = GetToken();
+         const token = getToken();
          const options = setOptions(token);
          return axios
            .post(path, body, options)
@@ -34,7 +34,7 @@ export const Post = async(path, body, success, failed) => {
            });
        };
 export const Patch = async(path, body, success, failed) => {
-         const token = GetToken();
+         const token = getToken();
          const options = setOptions(token);
          return axios
            .patch(path, body, options)
@@ -47,7 +47,7 @@ export const Patch = async(path, body, success, failed) => {
            });
        };
 export const Delete = async(path, success, failed) => {
-         const token = GetToken();
+         const token = getToken();
          const options = setOptions(token);
          return axios
            .delete(path, options)

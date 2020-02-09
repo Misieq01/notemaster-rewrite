@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { GetToken } from "../utils/tokenHandler";
+import { getToken } from "../utils/tokenHandler";
 
 
 
@@ -10,7 +10,7 @@ const CustomRoute = ({
   isPrivate = false,
   ...rest
 }) => {
-  const token = isPrivate ? GetToken() : !GetToken();
+  const token = isPrivate ? getToken() : !getToken();
 
   return (
     <Route
