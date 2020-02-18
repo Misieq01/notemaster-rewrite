@@ -128,7 +128,7 @@ const Editor = props => {
             placeholder="Title"
             onChange={event => GetInputData(event, "title")}
             value={data.title}
-            boxShadow={titleShadow}
+            style={{boxShadow: titleShadow}}
           />
           <Body
             type={data.type}
