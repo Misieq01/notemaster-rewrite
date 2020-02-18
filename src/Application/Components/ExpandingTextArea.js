@@ -1,27 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-
-const WrittingArea = styled.textarea`
-  width: 92%;
-  min-height: ${props => props.lineHeight};
-  resize: none;
-  border: none;
-  text-decoration: none;
-  outline: none;
-  font-size: 18px;
-  background: ${props => props.background || "rgb(250,250,250)"};
-  line-height: ${props => props.lineHeight};
-  ::-webkit-scrollbar {
-    width: 10px;
-    cursor: default;
-  }
-  ::-webkit-scrollbar-track {
-    background: #eeeeee;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #cccccc;
-  }
-`;
 
 const ResizableTextArea = props => {
   const [data, setData] = useState({
@@ -74,8 +51,9 @@ const ResizableTextArea = props => {
   };
 
   return (
-    <WrittingArea
-      className={props.className}
+    <textarea
+      className="textArea"
+      style={{ minHeight: props.lineHeight, lineHeight: props.lineHeight + 'px',background: props.background }}
       value={data.value}
       rows={rows}
       placeholder={props.placeholder}

@@ -1,0 +1,37 @@
+.board {
+  &__wrapper {
+    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  &__container {
+    width: calc(100vw - 300px);
+    height: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &__masonry {
+    margin: 60px 0;
+    width: 88%;
+  }
+  &__separatingLine {
+    width: inherit;
+    height: auto;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  &__lineText {
+    margin-left: 20px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.35);
+  }
+  &__sideMenuPlaceHolder {
+    width: 10px;
+    height: 100px;
+  }
+}

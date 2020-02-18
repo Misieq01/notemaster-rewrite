@@ -1,16 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
 import {motion,AnimatePresence} from 'framer-motion'
 import {useSelector} from 'react-redux'
 
-
-const Container = styled(motion.div)`
-    height: calc(100vh - 40px);
-    width: 300px;
-    background:red;
-    align-self: flex-start;
-    position:fixed;
-`
 const transition = {
   transition: { duration: 0.3, ease: "easeInOut" }
 };
@@ -28,13 +19,13 @@ const SideMenu = () =>{
     return (
       <AnimatePresence>
         {sideMenuDisplay && (
-          <Container
+          <motion.div className='sideMenu__container'
             key="container"
             exit='exit'
             variants={Variants}
           >
             SideMenu
-          </Container>
+          </motion.div>
         )}
       </AnimatePresence>
     );

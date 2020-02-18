@@ -1,0 +1,29 @@
+.menuLabel {
+  &__container {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 5px;
+    z-index: 100;
+  }
+  &__label {
+    width: 80%;
+    font-size: 16px;
+    padding: 10px 0;
+  }
+  &__input {
+    width: 80%;
+    font-size: 16px;
+    padding: 10px 0;
+    color: rgba(0, 0, 0, 0.75);
+  }
+  &__icon {
+    height: 15px;
+    width: 15px;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}

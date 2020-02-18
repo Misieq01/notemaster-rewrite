@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import * as axios from '../../utils/axiosHandler';
 import {withRouter} from 'react-router-dom'
 import {removeToken} from '../../utils/tokenHandler'
@@ -19,23 +18,6 @@ import LogoutIcon from '../../Assets/Icons/Navigation/logout.svg'
 import LabelsIcon from '../../Assets/Icons/Navigation/labels.svg'
 import MenuIcon from '../../Assets/Icons/Navigation/three-lines.svg'
 
-const Container = styled.div`
-  width: 100vw;
-  height: 120px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items:center;
-`
-const Wrapper = styled.div`
-  width: ${props => props.width || '40%'};
-  height: 80px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-`
-
 const Navigation = ({GetSearchValue,...props}) => {
 const dispatch = useDispatch()
 const Logout = () =>{
@@ -46,19 +28,19 @@ const Logout = () =>{
 }
 
   return (
-    <Container>
-      <Wrapper width='7vw'><ClickButton svg={MenuIcon} buttonTitle='Open menu' onClick={()=>dispatch(ChangeDisplaySideMenu())} /></Wrapper>
-      <Wrapper width='50vw'>
+    <div className='navigation__container'>
+      <div className='navigation__wrapper' style={{width: '7vw'}} ><ClickButton svg={MenuIcon} buttonTitle='Open menu' onClick={()=>dispatch(ChangeDisplaySideMenu())} /></div>
+      <div className='navigation__wrapper' style={{width: '50vw'}}>
         <SearchBar GetSearchValue={GetSearchValue} />
-      </Wrapper>
+      </div>
       
-      <Wrapper width='36vw'>
+      <div className='navigation__wrapper' style={{width: '36vw'}}>
         <MenuButton svg={AddNoteIcon} buttonTitle='Add note' MenuContent={AddMenu}/>
         <MenuButton svg={LabelsIcon} buttonTitle='Labels' MenuContent={Labels} />
         
-      </Wrapper>
-      <Wrapper width='7vw'><ClickButton svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/></Wrapper>
-    </Container>
+      </div>
+      <div className='navigation__wrapper' style={{width: '7vw'}}><ClickButton svg={LogoutIcon}  buttonTitle='Logout' onClick={Logout}/></div>
+    </div>
   );
 };
 

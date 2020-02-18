@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import styled from "styled-components";
 
 import {useSelector,useDispatch} from 'react-redux'
 import {GetAllLabels} from '../../Store/Selectors/labelsSelectors'
@@ -10,78 +9,6 @@ import CheckedBodIcon from "../../../Assets/Icons/Labels/square-check.svg";
 import UnCheckedBodIcon from "../../../Assets/Icons/Labels/square-uncheck.svg";
 import SearchIcon from "../../../Assets/Icons/Labels/search.svg";
 
-const Absolute = styled.div`
-  position: absolute;
-  margin: auto;
-  top: ${props => props.top + "px"};
-  left: ${props => props.left + "px"};
-  z-index: 200;
-`;
-
-const Container = styled.div`
-  height: auto;
-  width: 150px;
-  padding: 0 10px;
-  background: rgb(250, 250, 250);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
-  border-radius: 8px;
-
-`;
-
-const LabelsBox = styled.div`
-  width: 100%;
-  max-height: 240px;
-  overflow-y: auto;
-  ::-webkit-scrollbar {
-    width: 10px;
-    cursor: default;
-  }
-  ::-webkit-scrollbar-track {
-    background: #eeeeee;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #cccccc;
-  }
-`;
-
-const LabelWrapper = styled.div`
-  height: 30px;
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: 5px;
-  z-index: 100;
-`;
-
-const Label = styled.p`
-  width: 80%;
-  font-size: 14px;
-  padding: 10px 0;
-`;
-
-const InputWrapper = styled.div`
-  height: 40px;
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  width: 80%;
-  font-size: 14px;
-  padding: 10px 0;
-`;
-
-const Icon = styled.img`
-  height: ${props => props.size || "15px"};
-  width: ${props => props.size || "15px"};
-  opacity: 0.6;
-  cursor: ${props => props.cursor || "default"};
-`;
 
 const LabelsPicker = ({ parent, id,componentType, ...props }) => {
   const dispatch = useDispatch()
@@ -102,22 +29,22 @@ const LabelsPicker = ({ parent, id,componentType, ...props }) => {
     const isAdded = noteLabels.map(el=>el.name).includes(e.name);
     if(e.name.toLowerCase().includes(searchValue.toLowerCase())){
           return (
-            <LabelWrapper key={e._id}>
-              <Label>{e.name}</Label>
+            <div className='labelsPicker__labelWrapper' key={e._id}>
+              <div className='labelsPicker__label'>{e.name}</div>
               {isAdded ? (
-                <Icon
+                <img className='labelsPicker__boxIcon' alt='icon'
                   src={CheckedBodIcon}
                   cursor="pointer"
                   onClick={() => DeleteLabelFromNoteHandler(e)}
                 />
               ) : (
-                <Icon
+                <img className='labelsPicker__boxIcon' alt='icon'
                   src={UnCheckedBodIcon}
                   cursor="pointer"
                   onClick={() => AddLabelToNoteHandler(e)}
                 />
               )}
-            </LabelWrapper>
+            </div>
           );
     }else{
       return null
@@ -149,19 +76,19 @@ const LabelsPicker = ({ parent, id,componentType, ...props }) => {
     }, [parent, displayedLabels,componentType]);
    
   return (
-    <Absolute top={top} left={left}>
-      <Container
+    <div className='labelsPicker__absolute' style={{top:top,left:left}}>
+      <div className='labelsPicker__container'
         onClick={event => {
           event.stopPropagation();
         }}
       >
-        <InputWrapper>
-          <Input placeholder="Search label" value={searchValue} onChange={event=>setSearchValue(event.target.value)} />
-          <Icon src={SearchIcon} />
-        </InputWrapper>
-        <LabelsBox>{displayedLabels}</LabelsBox>
-      </Container>
-    </Absolute>
+        <div className='labelsPicker__inputWrapper'>
+          <input className='labelsPicker__input' placeholder="Search label" value={searchValue} onChange={event=>setSearchValue(event.target.value)} />
+          <img className='labelsPicker__searchIcon' alt='searchIcon' src={SearchIcon} />
+        </div>
+        <div className='labelsPicker__labelsBox'>{displayedLabels}</div>
+      </div>
+    </div>
   );
 };
 

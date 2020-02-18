@@ -1,0 +1,69 @@
+.card {
+  &__container {
+    width: 240px;
+    background: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    border-radius: 8px;
+    padding: 12px 12px 6px 12px;
+    margin: 10px 0;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    text-align: center;
+    &:hover {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+    }
+  }
+  &__link {
+    transition: all 0.35s ease-in-out;
+  }
+  &__title {
+    width: 90%;
+    height: 10%;
+    padding: 10px;
+    margin: 5px 0 0 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-align: left;
+    opacity: 0.95;
+  }
+  &__iconsWrapper {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
+  }
+  &__icon {
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__label {
+    font-size: 12px;
+    padding: 2px;
+    margin: 5px 3px;
+    border-radius: 5px;
+    display: inline-block;
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  &__labelsPlaceholder {
+    height: 30px;
+    width: 100%;
+  }
+}
+.noteTextContainer {
+  width: 90%;
+  padding: 3px;
+  margin: 0;
+  text-align: left;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 20px;
+}

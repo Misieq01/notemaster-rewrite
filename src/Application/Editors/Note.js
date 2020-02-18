@@ -1,21 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 
-import TextArea from "./ExpandingTextArea";
-
-const Text = styled(TextArea)`
-  z-index: 100;
-  top: 0;
-  opacity: 0.75;
-  transition: all 0.2s ease-in-out;
-  :focus{
-    opacity: 1;
-  }
-`;
+import TextArea from "../Components/ExpandingTextArea";
 
 const NoteEditor = ({ background, GetInputData, content,TitleShadowHandler, ...props }) => {
   return (
-    <Text
+    <TextArea
       onChange={GetInputData}
       fieldName={"content"}
       placeholder="Place for your thoughts"

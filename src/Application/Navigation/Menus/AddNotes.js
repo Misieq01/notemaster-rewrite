@@ -1,30 +1,9 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
 import {motion} from 'framer-motion'
-
-const Container = styled(motion.div)`
-  width: 200px;
-  height: auto;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  z-index: 500;
-  position: absolute;
-  top: ${props => props.top + "px"};
-  left: ${props => props.left + "px"};
-  text-align: center;
-  background: rgb(250, 250, 250);
-`;
-
-const Element = styled.div`
-  height: auto;
-  width: calc(100% - 40px);
-  padding: 10px 20px;
-  cursor: pointer;
-`;
 
 const transition = {
   transition: {
@@ -96,14 +75,14 @@ const AddNotes = ({
       history.push("/User/NotesPanel/Edit/" + id);
     });
   };
-  return <Container top={top} left={left} variants={containerVariants} initial='initial' animate='open' exit='close'>
+  return <motion.div className='addNotes__container' style={{top: top,left:left}} variants={containerVariants} initial='initial' animate='open' exit='close'>
           <motion.div variants={elementVariants}>
-            <Element onClick={() => AddNoteHandler("note")}>Note</Element>
-            <Element onClick={() => AddNoteHandler("list")}>
+            <div className='addNotes__element' onClick={() => AddNoteHandler("note")}>Note</div>
+            <div className='addNotes__element' onClick={() => AddNoteHandler("list")}>
               List
-            </Element>
+            </div>
           </motion.div>
-        </Container>
+        </motion.div>
 };
 
 export default AddNotes;

@@ -1,15 +1,4 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
-
-const TextContainer = styled.p`
-    width:90%;
-    padding: 3px;
-    margin:0;
-    text-align: left;
-    display:inline-block;
-    font-size: 15px;
-    line-height: 20px;
-`;
 
 const Note = ({ content, ...props }) => {
   const text = content;
@@ -28,7 +17,7 @@ const Note = ({ content, ...props }) => {
     return WordTruncate(text);
   }, [text]);
 
-  return <TextContainer>{Text}</TextContainer>;
+  return <p className="noteTextContainer">{Text}</p>;
 };
 
 export default Note;

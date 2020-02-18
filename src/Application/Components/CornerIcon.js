@@ -1,25 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-
-const Icon = styled.img`
-  position: absolute;
-  top: ${props => props.top};
-  right: ${props => props.right};
-  bottom: ${props => props.bottom};
-  left: ${props => props.left};
-  margin: 0 auto;
-  border-radius: 12px;
-  width: ${props => props.size + 'px'};
-  height: ${props => props.size + 'px'};
-  background: ${props => props.background || "none"};
-  opacity: ${props => props.opacity};
-  cursor: pointer;
-  z-index: 50;
-  transition: all 0.3s ease-in-out;
-  :hover {
-    transform: scale(1.1);
-  }
-`;
 
 const CornerIcon = ({icon, background, corner, xPos=0,yPos=0,size = 24,opacity = 1, onClick, ...props }) => {
   const setPosition = corner => {
@@ -42,9 +21,30 @@ const CornerIcon = ({icon, background, corner, xPos=0,yPos=0,size = 24,opacity =
   };
   const [top, right, bottom, left] = setPosition(corner);
 
+  const style = {
+  position: 'absolute',
+  top: top,
+  right: right,
+  bottom: bottom,
+  left: left,
+  margin: '0 auto',
+  borderRadius: '12px',
+  width: size + 'px',
+  height: size + 'px',
+  background: background || "none",
+  opacity: opacity,
+  cursor: 'pointer',
+  zIndex: 50,
+  transition: 'all 0.3s ease-in-out',
+  hover: {
+    transform: 'scale(1.1)',
+  }
+  }
 
   return (
-    <Icon
+    <img
+      style={style}
+      alt='cornerIcon'
       src={icon}
       background={background}
       onClick={onClick}

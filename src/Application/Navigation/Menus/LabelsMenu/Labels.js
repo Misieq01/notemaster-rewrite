@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import styled from "styled-components";
 import {motion} from 'framer-motion'
 
 import { useSelector, useDispatch } from "react-redux";
@@ -10,60 +9,6 @@ import SearchIcon from "../../../../Assets/Icons/Labels/search.svg";
 import AddIcon from "../../../../Assets/Icons/Labels/plus.svg";
 
 import Label from "./Label";
-
-const Absolute = styled(motion.div)`
-  position: absolute;
-  top: ${props => props.top + "px"};
-  left: ${props => props.left + "px"};
-  margin: auto;
-`;
-
-const Container = styled(motion.div)`
-  height: auto;
-  width: 200px;
-  padding: 0 10px;
-  background: rgb(250, 250, 250);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
-  border-radius: 8px;
-`;
-
-const LabelsWrapper = styled.div`
-  width: 100%;
-  max-height: 240px;
-  overflow-y: auto;
-  ::-webkit-scrollbar {
-    width: 10px;
-    cursor: default;
-  }
-  ::-webkit-scrollbar-track {
-    background: #eeeeee;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #cccccc;
-  }
-`;
-
-const InputWrapper = styled.div`
-  height: 50px;
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  width: 80%;
-  font-size: 16px;
-  padding: 10px 0;
-`;
-
-const Icon = styled.img`
-  height: ${props => props.size || "15px"};
-  width: ${props => props.size || "15px"};
-  opacity: 0.6;
-  cursor: ${props => props.cursor || "default"};
-`;
 
 const transition = {
   transition: {
@@ -164,32 +109,47 @@ const Labels = ({
     });
   };
 
-  return <Absolute top={top} left={left} variants={absoluteVariants} initial='initial' animate='open' exit='close'>
-          <Container onClick={() => setEditSlot("")} variants={containerVariants}>
-           <motion.div variants={contentVariants}>
-              <InputWrapper>
-                <Input
-                  placeholder="Type label"
-                  value={inputValue}
-                  onChange={event => setInputValue(event.target.value)}
-                />
-                {inputValue ? (
-                  <Icon
-                    src={AddIcon}
-                    cursor="pointer"
-                    size="18px"
-                    onClick={AddLabelHandler}
-                  />
-                ) : (
-                  <Icon src={SearchIcon} />
-                )}
-              </InputWrapper>
-              <LabelsWrapper>
-                <DisplayedLabels />
-              </LabelsWrapper>
-           </motion.div>
-          </Container>
-        </Absolute>
+  return (
+    <motion.div
+      className="labelsMenu__absolute"
+      style={{ top: top, left: left }}
+      variants={absoluteVariants}
+      initial="initial"
+      animate="open"
+      exit="close"
+    >
+      <motion.div
+        className="labelsMenu__container"
+        onClick={() => setEditSlot("")}
+        variants={containerVariants}
+      >
+        <motion.div variants={contentVariants}>
+          <div className="labelsMenu__inputWrapper">
+            <input
+              className="labelsMenu__input"
+              placeholder="Type label"
+              value={inputValue}
+              onChange={event => setInputValue(event.target.value)}
+            />
+            {inputValue ? (
+              <img className='labelsMenu__addIcon'
+                alt='addIcon'
+                src={AddIcon}
+                cursor="pointer"
+                size="18px"
+                onClick={AddLabelHandler}
+              />
+            ) : (
+              <img className='labelsMenu__searchIcon' alt='searchIcon' src={SearchIcon} />
+            )}
+          </div>
+          <div className="labelsMeni__labelsWrapper">
+            <DisplayedLabels />
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
 };
 
 export default Labels;

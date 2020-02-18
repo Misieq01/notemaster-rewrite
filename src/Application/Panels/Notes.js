@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import styled,{keyframes} from "styled-components";
-import {fadeIn} from 'react-animations'
+import { motion } from "framer-motion";
 
 import Navigation from "../Navigation/Navigation";
 import NoteBoard from "../Board/Board";
-
-const fadeInAnimation = keyframes`${fadeIn}`;
-
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  background: rgb(250, 250, 250);
-  text-align:center;
-  animation: 1s ${fadeInAnimation};
-`;
 
 const NotesPanel = () => {
   const [searchValue, setSearchValue] = useState("");
   const GetSearchValue = event => {
     setSearchValue(event.target.value);
   };
-  console.log('chuuuuu')
   return (
-    <Container>
-            <Navigation GetSearchValue={GetSearchValue} />
-            <NoteBoard searchValue={searchValue}/>
-    </Container>
+    <motion.div
+      className="notesPanel__container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeIn" }}
+    >
+      <Navigation GetSearchValue={GetSearchValue} />
+      <NoteBoard searchValue={searchValue} />
+    </motion.div>
   );
 };
 

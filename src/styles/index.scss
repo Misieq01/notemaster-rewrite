@@ -6,3 +6,23 @@
 @import "./Pages/home.scss";
 
 @import "./Components/input.scss";
+@import "./Components/background.scss";
+
+@import "./Application/Board/board.scss";
+@import "./Application/Board/card.scss";
+
+@import "./Application/Editors/editor.scss";
+
+@import "./Application/Navigation/navigation.scss";
+@import "./Application/Navigation/searchBar.scss";
+@import "./Application/Navigation/Menus/addNotes.scss";
+@import "./Application/Navigation/Menus/labels.scss";
+@import "./Application/Navigation/Menus/label.scss";
+@import "./Application/Navigation/SideMenu/sideMenu.scss";
+
+@import "./Application/Components/expandingTextArea.scss";
+@import "./Application/Components/colorPicker.scss";
+@import "./Application/Components/labelsPicker.scss";
+@import "./Application/Components/loadingScreen.scss";
+
+@import "./Application/Panels/notes.scss";

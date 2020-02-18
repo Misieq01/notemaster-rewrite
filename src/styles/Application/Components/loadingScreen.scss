@@ -1,0 +1,16 @@
+.loadingScreen{
+    &__container{
+  width: 100vw;
+  height: 100vh;
+  background: rgb(250, 250, 250);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    }
+    &__box{
+      width: 200px;
+      height: 200px;
+      background: rgb(119, 119, 255);
+      border-radius: 100px;
+    }
+}

@@ -1,17 +1,20 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import {useDispatch,useSelector} from 'react-redux'
-import {DeleteNote,CopyNote,ChangeImportance} from '../../Store/Actions/notesActions'
-import {getNoteById} from '../../Store/Selectors/notesSelectors'
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DeleteNote,
+  CopyNote,
+  ChangeImportance
+} from "../../Store/Actions/notesActions";
+import { getNoteById } from "../../Store/Selectors/notesSelectors";
 
 import List from "./List";
 import Note from "./Note";
 import Portal from "../../Components/ReactPortal";
 import ColorPicker from "../../Components/Pickers/Colors";
 import LabelsPicker from "../../Components/Pickers/Labels";
-import CornerIconPlacer from '../../Components/CornerIcon'
+import CornerIconPlacer from "../../Components/CornerIcon";
 
 import DeleteIcon from "../../../Assets/Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../../Assets/Icons/NoteOptions/copy.svg";
@@ -22,78 +25,9 @@ import ImportantTrueIcon from "../../../Assets/Icons/NoteOptions/important-true.
 // import CheckedIcon from "../../../Assets/Icons/NoteOptions/checked.svg";
 // import UnCheckedIcon from "../../../Assets/Icons/NoteOptions/unchecked.svg";
 
-
-const Container = styled.div`
-  width: 240px;
-  background: ${props => props.color};
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border-radius: 8px;
-  padding: 12px 12px 6px 12px;
-  margin: 10px 0;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  :hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
-  }
-  text-align: center;
-`;
-
-const EditLink = styled(Link)`
-  transition: all 0.35s ease-in-out;
-`
-
-const Title = styled.h2`
-    width:90%;
-    height: 10%;
-    padding: 10px;
-    margin:5px 0 0 0;
-    font-size: 18px;
-    text-transform: uppercase;
-    text-align: left;
-    opacity: 0.95;
-`;
-
-const IconsWrapper = styled.div`
-  width: 100%;
-  height: 20px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-  margin: 10px 0;
-`;
-
-const Icon = styled.img`
-  width: 16px;
-  height: 16px;
-  transition: all 0.3s ease-in-out;
-  opacity: ${props => props.opacity};
-  :hover {
-    opacity: 1;
-  }
-`;
-
-const Label = styled.div`
-  font-size: 12px;
-  padding: 2px;
-  margin: 5px 3px;
-  border-radius: 5px;
-  display: inline-block;
-  background:none;
-  border: 1px solid rgba(0,0,0,0.5);
-`;
-
-const LabelsWrapper = styled.div`
-  height: 30px;
-  width: 100%;
-`
-
-const Card = ({
-  _id,
-  ...props
-}) => {
-  const dispatch = useDispatch()
-  const data = useSelector(state => getNoteById(state,_id))
+const Card = ({ _id, ...props }) => {
+  const dispatch = useDispatch();
+  const data = useSelector(state => getNoteById(state, _id));
   const [displayIcons, setdisplayIcons] = useState(false);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
@@ -108,22 +42,25 @@ const Card = ({
     const labels = [...data.labels]
       .slice(0, MAX_LABELS_LENGTH)
       .map(e => (
-        <Label key={e.name}>
+        <div className='card__label' key={e.name}>
           {TruncateText(e.name, MAX_LABELS_TEXT_LENGTH)}
-        </Label>
+        </div>
       ));
 
-    return labels.length > 0 ? labels : <LabelsWrapper/>
-  }
+    return labels.length > 0 ? (
+      labels
+    ) : (
+      <div className="card__labelsPlaceholder" />
+    );
+  };
 
-  const Content = () =>{
+  const Content = () => {
     return data.type === "note" ? (
       <Note content={data.content} />
     ) : (
       <List content={data.content} color={data.color} />
     );
-  }
-
+  };
 
   const CopyNoteHandler = event => {
     event.preventDefault();
@@ -131,7 +68,7 @@ const Card = ({
   };
   const DeleteNoteHandler = event => {
     event.preventDefault();
-    dispatch(DeleteNote(data._id))
+    dispatch(DeleteNote(data._id));
   };
 
   const ColorPickerHandler = event => {
@@ -145,14 +82,14 @@ const Card = ({
   };
 
   const ChangeImportanceHandler = event => {
-    event.preventDefault()
-    dispatch(ChangeImportance(data._id,!data.important))
-  }
+    event.preventDefault();
+    dispatch(ChangeImportance(data._id, !data.important));
+  };
 
   const cardRef = useRef();
   const labelsIconRef = useRef();
 
-  const ColorPickerPopout = () =>{
+  const ColorPickerPopout = () => {
     return displayColorPicker ? (
       <Portal setState={() => setDisplayColorPicker(false)} eventType="move">
         <ColorPicker
@@ -163,9 +100,9 @@ const Card = ({
         />
       </Portal>
     ) : null;
-  }
+  };
 
-  const LabelsPickerPopout = () =>{
+  const LabelsPickerPopout = () => {
     return displayLabelsPicker ? (
       <Portal setState={() => setDisplayLabelsPicker(false)} eventType="move">
         <LabelsPicker
@@ -173,15 +110,16 @@ const Card = ({
           id={data._id}
           labels={data.labels}
           Close={() => setDisplayLabelsPicker(false)}
-          componentType='card'
+          componentType="card"
         />
       </Portal>
     ) : null;
-  }
+  };
   return (
-    <EditLink to={"/User/NotesPanel/Edit/" + data._id}>
-      <Container
-        color={data.color}
+    <Link className="card__link" to={"/User/NotesPanel/Edit/" + data._id}>
+      <div
+        className="card__container"
+        style={{ background: data.color }}
         ref={cardRef}
         onMouseOver={() => setdisplayIcons(true)}
         onMouseLeave={() => setdisplayIcons(false)}
@@ -193,7 +131,7 @@ const Card = ({
           xPos={4}
           size={18}
           opacity={displayIcons ? "0.45" : "0"}
-          onClick={event=>ChangeImportanceHandler(event)}
+          onClick={event => ChangeImportanceHandler(event)}
         />
         {/* <CornerIconPlacer
           icon={UnCheckedIcon}
@@ -202,40 +140,48 @@ const Card = ({
           size={24}
           opacity={displayIcons ? "1" : "0"}
         /> */}
-        <Title>{data.title}</Title>
+        <h2 className="card__title">{data.title}</h2>
         <Content />
         <TruncatedLabels />
-        <IconsWrapper>
-          <Icon
+        <div className="card__iconsWrapper">
+          <img
+            className="card__icon"
+            alt="icon"
             src={LabelIcon}
             title="Labels"
-            opacity={displayIcons ? "0.65" : "0"}
+            style={{ opacity: displayIcons ? 0.65 : 0 }}
             ref={labelsIconRef}
             onClick={LabelsPickerHandler}
           />
           <LabelsPickerPopout />
-          <Icon
+          <img
+            className="card__icon"
+            alt="icon"
             src={ColorIcon}
             title="Change Color"
-            opacity={displayIcons ? "0.65" : "0"}
+            style={{ opacity: displayIcons ? 0.65 : 0 }}
             onClick={event => ColorPickerHandler(event)}
           />
           <ColorPickerPopout />
-          <Icon
+          <img
+            className="card__icon"
+            alt="icon"
             src={CopyIcon}
             title="Copy"
             onClick={event => CopyNoteHandler(event)}
-            opacity={displayIcons ? "0.65" : "0"}
+            style={{ opacity: displayIcons ? 0.65 : 0 }}
           />
-          <Icon
+          <img
+            className="card__icon"
+            alt="icon"
             src={DeleteIcon}
             title="Delete"
             onClick={event => DeleteNoteHandler(event)}
-            opacity={displayIcons ? "0.65" : "0"}
+            style={{ opacity: displayIcons ? 0.65 : 0 }}
           />
-        </IconsWrapper>
-      </Container>
-    </EditLink>
+        </div>
+      </div>
+    </Link>
   );
 };
 
