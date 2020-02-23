@@ -1,22 +1,12 @@
 import React, { useMemo } from "react";
+import {textTruncateWord} from '../../../utils/textTruncate'
 
 const Note = ({ content, ...props }) => {
-  const text = content;
-
-  const MAX_TEXT_LENGTH = 430;
-
-  const WordTruncate = (t, len = MAX_TEXT_LENGTH) => {
-    if (t.length > len)
-      t =
-        t.slice(0, len).substring(0, Math.min(t.length, t.lastIndexOf(" "))) +
-        "...";
-    return t;
-  };
 
   const Text = useMemo(() => {
-    return WordTruncate(text);
-  }, [text]);
-
+    return textTruncateWord(content,430);
+  }, [content]);
+console.log(content,Text)
   return <p className="note-text-container">{Text}</p>;
 };
 

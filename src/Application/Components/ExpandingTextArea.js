@@ -9,7 +9,6 @@ const ResizableTextArea = props => {
   const [rows, setRows] = useState(props.minRows);
 
   useEffect(() => {
-    console.log("Somsiad");
     let rows = 0;
     const charsCount = props.value.length;
     if (charsCount === 0) {
@@ -24,7 +23,7 @@ const ResizableTextArea = props => {
   }, [props.value, props.maxRows,props.minRows]);
 
   const HandleChange = event => {
-    props.onChange(event, props.fieldName);
+    props.onChange(props.fieldName,event.target.value);
     const lineHeight = props.lineHeight;
     const minRows = data.minRows;
     const maxRows = data.maxRows;

@@ -1,102 +1,46 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import {
-  DeleteNote,
-  CopyNote,
-  ChangeImportance
-} from "../../Store/Actions/notesActions";
-import { getNoteById } from "../../Store/Selectors/notesSelectors";
+import { useNote } from "../../../Hooks/useNote";
+import { textTruncateChar } from "../../../utils/textTruncate";
 
 import List from "./List";
 import Note from "./Note";
-import ColorPicker from "../../Components/Pickers/Colors";
-import LabelsPicker from "../../Components/Pickers/Labels";
-import CornerIconPlacer from "../../Components/CornerIcon";
-import Labels from "../../Components/Labels";
-import Icon from '../../Components/Icon';
+import { Icon, Labels, CornerIcon, LabelsPicker, ColorPicker } from "../../Components/index";
 
-import DeleteIcon from "../../../Assets/Icons/NoteOptions/delete.svg";
-import CopyIcon from "../../../Assets/Icons/NoteOptions/copy.svg";
-import ColorIcon from "../../../Assets/Icons/NoteOptions/color.svg";
-import LabelIcon from "../../../Assets/Icons/NoteOptions/label.svg";
-import ImportantFalseIcon from "../../../Assets/Icons/NoteOptions/important-false.svg";
-import ImportantTrueIcon from "../../../Assets/Icons/NoteOptions/important-true.svg";
+import { noteIcons } from "../../../Assets/Icons/index";
 
-const Card = ({ _id, ...props }) => {
-  const dispatch = useDispatch();
-  const data = useSelector(state => getNoteById(state, _id));
+const Card = ({ _id }) => {
   const [displayIcons, setdisplayIcons] = useState(false);
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
-  const MAX_LABELS_LENGTH = 4;
-  const MAX_LABELS_TEXT_LENGTH = 12;
-  const truncateText = (t, len) => {
-    if (t.length > len) t = t.slice(0, len) + "...";
-    return t;
-  };
+  const [data, dataAction] = useNote(_id);
 
-  const truncatedLabels = [...data.labels]
-    .slice(0, MAX_LABELS_LENGTH)
-    .map(e => truncateText(e.name, MAX_LABELS_TEXT_LENGTH));
-
-  const CopyNoteHandler = event => {
-    event.preventDefault();
-    dispatch(CopyNote(data._id));
-  };
-  const DeleteNoteHandler = event => {
-    event.preventDefault();
-    dispatch(DeleteNote(data._id));
-  };
-
-  const ColorPickerHandler = event => {
-    event.preventDefault();
-    setDisplayColorPicker(true);
-  };
-
-  const LabelsPickerHandler = event => {
-    event.preventDefault();
-    setDisplayLabelsPicker(true);
-  };
-
-  const ChangeImportanceHandler = event => {
-    event.preventDefault();
-    dispatch(ChangeImportance(data._id, !data.important));
-  };
+  const truncatedLabels = [...data.labels].slice(0, 4).map(e => textTruncateChar(e.name, 12));
 
   const cardRef = useRef();
   const labelsIconRef = useRef();
 
   const ColorPickerPopout = () =>
-    displayColorPicker ? (
+    data.pickers.colors ? (
       <ColorPicker
         parent={cardRef.current}
         id={data._id}
-        close={() => setDisplayColorPicker(false)}
+        close={() => dataAction.closePicker("color")}
         componentType="card"
-        portalState={displayColorPicker}
       />
     ) : null;
 
   const LabelsPickerPopout = () =>
-    displayLabelsPicker ? (
+    data.pickers.labels ? (
       <LabelsPicker
         parent={labelsIconRef.current}
         id={data._id}
         labels={data.labels}
-        close={() => setDisplayLabelsPicker(false)}
+        close={() => dataAction.closePicker("labels")}
         componentType="card"
-        portalState={displayLabelsPicker}
       />
     ) : null;
 
   const Content = () => {
-    return data.type === "note" ? (
-      <Note content={data.content} />
-    ) : (
-      <List content={data.content} color={data.color} />
-    );
+    return data.type === "note" ? <Note content={data.content} /> : <List content={data.content} color={data.color} />;
   };
 
   return (
@@ -108,44 +52,33 @@ const Card = ({ _id, ...props }) => {
         onMouseOver={() => setdisplayIcons(true)}
         onMouseLeave={() => setdisplayIcons(false)}
       >
-        <CornerIconPlacer
-          icon={data.important ? ImportantTrueIcon : ImportantFalseIcon}
-          corner="topLeft"
-          yPos={14}
-          xPos={4}
-          size={18}
-          opacity={displayIcons ? "0.45" : "0"}
-          onClick={event => ChangeImportanceHandler(event)}
-        />
         <h2 className="card__title">{data.title}</h2>
         <Content />
         <Labels labels={truncatedLabels} size="small" />
         <div
           className="card__icons-wrapper"
           style={{ opacity: displayIcons ? 0.75 : 0 }}
+          onClick={event => event.preventDefault()}
         >
+          <CornerIcon
+            icon={data.important ? noteIcons.ImportantTrueIcon : noteIcons.ImportantFalseIcon}
+            corner="topLeft"
+            yPos={14}
+            xPos={4}
+            size={18}
+            opacity={displayIcons ? "0.45" : "0"}
+            onClick={() => dataAction.changeImportance(!data.important)}
+          />
           <Icon
-            icon={LabelIcon}
+            icon={noteIcons.LabelIcon}
             title="Labels"
             ref={labelsIconRef}
-            onClick={LabelsPickerHandler}
+            onClick={() => dataAction.displayPicker("labels")}
           />
           <LabelsPickerPopout />
-          <Icon
-            icon={ColorIcon}
-            title="Change color"
-            onClick={event => ColorPickerHandler(event)}
-          />
-          <Icon
-            icon={CopyIcon}
-            title="Copy"
-            onClick={event => CopyNoteHandler(event)}
-          />
-          <Icon
-            icon={DeleteIcon}
-            title="Delete"
-            onClick={event => DeleteNoteHandler(event)}
-          />
+          <Icon icon={noteIcons.ColorIcon} title="Change color" onClick={() => dataAction.displayPicker("colors")} />
+          <Icon icon={noteIcons.CopyIcon} title="Copy" onClick={dataAction.copyNote} />
+          <Icon icon={noteIcons.DeleteIcon} title="Delete" onClick={dataAction.deleteNote} />
           <ColorPickerPopout />
         </div>
       </div>

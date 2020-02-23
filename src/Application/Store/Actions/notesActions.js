@@ -31,7 +31,7 @@ export const fetchAllNotes = () => dispatch => {
   );
 };
 
-export const ChangeNoteFieldValue = (id, field, value) => (
+export const changeNoteFieldValue = (id, field, value) => (
   dispatch,
   getState
 ) => {
@@ -43,7 +43,7 @@ export const ChangeNoteFieldValue = (id, field, value) => (
   dispatch({ type: CHANGE_NOTE_FIELD_VALUE, notes: notes });
 };
 
-export const ChangeImportance = (id, value) => (dispatch, getState) => {
+export const changeImportance = (id, value) => (dispatch, getState) => {
   const state = getState();
   const notes = [...getAllNotes(state)];
   const index = GetNoteIndex(state, id);
@@ -57,7 +57,7 @@ export const ChangeImportance = (id, value) => (dispatch, getState) => {
   );
 };
 
-export const CopyNote = id => (dispatch, getState) => {
+export const copyNote = id => (dispatch, getState) => {
   const state = getState();
   const notes = [...getAllNotes(state)];
   axios.Post(
@@ -70,7 +70,7 @@ export const CopyNote = id => (dispatch, getState) => {
     () => dispatch({ type: COPY_NOTE.FAILED })
   );
 };
-export const DeleteNote = id => (dispatch, getState) => {
+export const deleteNote = id => (dispatch, getState) => {
   const state = getState();
   const notes = [...getAllNotes(state)];
   const index = GetNoteIndex(state, id);
@@ -82,7 +82,7 @@ export const DeleteNote = id => (dispatch, getState) => {
   );
 };
 
-export const PostUpdatedNote = id => (dispatch, getState) => {
+export const postUpdatedNote = id => (dispatch, getState) => {
   const state = getState();
   const note = getNoteById(state, id);
   axios.Patch(

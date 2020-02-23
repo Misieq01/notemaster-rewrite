@@ -1,169 +1,118 @@
 import React, { useEffect, useState, useRef } from "react";
-import { withRouter, useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
-import { getNoteById } from "../Store/Selectors/notesSelectors";
-import {
-  ChangeNoteFieldValue,
-  CopyNote,
-  DeleteNote,
-  PostUpdatedNote
-} from "../Store/Actions/notesActions";
+import { useNote } from "../../Hooks/useNote";
 
 import Body from "./BodyType";
-import ColorPicker from "../Components/Pickers/Colors";
-import LabelsPicker from "../Components/Pickers/Labels";
-import Labels from "../Components/Labels";
-import Icon from "../Components/Icon"
+import { ColorPicker, LabelsPicker, Labels, Icon } from "../Components/index";
 
-import DeleteIcon from "../../Assets/Icons/NoteOptions/delete.svg";
-import CopyIcon from "../../Assets/Icons/NoteOptions/copy.svg";
-import ColorIcon from "../../Assets/Icons/NoteOptions/color.svg";
-import LabelIcon from "../../Assets/Icons/NoteOptions/label.svg";
+import {noteIcons} from '../../Assets/Icons/index'
 
-const Editor = props => {
-  const dispatch = useDispatch();
+const Editor = () => {
+  const history = useHistory();
   const { id } = useParams();
-  const data = useSelector(state => getNoteById(state, id));
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [displayLabelsPicker, setDisplayLabelsPicker] = useState(false);
+  const [data, dataAction] = useNote(id);
   const [titleShadow, setTitleShadow] = useState("none");
+
+  const colorIconRef = useRef();
+  const labelsIconRef = useRef();
+
   useEffect(() => {
     document.body.style.overflowY = "hidden";
-  }, [dispatch]);
-
-  useEffect(() => {
     return () => {
       document.body.style.overflowY = "auto";
     };
   }, []);
 
   const BackToNotePanel = () => {
-    props.history.push("/User/NotesPanel");
-  };
-
-  const GetInputData = (event, fieldName) => {
-    dispatch(ChangeNoteFieldValue(data._id, fieldName, event.target.value));
+    history.push("/User/NotesPanel");
   };
 
   const FinishHandler = () => {
-    dispatch(PostUpdatedNote(data._id));
+    dataAction.postUpdate();
     BackToNotePanel();
   };
   const DeleteNoteHandler = () => {
-    dispatch(DeleteNote(data._id));
+    dataAction.deleteNote();
     BackToNotePanel();
   };
 
   const CopyNoteHandler = () => {
-    dispatch(CopyNote(data._id));
+    dataAction.copyNote();
     BackToNotePanel();
-  };
-
-  const ShowColorPicker = () => {
-    setDisplayColorPicker(true);
-  };
-  const HideColorPicker = () => {
-    setDisplayColorPicker(false);
-  };
-  const ShowLabelsPicker = () => {
-    setDisplayLabelsPicker(true);
-  };
-  const HideLabelsPicker = () => {
-    setDisplayLabelsPicker(false);
   };
 
   const TitleShadowHandler = top => {
     if (top === 0) {
       setTitleShadow("none");
-    } else if (top !== 0) {
+    } else if (top !== 0 && titleShadow === "none") {
       setTitleShadow("0 2px 4px rgba(0, 0, 0, 0.2)");
     }
   };
 
-  const colorIconRef = useRef();
-  const labelsIconRef = useRef();
-
   const ColorPickerPopout = () =>
-    displayColorPicker ? (
+    data.pickers.colors ? (
       <ColorPicker
         parent={colorIconRef.current}
         id={data._id}
-        close={HideColorPicker}
+        close={() => dataAction.closePicker("colors")}
         componentType="editor"
-        portalState={displayColorPicker}
       />
     ) : null;
 
-  const LabelsPickerPopout = () => displayLabelsPicker ? (
+  const LabelsPickerPopout = () =>
+    data.pickers.labels ? (
       <LabelsPicker
         parent={labelsIconRef.current}
         id={data._id}
-        close={HideLabelsPicker}
+        close={() => dataAction.closePicker("labels")}
         componentType="editor"
-        portalState={displayLabelsPicker}
       />
     ) : null;
 
   return (
     <>
-      {data !== undefined ? (
         <div className="editor__container" style={{ background: data.color }}>
           <input
             className="editor__title"
             placeholder="Title"
-            onChange={event => GetInputData(event, "title")}
+            onChange={event => dataAction.updateField("title", event.target.value)}
             value={data.title}
             style={{ boxShadow: titleShadow }}
           />
           <Body
             type={data.type}
-            GetInputData={GetInputData}
+            GetInputData={dataAction.updateField}
             content={data.content}
             background={data.color}
             TitleShadowHandler={TitleShadowHandler}
           />
-          <Labels
-            labels={data.labels}
-            size='medium'
-          />
+          <Labels labels={data.labels} size="medium" />
           <div className="editor__option-wrapper">
             <Icon
-              icon={LabelIcon}
+              icon={noteIcons.LabelIcon}
               title="Edit labels"
               ref={labelsIconRef}
-              onClick={ShowLabelsPicker}
+              onClick={() => dataAction.displayPicker("labels")}
             />
             <LabelsPickerPopout />
             <Icon
-              icon={ColorIcon}
+              icon={noteIcons.ColorIcon}
               title="Change color"
               ref={colorIconRef}
-              onClick={ShowColorPicker}
+              onClick={() => dataAction.displayPicker("colors")}
             />
             <ColorPickerPopout />
 
-            <Icon
-              icon={CopyIcon}
-              title="Copy note"
-              onClick={CopyNoteHandler}
-            />
-            <Icon
-              icon={DeleteIcon}
-              title="Delete note"
-              onClick={DeleteNoteHandler}
-            />
-            <button
-              className="editor__option-wrapper--finish-button"
-              onClick={FinishHandler}
-            >
+            <Icon icon={noteIcons.CopyIcon} title="Copy note" onClick={CopyNoteHandler} />
+            <Icon icon={noteIcons.DeleteIcon} title="Delete note" onClick={DeleteNoteHandler} />
+            <button className="editor__option-wrapper--finish-button" onClick={FinishHandler}>
               Finish
             </button>
           </div>
         </div>
-      ) : null}
     </>
   );
 };
 
-export default withRouter(Editor);
+export default Editor;

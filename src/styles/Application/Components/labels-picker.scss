@@ -1,8 +1,8 @@
-  %icon {
-    opacity: 0.6;
-    height: 15px;
-    width: 15px;
-  }
+%icon {
+  opacity: 0.6;
+  height: 15px;
+  width: 15px;
+}
 
 .labels-picker {
   &__absolute {
@@ -34,7 +34,7 @@
     }
   }
   &__label-wrapper {
-    @include flex(null,space-around);
+    @include flex(null, space-around);
     z-index: 100;
     height: 30px;
     width: 100%;
@@ -45,12 +45,12 @@
     padding: 10px 0;
     font-size: 14px;
   }
-    &__label-wrapper--box-icon {
-@extend %icon;
+  &__label-wrapper--box-icon {
+    @extend %icon;
     cursor: pointer;
   }
   &__input-wrapper {
-    @include flex(null,space-around);
+    @include flex(null, space-around);
     height: 40px;
     width: 100%;
   }
@@ -60,8 +60,8 @@
     font-size: 14px;
   }
 
-  &__input-wrapper-search-icon{
-@extend %icon;
+  &__input-wrapper--search-icon {
+    @extend %icon;
     cursor: default;
   }
 }

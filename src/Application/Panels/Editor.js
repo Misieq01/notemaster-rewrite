@@ -4,7 +4,7 @@ import Background from "../../Components/Background";
 import Editor from "../Editors/Editor";
 import {withRouter,useParams} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
-import {PostUpdatedNote} from '../Store/Actions/notesActions'
+import {postUpdatedNote} from '../Store/Actions/notesActions'
 
 const AddNotePanel = props => {
 
@@ -12,7 +12,7 @@ const AddNotePanel = props => {
   const {id} = useParams()
 
   const ClosePanel = () =>{
-    dispatch(PostUpdatedNote(id))
+    dispatch(postUpdatedNote(id))
     props.history.push("/User/NotesPanel");
   }
 
