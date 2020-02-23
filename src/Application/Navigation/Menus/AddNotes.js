@@ -77,8 +77,8 @@ const AddNotes = ({
   };
   return <motion.div className='addNotes__container' style={{top: top,left:left}} variants={containerVariants} initial='initial' animate='open' exit='close'>
           <motion.div variants={elementVariants}>
-            <div className='addNotes__element' onClick={() => AddNoteHandler("note")}>Note</div>
-            <div className='addNotes__element' onClick={() => AddNoteHandler("list")}>
+            <div className='addNotes__container--element' onClick={() => AddNoteHandler("note")}>Note</div>
+            <div className='addNotes__container--element' onClick={() => AddNoteHandler("list")}>
               List
             </div>
           </motion.div>

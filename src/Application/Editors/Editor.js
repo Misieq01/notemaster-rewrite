@@ -10,11 +10,11 @@ import {
   PostUpdatedNote
 } from "../Store/Actions/notesActions";
 
-// import Background from "../../Components/Background";
 import Body from "./BodyType";
-import Portal from "../Components/ReactPortal";
 import ColorPicker from "../Components/Pickers/Colors";
 import LabelsPicker from "../Components/Pickers/Labels";
+import Labels from "../Components/Labels";
+import Icon from "../Components/Icon"
 
 import DeleteIcon from "../../Assets/Icons/NoteOptions/delete.svg";
 import CopyIcon from "../../Assets/Icons/NoteOptions/copy.svg";
@@ -84,40 +84,26 @@ const Editor = props => {
   const colorIconRef = useRef();
   const labelsIconRef = useRef();
 
-  const ColorPickerPopout = () => {
-    return displayColorPicker ? (
-      <Portal setState={HideColorPicker} eventType="move">
-        <ColorPicker
-          parent={colorIconRef.current}
-          id={data._id}
-          Close={HideColorPicker}
-          componentType="editor"
-        />
-      </Portal>
+  const ColorPickerPopout = () =>
+    displayColorPicker ? (
+      <ColorPicker
+        parent={colorIconRef.current}
+        id={data._id}
+        close={HideColorPicker}
+        componentType="editor"
+        portalState={displayColorPicker}
+      />
     ) : null;
-  };
-  const LabelsPickerPopout = () => {
-    return displayLabelsPicker ? (
-      <Portal setState={HideLabelsPicker} eventType="move">
-        <LabelsPicker
-          parent={labelsIconRef.current}
-          id={data._id}
-          Close={HideLabelsPicker}
-          componentType="editor"
-        />
-      </Portal>
-    ) : null;
-  };
 
-  const Labels = () => {
-    return (
-      <div className="editor__labelsWrapper">
-        {data.labels.map(e => (
-          <div className="editor__label">{e.name}</div>
-        ))}
-      </div>
-    );
-  }
+  const LabelsPickerPopout = () => displayLabelsPicker ? (
+      <LabelsPicker
+        parent={labelsIconRef.current}
+        id={data._id}
+        close={HideLabelsPicker}
+        componentType="editor"
+        portalState={displayLabelsPicker}
+      />
+    ) : null;
 
   return (
     <>
@@ -128,7 +114,7 @@ const Editor = props => {
             placeholder="Title"
             onChange={event => GetInputData(event, "title")}
             value={data.title}
-            style={{boxShadow: titleShadow}}
+            style={{ boxShadow: titleShadow }}
           />
           <Body
             type={data.type}
@@ -137,42 +123,40 @@ const Editor = props => {
             background={data.color}
             TitleShadowHandler={TitleShadowHandler}
           />
-          <Labels />
-          <div className="editor__optionWrapper">
-            <img
-              className="editor__button"
-              alt="button"
-              src={LabelIcon}
+          <Labels
+            labels={data.labels}
+            size='medium'
+          />
+          <div className="editor__option-wrapper">
+            <Icon
+              icon={LabelIcon}
               title="Edit labels"
               ref={labelsIconRef}
               onClick={ShowLabelsPicker}
             />
             <LabelsPickerPopout />
-            <img
-              className="editor__button"
-              alt="button"
-              src={ColorIcon}
+            <Icon
+              icon={ColorIcon}
               title="Change color"
               ref={colorIconRef}
               onClick={ShowColorPicker}
             />
             <ColorPickerPopout />
 
-            <img
-              className="editor__button"
-              alt="button"
-              src={CopyIcon}
+            <Icon
+              icon={CopyIcon}
               title="Copy note"
               onClick={CopyNoteHandler}
             />
-            <img
-              className="editor__button"
-              alt="button"
-              src={DeleteIcon}
+            <Icon
+              icon={DeleteIcon}
               title="Delete note"
               onClick={DeleteNoteHandler}
             />
-            <button className="editor__finishButton" onClick={FinishHandler}>
+            <button
+              className="editor__option-wrapper--finish-button"
+              onClick={FinishHandler}
+            >
               Finish
             </button>
           </div>

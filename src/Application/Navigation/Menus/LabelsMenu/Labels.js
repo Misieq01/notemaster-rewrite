@@ -111,7 +111,7 @@ const Labels = ({
 
   return (
     <motion.div
-      className="labelsMenu__absolute"
+      className="labels-menu__absolute"
       style={{ top: top, left: left }}
       variants={absoluteVariants}
       initial="initial"
@@ -119,31 +119,36 @@ const Labels = ({
       exit="close"
     >
       <motion.div
-        className="labelsMenu__container"
+        className="labels-menu__container"
         onClick={() => setEditSlot("")}
         variants={containerVariants}
       >
         <motion.div variants={contentVariants}>
-          <div className="labelsMenu__inputWrapper">
+          <div className="labels-menu__input-wrapper">
             <input
-              className="labelsMenu__input"
+              className="labels-menu__input-wrapper--input"
               placeholder="Type label"
               value={inputValue}
               onChange={event => setInputValue(event.target.value)}
             />
             {inputValue ? (
-              <img className='labelsMenu__addIcon'
-                alt='addIcon'
+              <img
+                className="labels-menu__input-wrapper--add-icon"
+                alt="addIcon"
                 src={AddIcon}
                 cursor="pointer"
                 size="18px"
                 onClick={AddLabelHandler}
               />
             ) : (
-              <img className='labelsMenu__searchIcon' alt='searchIcon' src={SearchIcon} />
+              <img
+                className="labels-menu__input-wrapper--search-icon"
+                alt="searchIcon"
+                src={SearchIcon}
+              />
             )}
           </div>
-          <div className="labelsMeni__labelsWrapper">
+          <div className="labels-menu__labels-wrapper">
             <DisplayedLabels />
           </div>
         </motion.div>

@@ -3,17 +3,17 @@ import {Link} from 'react-router-dom'
 import Background from '../Components/Background'
 
 
-const Home = props =>{
+const Home = () =>{
     return (
       <>
         <Background />
         <div className="home__container">
           <div className="home__header">
-            <span>
+            <div>
               <Link className="home__navLink" to="/">
                 <h1>NoteMaster</h1>
               </Link>
-            </span>
+            </div>
             <nav>
               <Link className="home__navLink" to="/About">
                 About

@@ -1,0 +1,10 @@
+.icon{
+    opacity: 0.75;
+    transition: all 0.2s ease-in-out;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
+}

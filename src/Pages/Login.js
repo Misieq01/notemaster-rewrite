@@ -7,7 +7,7 @@ import Input from "../Components/Input";
 
 import {LoginIcon,PasswordIcon} from '../Assets/Icons/index'
 
-const Login = props => {
+const Login = () => {
   const history = useHistory()
 
   const [data, setData] = useState({
@@ -28,9 +28,9 @@ const Login = props => {
 
   return (
     <div className="auth__container">
-      <div className="auth__loginForm">
-        <h2 className="auth__title">Login</h2>
-        <div className="auth__inputWrapper">
+      <div className="auth__login-form">
+        <h2 className="form__title">Login</h2>
+        <div className="form__inputs-wrapper">
           <Input
             label="Email:"
             placeholder="Type your Email"
@@ -46,16 +46,18 @@ const Login = props => {
             onChange={event => dataUpdate(event, "password")}
           />
           <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
-            <p className="login__forgotPassword">Forgot password ?</p>
+            <p className="form__password-reset">Forgot password ?</p>
           </Link>
         </div>
-        <button className="auth__button" onClick={loginHandler}>
+        <button className="form__button" onClick={loginHandler}>
           Login
         </button>
-        <div>
-          <p className="auth__text">Don't have account yet ?</p>
-          <Link to="/Signup">
-            <p className="auth__changeAuth">Singup</p>
+        <div className="form__bottom-text-wrapper">
+          <p className="form__bottom-text-wrapper--text">
+            Don't have account yet ?
+          </p>
+          <Link to="/Signup" className="form__bottom-text-wrapper--link">
+            Singup
           </Link>
         </div>
       </div>

@@ -11,7 +11,7 @@ const NotesPanel = () => {
   };
   return (
     <motion.div
-      className="notesPanel__container"
+      className="notes-panel__container"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeIn" }}

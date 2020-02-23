@@ -1,68 +1,83 @@
-@mixin form($property) {
-    width: 420px;
-    height: $property;
-    background: rgb(245, 245, 245);
-    border: 4px solid rgb(250, 250, 250);
-    border-radius: 8px;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 100;
+// style inherited by login-form and signup-form
+%form {
+  @include flex(column nowrap, space-around);
+  z-index: $zIndex1;
+  width: 420px;
+  border: 4px solid $white;
+  border-radius: 8px;
+  background: $white;
 }
 
-.auth {
-  &__container {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to left, #ff5f6d, #ffc371);
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-  }
-  &__loginForm{
-      @include form(520px)
-  }
-  &__signupForm{
-      @include form(720px)
-  }
+.form{
   &__title {
   font-size: 32px;
   font-weight: bold;
 }
-&__changeAuth {
-  font-size: 16px;
-  text-align: center;
-  cursor: pointer;
-  margin-top: 15px;
+
+&__password-reset{
   transition: all 0.2s ease-in-out;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 14px;
   &:hover {
     color: $hoverFontColor;
   }
 }
-&__text {
+
+&__inputs-wrapper {
+  @include flex(column nowrap, flex-start);
+  width: 80%;
+  height: auto;
+}
+
+&__bottom-text-wrapper{
+  text-align: center;
+}
+
+&__bottom-text-wrapper--text {
   font-size: 12px;
   text-align: center;
 }
-&__inputWrapper {
-  height: auto;
-  width: 80%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
+
+&__bottom-text-wrapper--link {
+  transition: all 0.2s ease-in-out;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  align-self: center;
+  &:hover {
+    color: $hoverFontColor;
+  }
 }
-&__button{
-    width: 70%;
-  font-size: 20px;
+
+&__button {
+  transition: all 0.2s ease-in-out;
+  width: 70%;
   padding: 10px 20px;
   border-radius: 10px;
-  background: linear-gradient(to left, #ff5f6d, #ffc371);
-  color: rgb(250, 250, 250);
+  background: $gradient;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  color: $white;
+  font-size: 20px;
   &:hover {
     transform: scale(1.02);
   }
-}
+}}
+
+.auth {
+  //container which positioning form
+  &__container {
+    @include flex();
+    width: 100vw;
+    height: 100vh;
+    background: $gradient;
+  }
+  &__login-form {
+    @extend %form;
+    height: 520px;
+  }
+  &__signup-form {
+    @extend %form;
+    height: 720px;
+  }
 }

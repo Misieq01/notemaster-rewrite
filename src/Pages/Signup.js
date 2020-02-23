@@ -32,9 +32,9 @@ const Signup = () => {
 
   return (
     <div className="auth__container">
-      <div className="auth__signupForm">
-        <h2 className="auth__title">Signup</h2>
-        <div className="auth__inputWrapper">
+      <div className="auth__signup-form">
+        <h2 className="form__title">Signup</h2>
+        <div className="form__inputs-wrapper">
           <Input
             label="First name:"
             placeholder="Type your first name"
@@ -71,13 +71,15 @@ const Signup = () => {
             onChange={event => dataUpdate(event, "passwordConf")}
           />
         </div>
-        <button className="auth__button" onClick={signUpHandler}>
+        <button className="form__button" onClick={signUpHandler}>
           Signup
         </button>
-        <div>
-          <p className="auth__text">Already have account ?</p>
-          <Link to="/Login">
-            <p className="auth__changeAuth">Login</p>
+        <div className="form__bottom-text-wrapper">
+          <p className="form__bottom-text-wrapper--text">
+            Already have account ?
+          </p>
+          <Link to="/Login" className="form__bottom-text-wrapper--link">
+            Login
           </Link>
         </div>
       </div>

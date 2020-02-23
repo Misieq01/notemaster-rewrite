@@ -34,19 +34,19 @@ const Labels = ({
 
   return (
     <div
-      className="menuLabel__container"
+      className="menu-label__container"
       onClick={event => PreventPropagation(event)}
     >
       {editSlot === name ? (
         <>
           <input
-            className="menuLabel__input"
+            className="menu-label__input"
             value={editValue}
             onChange={event => setEditValue(event.target.value)}
             autoFocus
           />
           <img
-            className="menuLabel__icon"
+            className="menu-label__icon"
             alt="icon"
             src={AcceptIcon}
             onClick={FinishEditing}
@@ -54,11 +54,11 @@ const Labels = ({
         </>
       ) : (
         <>
-          <p className="menuLabel__label" onClick={StartEditing}>
+          <p className="menu-label__label" onClick={StartEditing}>
             {editValue}
           </p>
           <img
-            className="menuLabel__icon"
+            className="menu-label__icon"
             alt="icon"
             src={DeleteIcon}
             onClick={Remove}

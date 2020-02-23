@@ -44,11 +44,11 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
     return notes.length > 0 ? (
       <div className="board__container">
         {importantNotes.length !== 0 ? (
-          <div className="board__separatingLine">
-            <span className="board__lineText">{text}</span>
+          <div className="board__container--separatingLine">
+            <span className="board__container--lineText">{text}</span>
           </div>
         ) : null}
-        <Masonry className="board__masonry" options={MasonryOptions}>
+        <Masonry className="board__container--masonry" options={MasonryOptions}>
           {notes}
         </Masonry>
       </div>
@@ -63,7 +63,7 @@ const NoteBoard = React.memo(({ searchValue, ...props }) => {
     >
       <SideMenu />
       <motion.div
-        className="board__sideMenuPlaceHolder"
+        className="board__side-menu-place-holder"
         variants={ContainerVariants}
       />
       <div>

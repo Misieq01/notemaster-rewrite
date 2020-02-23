@@ -28,9 +28,9 @@ const InputComponent = ({
   return (
     <div className='input__container'>
       <p className='input__label'>{label}</p>
-      <div className='input__inputWrapper' ref={InputWrapperRef}>
-        <img className='input__icon' ref={IconRef} src={icon} alt='icon'/>
-        <input className='input__input'
+      <div className='input__wrapper' ref={InputWrapperRef}>
+        <img className='input__wrapper--icon' ref={IconRef} src={icon} alt='icon'/>
+        <input className='input__wrapper--input'
           placeholder={placeholder}
           onFocus={focusHandler}
           onBlur={blurHandler}

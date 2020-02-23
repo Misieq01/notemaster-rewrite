@@ -1,0 +1,14 @@
+.labels-display{
+    &__container{
+    height: 30px;
+    width: 100%;
+    }
+    &__label{
+        &--small{
+            @include label(12px)
+        }
+        &--medium{
+            @include label(15px)
+        }
+    }
+}

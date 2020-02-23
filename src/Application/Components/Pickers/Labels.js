@@ -4,13 +4,14 @@ import {useSelector,useDispatch} from 'react-redux'
 import {GetAllLabels} from '../../Store/Selectors/labelsSelectors'
 import {getNoteById} from '../../Store/Selectors/notesSelectors'
 import {AddLabelToNote,DeleteLabelFromNote} from '../../Store/Actions/notesStuffActions'
+import Portal from '../ReactPortal'
 
 import CheckedBodIcon from "../../../Assets/Icons/Labels/square-check.svg";
 import UnCheckedBodIcon from "../../../Assets/Icons/Labels/square-uncheck.svg";
 import SearchIcon from "../../../Assets/Icons/Labels/search.svg";
 
 
-const LabelsPicker = ({ parent, id,componentType, ...props }) => {
+const LabelsPicker = ({ parent, id,componentType,close, ...props }) => {
   const dispatch = useDispatch()
   const labels = useSelector(state=>GetAllLabels(state))
   const noteLabels = useSelector(state=>getNoteById(state,id).labels)
@@ -29,16 +30,20 @@ const LabelsPicker = ({ parent, id,componentType, ...props }) => {
     const isAdded = noteLabels.map(el=>el.name).includes(e.name);
     if(e.name.toLowerCase().includes(searchValue.toLowerCase())){
           return (
-            <div className='labelsPicker__labelWrapper' key={e._id}>
-              <div className='labelsPicker__label'>{e.name}</div>
+            <div className="labels-picker__label-wrapper" key={e._id}>
+              <div className="labels-picker__label-wrapper--label">{e.name}</div>
               {isAdded ? (
-                <img className='labelsPicker__boxIcon' alt='icon'
+                <img
+                  className="labels-picker__label-wrapper--box-icon"
+                  alt="icon"
                   src={CheckedBodIcon}
                   cursor="pointer"
                   onClick={() => DeleteLabelFromNoteHandler(e)}
                 />
               ) : (
-                <img className='labelsPicker__boxIcon' alt='icon'
+                <img
+                  className="labels-picker__label-wrapper--box-icon"
+                  alt="icon"
                   src={UnCheckedBodIcon}
                   cursor="pointer"
                   onClick={() => AddLabelToNoteHandler(e)}
@@ -76,19 +81,31 @@ const LabelsPicker = ({ parent, id,componentType, ...props }) => {
     }, [parent, displayedLabels,componentType]);
    
   return (
-    <div className='labelsPicker__absolute' style={{top:top,left:left}}>
-      <div className='labelsPicker__container'
-        onClick={event => {
-          event.stopPropagation();
-        }}
-      >
-        <div className='labelsPicker__inputWrapper'>
-          <input className='labelsPicker__input' placeholder="Search label" value={searchValue} onChange={event=>setSearchValue(event.target.value)} />
-          <img className='labelsPicker__searchIcon' alt='searchIcon' src={SearchIcon} />
+    <Portal setState={close} eventType="move">
+      <div className="labels-picker__absolute" style={{ top: top, left: left }}>
+        <div
+          className="labels-picker__container"
+          onClick={event => {
+            event.stopPropagation();
+          }}
+        >
+          <div className="labels-picker__input-wrapper">
+            <input
+              className="labels-picker__input-wrapper--input"
+              placeholder="Search label"
+              value={searchValue}
+              onChange={event => setSearchValue(event.target.value)}
+            />
+            <img
+              className="labels-picker__input-wrapper--search-icon"
+              alt="searchIcon"
+              src={SearchIcon}
+            />
+          </div>
+          <div className="labels-picker__labels-box">{displayedLabels}</div>
         </div>
-        <div className='labelsPicker__labelsBox'>{displayedLabels}</div>
       </div>
-    </div>
+    </Portal>
   );
 };
 

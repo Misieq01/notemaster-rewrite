@@ -17,7 +17,7 @@ const Note = ({ content, ...props }) => {
     return WordTruncate(text);
   }, [text]);
 
-  return <p className="noteTextContainer">{Text}</p>;
+  return <p className="note-text-container">{Text}</p>;
 };
 
 export default Note;

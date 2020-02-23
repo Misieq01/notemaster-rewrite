@@ -1,7 +1,7 @@
-@import "./main.scss";
 @import "./variables.scss";
+@import "./mixins.scss";
+@import "./main.scss";
 
-@import "./Pages/login.scss";
 @import "./Pages/auth.scss";
 @import "./Pages/home.scss";
 
@@ -14,15 +14,17 @@
 @import "./Application/Editors/editor.scss";
 
 @import "./Application/Navigation/navigation.scss";
-@import "./Application/Navigation/searchBar.scss";
-@import "./Application/Navigation/Menus/addNotes.scss";
+@import "./Application/Navigation/search-bar.scss";
+@import "./Application/Navigation/Menus/add-notes.scss";
 @import "./Application/Navigation/Menus/labels.scss";
 @import "./Application/Navigation/Menus/label.scss";
-@import "./Application/Navigation/SideMenu/sideMenu.scss";
+@import "./Application/Navigation/SideMenu/side-menu.scss";
 
-@import "./Application/Components/expandingTextArea.scss";
-@import "./Application/Components/colorPicker.scss";
-@import "./Application/Components/labelsPicker.scss";
-@import "./Application/Components/loadingScreen.scss";
+@import "./Application/Components/expanding-text-area.scss";
+@import "./Application/Components/color-picker.scss";
+@import "./Application/Components/labels-picker.scss";
+@import "./Application/Components/loading-screen.scss";
+@import "./Application/Components/labels.scss";
+@import "./Application/Components/icon.scss";
 
 @import "./Application/Panels/notes.scss";

@@ -1,36 +1,30 @@
 .board {
   &__wrapper {
+    @include flex(null, center, flex-start);
     width: 100vw;
     height: auto;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: flex-start;
   }
   &__container {
+    @include flex(column nowrap, space-around);
     width: calc(100vw - 300px);
     height: auto;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-around;
-    align-items: center;
   }
-  &__masonry {
-    margin: 60px 0;
+  &__container--masonry {
     width: 88%;
+    margin: 60px 0;
   }
-  &__separatingLine {
+  &__container--separatingLine {
     width: inherit;
     height: auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     text-align: left;
   }
-  &__lineText {
+  &__container--lineText {
     margin-left: 20px;
     font-size: 16px;
     color: rgba(0, 0, 0, 0.35);
   }
-  &__sideMenuPlaceHolder {
+  &__side-menu-place-holder {
     width: 10px;
     height: 100px;
   }

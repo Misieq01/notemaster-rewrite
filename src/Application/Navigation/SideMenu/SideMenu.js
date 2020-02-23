@@ -19,7 +19,7 @@ const SideMenu = () =>{
     return (
       <AnimatePresence>
         {sideMenuDisplay && (
-          <motion.div className='sideMenu__container'
+          <motion.div className='side-menu__container'
             key="container"
             exit='exit'
             variants={Variants}

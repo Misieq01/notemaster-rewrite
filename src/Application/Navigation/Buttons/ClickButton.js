@@ -9,11 +9,12 @@ const Button = ({
 
   return (
     <>
-      <button className='navigation__button'
+      <button
+        className="navigation__wrapper--button"
         title={buttonTitle}
         onClick={onClick}
       >
-        <img alt='icon' src={svg} />
+        <img alt="icon" className="navigation__wrapper--icon" src={svg} />
       </button>
     </>
   );

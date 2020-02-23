@@ -1,0 +1,17 @@
+@mixin flex($flow: row nowrap, $justify: center, $align: center) {
+  display: flex;
+  flex-flow: $flow;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin label($size: 15px){
+    display: inline-block;
+    padding: $size * 0.25 $size * 0.4;
+    margin: $size * 0.4 $size * 0.25;
+    border-radius: 5px;
+    border: 1px solid $black;
+    background: none;
+    cursor: default;
+    font-size: $size;
+}

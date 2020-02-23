@@ -1,27 +1,27 @@
   %icon {
+    opacity: 0.6;
     height: 15px;
     width: 15px;
-    opacity: 0.6;
   }
 
-.labelsPicker {
+.labels-picker {
   &__absolute {
     position: absolute;
-    margin: auto;
     z-index: 200;
+    margin: auto;
   }
   &__container {
     height: auto;
     width: 150px;
     padding: 0 10px;
-    background: rgb(250, 250, 250);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.24);
     border-radius: 8px;
+    background: rgb(250, 250, 250);
   }
-  &__labelsBox {
+  &__labels-box {
+    overflow-y: auto;
     width: 100%;
     max-height: 240px;
-    overflow-y: auto;
     &::-webkit-scrollbar {
       width: 10px;
       cursor: default;
@@ -33,39 +33,34 @@
       background: #cccccc;
     }
   }
-  &__labelWrapper {
+  &__label-wrapper {
+    @include flex(null,space-around);
+    z-index: 100;
     height: 30px;
     width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    align-items: center;
     padding-bottom: 5px;
-    z-index: 100;
   }
-  &__label {
+  &__label-wrapper--label {
     width: 80%;
-    font-size: 14px;
     padding: 10px 0;
-  }
-  &__inputWrapper {
-    height: 40px;
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    align-items: center;
-  }
-  &__input {
-    width: 80%;
     font-size: 14px;
-    padding: 10px 0;
   }
-  &__boxIcon {
+    &__label-wrapper--box-icon {
 @extend %icon;
     cursor: pointer;
   }
-  &__searchIcon{
+  &__input-wrapper {
+    @include flex(null,space-around);
+    height: 40px;
+    width: 100%;
+  }
+  &__input-wrapper--input {
+    width: 80%;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  &__input-wrapper-search-icon{
 @extend %icon;
     cursor: default;
   }

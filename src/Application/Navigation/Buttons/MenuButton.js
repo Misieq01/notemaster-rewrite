@@ -26,12 +26,13 @@ const Button = ({ svg, buttonTitle, MenuContent, ...props }) => {
 
   return (
     <>
-      <button className='navigation__button'
+      <button
+        className="navigation__wrapper--button"
         ref={ButtonRef}
         title={buttonTitle}
         onClick={ClickHandler}
       >
-        <img alt='icon' src={svg} />
+        <img alt="icon" className="navigation__wrapper--icon" src={svg} />
       </button>
       <AnimatePresence>
         {portalActive && (

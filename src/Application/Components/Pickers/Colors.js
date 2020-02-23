@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
 import { ChangeNoteColor } from "../../Store/Actions/notesStuffActions";
 import { useDispatch } from "react-redux";
+import Portal from '../ReactPortal'
 
-const ColorPicker = ({ parent, id, componentType,Close, ...props }) => {
+const ColorPicker = ({ parent, id, componentType,close, ...props }) => {
   const dispatch = useDispatch();
+  
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
     if (componentType === "card") {
@@ -17,43 +19,34 @@ const ColorPicker = ({ parent, id, componentType,Close, ...props }) => {
     }
   }, [parent, componentType]);
 
-  const UpdateColor = color => {
+  const updateColor = color => {
     dispatch(ChangeNoteColor(id, color));
-    Close()
+    close()
   };
 
-  return (
+  const Color = ({color}) => (
     <div
-      className="colorPicker__container"
-      style={{ top: top, left: left }}
-      onClick={event => event.stopPropagation()}
-    >
+      className="color-picker__color"
+      style={{ background: color }}
+      onClick={() => updateColor(color)}
+    />
+  );
+
+
+  return (
+    <Portal setState={close} eventType="move">
       <div
-        className="colorPicker__color"
-        style={{ background: "rgb(255,179,186)" }}
-        onClick={() => UpdateColor("rgb(255,179,186)")}
-      />
-      <div
-        className="colorPicker__color"
-        style={{ background: "rgb(255,223,186)" }}
-        onClick={() => UpdateColor("rgb(255,223,186)")}
-      />
-      <div
-        className="colorPicker__color"
-        style={{ background: "rgb(255,255,186)" }}
-        onClick={() => UpdateColor("rgb(255,255,186)")}
-      />
-      <div
-        className="colorPicker__color"
-        style={{ background: "rgb(186,255,201)" }}
-        onClick={() => UpdateColor("rgb(186,255,201)")}
-      />
-      <div
-        className="colorPicker__color"
-        style={{ background: "rgb(186,225,255)" }}
-        onClick={() => UpdateColor("rgb(186,225,255)")}
-      />
-    </div>
+        className="color-picker__container"
+        style={{ top: top, left: left }}
+        onClick={event => event.stopPropagation()}
+      >
+        <Color color="rgb(255,179,186)" />
+        <Color color="rgb(255,223,186)" />
+        <Color color="rgb(255,255,186)" />
+        <Color color="rgb(186,255,201)" />
+        <Color color="rgb(186,225,255)" />
+      </div>
+    </Portal>
   );
 };
 
