@@ -1,34 +1,11 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { setToken } from "../utils/tokenHandler";
-import * as axios from "../utils/axiosHandler";
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../Hooks/useAuth";
 import Input from "../Components/Input";
 import { UserIcon, EmailIcon, PasswordIcon } from "../Assets/Icons/index";
 
 const Signup = () => {
-  const history = useHistory();
-
-  const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    passwordConf: ""
-  });
-
-  const dataUpdate = (event, property) => {
-    setData({ ...data, [property]: event.target.value });
-  };
-
-  const signUpHandler = () => {
-    if (data.password === data.passwordConf) {
-      delete data.passwordConf;
-      axios.Post("http://localhost:4000/Signup", data, res => {
-        setToken(res.data);
-        history.push("/User/NotesPanel");
-      });
-    }
-  };
+  const [response, action] = useAuth("auth");
 
   return (
     <div className="auth__container">
@@ -40,44 +17,42 @@ const Signup = () => {
             placeholder="Type your first name"
             icon={UserIcon}
             inputType="text"
-            onChange={event => dataUpdate(event, "firstName")}
+            onChange={event => action._updateField("firstName", event.target.value)}
           />
           <Input
             label="Last name:"
             placeholder="Type your last name"
             icon={UserIcon}
             inputType="text"
-            onChange={event => dataUpdate(event, "lastName")}
+            onChange={event => action._updateField("lastName", event.target.value)}
           />
           <Input
             label="Email:"
             placeholder="It will be also your login"
             icon={EmailIcon}
             inputType="text"
-            onChange={event => dataUpdate(event, "email")}
+            onChange={event => action._updateField("email", event.target.value)}
           />
           <Input
             label="Password:"
             placeholder="Type your password"
             icon={PasswordIcon}
             inputType="password"
-            onChange={event => dataUpdate(event, "password")}
+            onChange={event => action._updateField("password", event.target.value)}
           />
           <Input
             label="Confirm password:"
             placeholder="Retype your password"
             icon={PasswordIcon}
             inputType="password"
-            onChange={event => dataUpdate(event, "passwordConf")}
+            onChange={event => action._updateField("passwordConf", event.target.value)}
           />
         </div>
-        <button className="form__button" onClick={signUpHandler}>
+        <button className="form__button" onClick={()=>action.signUp()}>
           Signup
         </button>
         <div className="form__bottom-text-wrapper">
-          <p className="form__bottom-text-wrapper--text">
-            Already have account ?
-          </p>
+          <p className="form__bottom-text-wrapper--text">Already have account ?</p>
           <Link to="/Login" className="form__bottom-text-wrapper--link">
             Login
           </Link>

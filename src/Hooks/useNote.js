@@ -26,6 +26,7 @@ const UseNoteProto = {
     this._dispatch(changeImportance(this._id, value));
   },
   updateField(field,value){
+    console.log(this)
       this._dispatch(changeNoteFieldValue(this._id,field,value))
   },
   postUpdate(){
@@ -39,7 +40,6 @@ export const useNote = _id => {
   const [pickersDisplay, setDisplay] = useState({ colors: false, labels: false });
 
   const _setDisplay = (value, field) => setDisplay({ ...pickersDisplay, [field]: value });
-
   const ref = useRef(null);
 
   if (ref.current === null) {

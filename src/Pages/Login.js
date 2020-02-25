@@ -1,31 +1,13 @@
-import React, { useState } from "react";
-import { Link,useHistory } from "react-router-dom";
-import {setToken} from '../utils/tokenHandler'
-import * as axios from '../utils/axiosHandler'
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../Hooks/useAuth";
 
 import Input from "../Components/Input";
 
-import {LoginIcon,PasswordIcon} from '../Assets/Icons/index'
+import { LoginIcon, PasswordIcon } from "../Assets/Icons/index";
 
 const Login = () => {
-  const history = useHistory()
-
-  const [data, setData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const dataUpdate = (event, property) => {
-    setData({ ...data, [property]: event.target.value });
-  };
-
-  const loginHandler = () => {
-    axios.Post("http://localhost:4000/Login", data, response => {
-     setToken(response.data);
-      history.push("/User/NotesPanel");
-    },err=>console.log(err));
-  };
-
+  const [response, action] = useAuth();
   return (
     <div className="auth__container">
       <div className="auth__login-form">
@@ -36,26 +18,24 @@ const Login = () => {
             placeholder="Type your Email"
             icon={LoginIcon}
             inputType="text"
-            onChange={event => dataUpdate(event, "email")}
+            onChange={event => action._updateField("email", event.target.value)}
           />
           <Input
             label="Password:"
             placeholder="Type your password"
             icon={PasswordIcon}
             inputType="password"
-            onChange={event => dataUpdate(event, "password")}
+            onChange={event => action._updateField("password", event.target.value)}
           />
           <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
             <p className="form__password-reset">Forgot password ?</p>
           </Link>
         </div>
-        <button className="form__button" onClick={loginHandler}>
+        <button className="form__button" onClick={()=>action.login()}>
           Login
         </button>
         <div className="form__bottom-text-wrapper">
-          <p className="form__bottom-text-wrapper--text">
-            Don't have account yet ?
-          </p>
+          <p className="form__bottom-text-wrapper--text">Don't have account yet ?</p>
           <Link to="/Signup" className="form__bottom-text-wrapper--link">
             Singup
           </Link>

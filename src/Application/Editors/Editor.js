@@ -24,23 +24,27 @@ const Editor = () => {
     };
   }, []);
 
-  const BackToNotePanel = () => {
+  const backToNotePanel = () => {
     history.push("/User/NotesPanel");
   };
 
-  const FinishHandler = () => {
+  const finishHandler = () => {
     dataAction.postUpdate();
-    BackToNotePanel();
+    backToNotePanel();
   };
-  const DeleteNoteHandler = () => {
+  const deleteNoteHandler = () => {
     dataAction.deleteNote();
-    BackToNotePanel();
+    backToNotePanel();
   };
 
-  const CopyNoteHandler = () => {
+  const copyNoteHandler = () => {
     dataAction.copyNote();
-    BackToNotePanel();
+    backToNotePanel();
   };
+
+  const updateContentField = event =>{
+    dataAction.updateField('content',event.target.value)
+  }
 
   const TitleShadowHandler = top => {
     if (top === 0) {
@@ -82,7 +86,7 @@ const Editor = () => {
           />
           <Body
             type={data.type}
-            GetInputData={dataAction.updateField}
+            GetInputData={updateContentField}
             content={data.content}
             background={data.color}
             TitleShadowHandler={TitleShadowHandler}
@@ -104,9 +108,9 @@ const Editor = () => {
             />
             <ColorPickerPopout />
 
-            <Icon icon={noteIcons.CopyIcon} title="Copy note" onClick={CopyNoteHandler} />
-            <Icon icon={noteIcons.DeleteIcon} title="Delete note" onClick={DeleteNoteHandler} />
-            <button className="editor__option-wrapper--finish-button" onClick={FinishHandler}>
+            <Icon icon={noteIcons.CopyIcon} title="Copy note" onClick={copyNoteHandler} />
+            <Icon icon={noteIcons.DeleteIcon} title="Delete note" onClick={deleteNoteHandler} />
+            <button className="editor__option-wrapper--finish-button" onClick={finishHandler}>
               Finish
             </button>
           </div>
