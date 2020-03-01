@@ -17,7 +17,7 @@ export const Get = async(path, success,failed) => {
     })
     .catch(error => {
       console.log(error.response);
-      failed(error)
+      failed(error.response)
     });
 };
 export const Post = async(path, body, success, failed) => {
@@ -30,7 +30,7 @@ export const Post = async(path, body, success, failed) => {
            })
            .catch(error => {
              console.log(error.response);
-             failed(error)
+             failed(error.response);
            });
        };
 export const Patch = async(path, body, success, failed) => {
@@ -43,7 +43,7 @@ export const Patch = async(path, body, success, failed) => {
            })
            .catch(error => {
              console.log(error.response);
-             failed(error)
+             failed(error.response)
            });
        };
 export const Delete = async(path, success, failed) => {
@@ -56,6 +56,6 @@ export const Delete = async(path, success, failed) => {
            })
            .catch(error => {
              console.log(error.response);
-             failed(error)
+             failed(error.response)
            });
        };

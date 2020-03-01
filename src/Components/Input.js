@@ -7,7 +7,7 @@ const InputComponent = ({
   inputType,
   value,
   onChange,
-  OnBlur
+  error
 }) => {
   const InputWrapperRef = useRef();
   const IconRef = useRef();
@@ -22,7 +22,6 @@ const InputComponent = ({
     InputWrapperRef.current.style.borderBottom =
       "1px solid rgba(90, 90, 90, 0.5)";
     IconRef.current.style.opacity = 0.6;
-    if(OnBlur){OnBlur()}
   };
 
   return (
@@ -39,6 +38,7 @@ const InputComponent = ({
           value={value}
         />
       </div>
+      <span className='input__error'>{error}</span>
     </div>
   );
 };

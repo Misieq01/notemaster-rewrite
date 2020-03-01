@@ -4,21 +4,17 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
-  firstName: { type: String, trim: true, require: true },
-  lastName: { type: String, trim: true, require: true },
+  firstName: {
+    type: String,
+    trim: true,
+  },
+  lastName: { type: String, trim: true },
   email: {
     type: String,
-    unique: true,
-    require: true,
     trim: true,
     lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Email is invalid");
-      }
-    }
   },
-  password: { type: String, require: true, trim: true, minLength: 7 },
+  password: { type: String, trim: true},
   notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],
   tokens: [
     {
@@ -57,7 +53,7 @@ userSchema.methods.DeleteNote = async function(noteId) {
   const user = this;
   const index = user.notes.indexOf(noteId);
   user.notes.splice(index, 1);
-  await user.save()
+  await user.save();
   return user;
 };
 
@@ -78,16 +74,44 @@ userSchema.methods.GenerateAuthToken = async function() {
   return token;
 };
 
+userSchema.statics.checkPasswordMatch = async data => {
+  if (data.password !== data.passwordConf) {
+    throw { message: "Passwords don't match", field: "passwordConf" };
+  } else {
+    delete data.passwordConf;
+    return data;
+  }
+};
+
+userSchema.statics.validateData = async data =>{
+  const {firstName,lastName,email,password,passwordConf} = data
+  const isTaken = await User.findOne({email:email})
+  console.log(email.length)
+  if(firstName.length <= 0) throw { message: "This field can't be empty", field: "firstName" }
+  if(lastName.length <= 0) throw { message: "This field can't be empty", field: "lastName" }
+  if(email.length <= 0) throw { message: "This field can't be empty", field: "email" }
+  if(!validator.isEmail(email)) throw { message: "Invalid email", field: "email" }
+  if(isTaken) throw { message: "Email is already taken", field: "email" }
+  if(password.length < 8) throw { message: "Password doesn't meet requirements", field: "password" }
+  if(password !== passwordConf) throw { message: "Passwords don't match", field: "passwordConf" };
+  delete data.passwordConf
+  return data
+}
+
 userSchema.statics.FindByCredentials = async (email, password) => {
+  // Checking if email is valid
+  if (!validator.isEmail(email)) {
+    throw { message: "Email is invalid", field: "email" };
+  }
   //Finding user by his email
   const user = await User.findOne({ email });
   if (!user) {
-    throw Error("There is no registered user on this email");
+    throw { message: "There is no user registered on this email", field: "email" };
   }
   //Checking for correct password
   const isMatch = await bcryptjs.compare(password, user.password);
   if (!isMatch) {
-    throw Error("Incorrect email or password");
+    throw { message: "Incorect password", field: "password" };
   }
 
   //If all good send back user

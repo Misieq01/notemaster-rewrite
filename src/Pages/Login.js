@@ -7,7 +7,7 @@ import Input from "../Components/Input";
 import { LoginIcon, PasswordIcon } from "../Assets/Icons/index";
 
 const Login = () => {
-  const [response, action] = useAuth();
+  const [auth, action] = useAuth();
   return (
     <div className="auth__container">
       <div className="auth__login-form">
@@ -19,6 +19,7 @@ const Login = () => {
             icon={LoginIcon}
             inputType="text"
             onChange={event => action._updateField("email", event.target.value)}
+            error={auth.response.field === "email" ? auth.response.message : null}
           />
           <Input
             label="Password:"
@@ -26,12 +27,13 @@ const Login = () => {
             icon={PasswordIcon}
             inputType="password"
             onChange={event => action._updateField("password", event.target.value)}
+            error={auth.response.field === "password" ? auth.response.message : null}
           />
           <Link to="/Reset" style={{ alignSelf: "flex-end" }}>
             <p className="form__password-reset">Forgot password ?</p>
           </Link>
         </div>
-        <button className="form__button" onClick={()=>action.login()}>
+        <button className="form__button" onClick={() => action.login(auth.data)}>
           Login
         </button>
         <div className="form__bottom-text-wrapper">

@@ -6,6 +6,7 @@
   border: 4px solid $white;
   border-radius: 8px;
   background: $white;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12),0 1px 3px rgba(0,0,0,0.24);
 }
 
 .form{
@@ -70,7 +71,7 @@
     @include flex();
     width: 100vw;
     height: 100vh;
-    background: $gradient;
+    background: linear-gradient(to bottom right, transparent 39.9%,$white 40%),linear-gradient(to left, #ff5f6d, #ffc371);
   }
   &__login-form {
     @extend %form;
