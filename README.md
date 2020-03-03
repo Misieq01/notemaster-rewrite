@@ -1,3 +1,3 @@
-To start project run these two commands:
-npm run server
+To start project run these two commands:\
+npm run server\
 npm start
