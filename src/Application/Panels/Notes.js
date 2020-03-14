@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 import Navigation from "../Navigation/Navigation";
 import NoteBoard from "../Board/Board";
 
 const NotesPanel = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const GetSearchValue = event => {
-    setSearchValue(event.target.value);
-  };
   return (
     <motion.div
       className="notes-panel__container"
@@ -16,8 +12,8 @@ const NotesPanel = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeIn" }}
     >
-      <Navigation GetSearchValue={GetSearchValue} />
-      <NoteBoard searchValue={searchValue} />
+      <Navigation/>
+      <NoteBoard/>
     </motion.div>
   );
 };

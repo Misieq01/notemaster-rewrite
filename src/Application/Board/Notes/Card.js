@@ -14,6 +14,7 @@ const Card = ({ _id }) => {
   const [data, dataAction] = useNote(_id);
 
   const truncatedLabels = [...data.labels].slice(0, 4).map(e => textTruncateChar(e.name, 12));
+  const contentWithSearchValueApplied = data.content
 
   const cardRef = useRef();
   const labelsIconRef = useRef();

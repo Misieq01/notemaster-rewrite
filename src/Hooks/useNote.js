@@ -37,6 +37,7 @@ const UseNoteProto = {
 export const useNote = _id => {
   const dispatch = useDispatch();
   const data = useSelector(state => getNoteById(state, _id));
+  const searchValue = useSelector(state => state.others.searchValue)
   const [pickersDisplay, setDisplay] = useState({ colors: false, labels: false });
 
   const _setDisplay = (value, field) => setDisplay({ ...pickersDisplay, [field]: value });
@@ -49,7 +50,8 @@ export const useNote = _id => {
         __proto__: UseNoteProto,
         _setDisplay,
         _dispatch: dispatch,
-        _id
+        _id,
+        _searchValue: searchValue
       }
     ];
   } else {
