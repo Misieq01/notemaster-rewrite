@@ -8,22 +8,29 @@ const Button = ({ svg, buttonTitle, MenuContent, ...props }) => {
 
   // This state allow closing menu when clicking on button
   // We just needed extra state to manage display which would not be connected to portal
-  const [helpingState,setHelp] = useState(false)
+  const [helpingState, setHelp] = useState(false);
 
   const UnMount = () => {
-      setPortalActive(false);
+    setPortalActive(false);
+    setTimeout(()=>setHelp(false),0)
   };
 
-  const ClickHandler = () =>{
-    if(!helpingState){
-      setPortalActive(true)
-      setHelp(true)
-    }else if(helpingState){
-      setPortalActive(false)
-      setHelp(false);
+  console.log("portal", portalActive);
+  console.log("help", helpingState);
 
+  const ClickHandler = () => {
+    if (!helpingState) {
+      setPortalActive(true);
+      setHelp(true);
+    } else if (helpingState) {
+      setPortalActive(false);
+      setHelp(false);
+    } else if (helpingState && !portalActive) {
+      console.log("fired");
+      setPortalActive(true);
+      setHelp(true);
     }
-  }
+  };
 
   // Reference to buttom DOM element
   const ButtonRef = useRef();
