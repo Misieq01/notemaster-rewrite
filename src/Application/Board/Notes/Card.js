@@ -78,8 +78,8 @@ const Card = ({ _id }) => {
           />
           <LabelsPickerPopout />
           <Icon icon={noteIcons.ColorIcon} title="Change color" onClick={() => dataAction.displayPicker("colors")} />
-          <Icon icon={noteIcons.CopyIcon} title="Copy" onClick={dataAction.copyNote} />
-          <Icon icon={noteIcons.DeleteIcon} title="Delete" onClick={dataAction.deleteNote} />
+          <Icon icon={noteIcons.CopyIcon} title="Copy" onClick={()=>dataAction.copyNote()} />
+          <Icon icon={noteIcons.DeleteIcon} title="Delete" onClick={()=>dataAction.deleteNote()} />
           <ColorPickerPopout />
         </div>
       </div>

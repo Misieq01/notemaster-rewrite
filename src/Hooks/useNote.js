@@ -11,6 +11,7 @@ import {
 
 const UseNoteProto = {
   copyNote() {
+    console.log(this);
     this._dispatch(copyNote(this._id));
   },
   deleteNote() {
@@ -26,7 +27,6 @@ const UseNoteProto = {
     this._dispatch(changeImportance(this._id, value));
   },
   updateField(field,value){
-    console.log(this)
       this._dispatch(changeNoteFieldValue(this._id,field,value))
   },
   postUpdate(){
