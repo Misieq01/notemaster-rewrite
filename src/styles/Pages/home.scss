@@ -59,6 +59,7 @@ $bg-img: url("../../Assets//Images/Home-background.jpg");
     &--autor {
       font-size: 20px !important;
       font-weight: 300;
+         z-index: $zIndex2;
     }
 
     & p {
@@ -68,6 +69,7 @@ $bg-img: url("../../Assets//Images/Home-background.jpg");
       font-size: 24px;
       text-align: center;
       font-style: italic;
+         z-index: $zIndex2;
     }
   }
 }
