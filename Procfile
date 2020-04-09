@@ -1,1 +1,1 @@
-web: node src/Server/Server
+web: node index

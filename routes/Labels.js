@@ -1,7 +1,7 @@
 const express = require('express')
-const Label = require('../Schemas/Labels')
-const Note = require('../Schemas/Notes')
-const AuthMiddleware = require('../Middleware/auth')
+const Label = require('../models/Labels')
+const Note = require('../models/Notes')
+const AuthMiddleware = require('../middleware/auth')
 
 const router = express.Router()
 
