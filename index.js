@@ -21,12 +21,11 @@ app.use((req, res, next) => {
     );
     next();
   });
-  
-  mongoose.connect(process.env.MONGODB_URI ||  "mongodb://localhost:27017/notemaster", {
+  mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/notemaster", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     autoIndex: false,
-    useFindAndModify: false
+    useFindAndModify: false,
   });
   
   const connection = mongoose.connection;
