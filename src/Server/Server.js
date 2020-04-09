@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+require('dotenv').config()
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 let users = require("./Routes/Users");
@@ -20,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect("mongodb://localhost:27017/notemaster", {
+mongoose.connect(process.env.MONGODB_URI ||  "mongodb://localhost:27017/notemaster", {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   autoIndex: false,
