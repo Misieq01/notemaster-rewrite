@@ -29,13 +29,15 @@
     "validator": "^12.2.0"
   },
   "scripts": {
-    "start": "nodemon src/server/server",
+    "start": "node src/server/server",
+    "start:dev": "nodemon src/server/server",
     "heroku-postbuild": "npm install && npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "react-scripts start"
   },
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": "react-app"
   },
