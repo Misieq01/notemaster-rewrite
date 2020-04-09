@@ -11,7 +11,7 @@ let users = require("./Routes/Users");
 let notes = require("./Routes/Notes");
 let labels = require('./Routes/Labels')
 
-app.use(express.static(path.join(__dirname, "/build")));
+app.use(express.static('../../build'));
 
 app.use(cors());
 app.use(express.json());
@@ -42,7 +42,7 @@ app.use(notes);
 app.use(labels);
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/build/index.html"));
+  res.sendFile("../../build/index.html");
 });
 
 app.listen(PORT, () => {
