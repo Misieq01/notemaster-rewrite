@@ -28,6 +28,9 @@ app.use((req, res, next) => {
     useFindAndModify: false,
   });
   
+console.log(process.env.MONGODB_URI)
+console.log(process.env.PORT);
+
   const connection = mongoose.connection;
   
   connection.once("open", () => {
