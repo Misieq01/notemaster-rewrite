@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require('path')
-require('dotenv').config()
+// require('dotenv').config()
 
 const PORT = process.env.PORT || 4000;
 const db = process.env.MONGOLAB_URI || "mongodb://localhost:27017/notemaster";
