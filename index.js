@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   });
   
 console.log(db)
-console.log(port);
+console.log(PORT);
 
   const connection = mongoose.connection;
   
