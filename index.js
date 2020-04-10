@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const path = require('path')
 require('dotenv').config()
 
-const PORT = process.env.PORT;
-
+const PORT = process.env.PORT || 4000;
+const db = process.env.MONGOLAB_URI || "mongodb://localhost:27017/notemaster";
 let users = require("./routes/Users");
 let notes = require("./routes/Notes");
 let labels = require('./routes/Labels')
@@ -21,15 +21,15 @@ app.use((req, res, next) => {
     );
     next();
   });
-  mongoose.connect(process.env.MONGOLAB_URI, {
+  mongoose.connect(db, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     autoIndex: false,
     useFindAndModify: false,
   });
   
-console.log(process.env.MONGODB_URI)
-console.log(process.env.PORT);
+console.log(db)
+console.log(port);
 
   const connection = mongoose.connection;
   
