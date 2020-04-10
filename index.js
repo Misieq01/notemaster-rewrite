@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const path = require('path')
 require('dotenv').config()
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 
 let users = require("./routes/Users");
 let notes = require("./routes/Notes");
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     );
     next();
   });
-  mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/notemaster", {
+  mongoose.connect(process.env.MONGOLAB_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     autoIndex: false,
