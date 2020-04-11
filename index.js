@@ -65,18 +65,16 @@ app.use(labels);
 //   res.sendFile(path.join((__dirname = "/client/build/index.html")));
 // });
 
-if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
   //
   app.get("*", (req, res) => {
     res.sendFile(path.join((__dirname = "client/build/index.html")));
   });
-}
 
-//Route Operations...
-app.get("/", (req, res) => {
-  res.send("Root route of server");
-});
+// //Route Operations...
+// app.get("/", (req, res) => {
+//   res.send("Root route of server");
+// });
 
 app.listen(port, () => {
   console.log("Server is online");
