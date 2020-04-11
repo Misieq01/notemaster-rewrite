@@ -17,7 +17,7 @@ export const ChangeNoteColor = (id, color) => (dispatch, getState) => {
   const notes = getAllNotes(state);
   notes[index] = note;
   axios.Patch(
-    "http://localhost:4000/UpdateNote/" + id,
+    "/UpdateNote/" + id,
     note,
     () => dispatch({ type: CHANGE_NOTE_COLOR.SUCCESS, notes: notes }),
     () => dispatch({ type: CHANGE_NOTE_COLOR.FAILED })
@@ -31,7 +31,7 @@ export const AddLabelToNote = (noteId, label) => (dispatch, getState) => {
   const index = GetNoteIndex(state, noteId);
   note.labels.push(label)
   axios.Patch(
-    "http://localhost:4000/NoteAddLabel/" + noteId,
+    "/NoteAddLabel/" + noteId,
     { label: label._id },
     () => {
       notes[index] = note;
@@ -47,7 +47,7 @@ export const DeleteLabelFromNote = (noteId, labelId) => (dispatch, getState) => 
   const labelIndex = notes[noteIndex].labels.map(e=>e._id).indexOf(labelId)
   note.labels.splice(labelIndex,1)
   axios.Patch(
-    "http://localhost:4000/NoteDeleteLabel/" + noteId,
+    "/NoteDeleteLabel/" + noteId,
     { label: labelId },
     () => {
       notes[noteIndex] = note;

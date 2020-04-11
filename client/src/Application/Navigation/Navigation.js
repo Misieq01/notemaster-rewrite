@@ -20,7 +20,7 @@ import MenuIcon from "../../Assets/Icons/Navigation/three-lines.svg";
 const Navigation = ({ GetSearchValue, ...props }) => {
   const dispatch = useDispatch();
   const Logout = () => {
-    axios.Post("http://localhost:4000/Logout", "", () => {
+    axios.Post("/Logout", "", () => {
       removeToken();
       props.history.push("/Login");
     });

@@ -18,7 +18,7 @@ import * as axios from "../../../utils/axiosHandler";
 
 export const fetchAllNotes = () => dispatch => {
   axios.Get(
-    "http://localhost:4000/GetAllNotes",
+    "/GetAllNotes",
     response => {
       setTimeout(
         () => dispatch({ type: FETCH_NOTES.SUCCESS, payload: response.data }),
@@ -50,7 +50,7 @@ export const changeImportance = (id, value) => (dispatch, getState) => {
   const note = { ...getNoteById(state, id), important: value };
   notes[index] = note;
   axios.Patch(
-    "http://localhost:4000/UpdateNote/" + id,
+    "/UpdateNote/" + id,
     note,
     () => dispatch({ type: CHANGE_IMPORTANCE.SUCCESS, notes: notes }),
     () => dispatch({ type: CHANGE_IMPORTANCE.FAILED })
@@ -61,7 +61,7 @@ export const copyNote = id => (dispatch, getState) => {
   const state = getState();
   const notes = [...getAllNotes(state)];
   axios.Post(
-    "http://localhost:4000/CopyNote" + id,
+    "/CopyNote" + id,
     null,
     response => {
       notes.push(response.data);
@@ -76,7 +76,7 @@ export const deleteNote = id => (dispatch, getState) => {
   const index = GetNoteIndex(state, id);
   notes.splice(index, 1);
   axios.Delete(
-    "http://localhost:4000/DeleteNote/" + id,
+    "/DeleteNote/" + id,
     () => dispatch({ type: DELETE_NOTE.SUCCESS, notes: notes }),
     () => dispatch({ type: DELETE_NOTE.FAILED })
   );
@@ -86,7 +86,7 @@ export const postUpdatedNote = id => (dispatch, getState) => {
   const state = getState();
   const note = getNoteById(state, id);
   axios.Patch(
-    "http://localhost:4000/UpdateNote/" + id,
+    "/UpdateNote/" + id,
     note,
     () => dispatch({ type: POST_UPDATED_NOTE.SUCCESS }),
     () => dispatch({ type: POST_UPDATED_NOTE.FAILED })
@@ -107,7 +107,7 @@ export const AddNote = (id, type) => (dispatch, getState) => {
   };
 
   return axios.Post(
-    "http://localhost:4000/NewNote",
+    "/NewNote",
     note,
     () => {
       notes.push(note);

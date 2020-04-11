@@ -33,7 +33,7 @@ const UseAuthProto = {
       return;
     }    
     axios.Post(
-      "http://localhost:4000/Login",
+      "/Login",
       data,
       res => {
         setToken(res.data);
@@ -52,7 +52,7 @@ const UseAuthProto = {
       return;
     }
     axios.Post(
-      "http://localhost:4000/Signup",
+      "/Signup",
       data,
       res => {
         setToken(res.data);

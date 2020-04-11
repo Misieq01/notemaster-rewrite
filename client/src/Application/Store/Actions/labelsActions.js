@@ -15,7 +15,7 @@ import * as axios from "../../../utils/axiosHandler";
 
 export const FetchLabels = () => dispatch => {
   axios.Get(
-    "http://localhost:4000/Labels",
+    "/Labels",
     res => setTimeout(()=>dispatch({ type: FETCH_LABELS.SUCCESS, labels: res.data })),
     () => dispatch({ type: FETCH_LABELS.FAILED })
   );
@@ -25,7 +25,7 @@ export const AddLabel = name => (dispatch, getState) => {
   const state = getState();
   const labels = [...GetAllLabels(state)];
   axios.Post(
-    "http://localhost:4000/NewLabel",
+    "/NewLabel",
     { name },
     res => {
       labels.push(res.data);
@@ -41,7 +41,7 @@ export const UpdateLabel = (id, name) => (dispatch, getState) => {
   const label = { ...GetLabelById(state, id), name: name };
   const notes = getAllNotes(state);
   axios.Patch(
-    "http://localhost:4000/ChangeLabel/" + id,
+    "/ChangeLabel/" + id,
     label,
     () => {
       labels[index] = label;
@@ -68,7 +68,7 @@ export const DeleteLabel = id => (dispatch, getState) => {
   const index = GetLabelIndex(state, id);
   const notes = getAllNotes(state);
   axios.Delete(
-    "http://localhost:4000/DeleteLabel/" + id,
+    "/DeleteLabel/" + id,
     () => {
       labels.splice(index, 1);
         const notesWithDeletedLabel = notes.map((note, id) => {
