@@ -3,10 +3,10 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require('path')
-// require('dotenv').config()
+require('dotenv').config()
 
-const PORT = process.env.PORT || 4000;
-const db = process.env.MONGOLAB_URI || "mongodb://localhost:27017/notemaster";
+const PORT = process.env.PORT;
+const db = process.env.MONGODB_URI;
 let users = require("./routes/Users");
 let notes = require("./routes/Notes");
 let labels = require('./routes/Labels')
@@ -36,6 +36,7 @@ console.log(PORT);
   connection.once("open", () => {
     console.log("Database is connected");
   });
+  connection.on('error', err => console.log('Mongodb error: ' + err))
   
   app.use(users);
   app.use(notes);
