@@ -54,6 +54,7 @@ mongoose
 
 console.log("database: " + db);
 console.log("port: " + port);
+console.log("baseURL: " + process.env.BASE_URL);
 
 app.use(users);
 app.use(notes);

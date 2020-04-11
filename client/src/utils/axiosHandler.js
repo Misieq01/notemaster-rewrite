@@ -3,6 +3,7 @@ import { getToken } from "./tokenHandler";
 
 const setOptions = token => {
   return {
+    baseUrl: process.env.BASE_URL,
     headers: { Authorization: "Bearer " + token }
   };
 };
