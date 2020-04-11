@@ -1,3 +1,3 @@
 module.exports = {
-  mongoURI: process.env.MONGODB_URI,
+  mongoURI: "mongodb://localhost:27017/notemaster",
 };
