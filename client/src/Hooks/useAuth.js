@@ -46,6 +46,7 @@ const UseAuthProto = {
     );
   },
   signUp(data){
+    console.log(data)
     const env = this;
     if (this._config === "default") {
       this._setResponse("failed", "global", "incorrect data set");
@@ -57,7 +58,7 @@ const UseAuthProto = {
       res => {
         setToken(res.data);
         env._setResponse(200, "global", "signed in");
-        env.history.push("/User/NotesPanel");
+        env._history.push("/User/NotesPanel");
       },
       err => {
         env._setResponse(400, err.data.field, err.data.message);

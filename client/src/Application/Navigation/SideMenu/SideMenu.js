@@ -22,6 +22,8 @@ const SideMenu = () =>{
           <motion.div className='side-menu__container'
             key="container"
             exit='exit'
+            initial='initial'
+            animate='open'
             variants={Variants}
           >
             SideMenu
