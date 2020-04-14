@@ -1,22 +1,19 @@
 import React from "react";
 
 const Button = ({
-  svg,
+  Icon,
   buttonTitle,
   onClick,
-  ...props
 }) => {
 
   return (
-    <>
       <button
         className="navigation__wrapper--button"
         title={buttonTitle}
         onClick={onClick}
       >
-        <img alt="icon" className="navigation__wrapper--icon" src={svg} />
+        <Icon className="navigation__wrapper--icon"/>
       </button>
-    </>
   );
 };
 

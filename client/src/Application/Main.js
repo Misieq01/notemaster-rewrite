@@ -7,7 +7,7 @@ import {FetchLabels} from './Store/Actions/labelsActions'
 
 import NotesPanel from "./Panels/Notes";
 import UserPanel from "./Panels/Account";
-import NoteEditor from "./Panels/Editor";
+import NoteEditor from "./Editors/Editor";
 import LoadingScreen from './Components/LoadingScreen'
 import CustomRoute from '../Components/CustomRoute'
 
@@ -30,10 +30,10 @@ const Main = props => {
     <>
       <Loading/>
       <Switch>
-        {isLoading ? null : <CustomRoute path="/User/NotesPanel" redirectPath="/Login" isPrivate={true} exact component={NotesPanel} />}
-        <CustomRoute path="/User/NotesPanel/Edit/:id" redirectPath="/Login" isPrivate={true} exact component={NotesPanel} />
+        {isLoading ? null : <CustomRoute path="/User/NotesPanel/:type" redirectPath="/Login" isPrivate={true} exact component={NotesPanel} />}
+        <CustomRoute path="/User/NotesPanel/:type/Edit/:id" redirectPath="/Login" isPrivate={true} exact component={NotesPanel} />
       </Switch>
-      <CustomRoute path="/User/NotesPanel/Edit/:id" redirectPath="/Login" isPrivate={true} exact component={NoteEditor} />
+      <CustomRoute path="/User/NotesPanel/:type/Edit/:id" redirectPath="/Login" isPrivate={true} exact component={NoteEditor} />
       <CustomRoute path="/User/Account" redirectPath="/Login" isPrivate={true} exact component={UserPanel} />
     </>
   );

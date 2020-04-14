@@ -4,15 +4,17 @@ import { useParams, useHistory } from "react-router-dom";
 import { useNote } from "../../Hooks/useNote";
 
 import Body from "./BodyType";
+import Background from '../../Components/Background'
 import { ColorPicker, LabelsPicker, Labels, Icon } from "../Components/index";
 
 import {noteIcons} from '../../Assets/Icons/index'
 
 const Editor = () => {
   const history = useHistory();
-  const { id } = useParams();
+  const id = useParams().id;
   const [data, dataAction] = useNote(id);
   const [titleShadow, setTitleShadow] = useState("none");
+  const notesPanelType = useParams().type
 
   const colorIconRef = useRef();
   const labelsIconRef = useRef();
@@ -25,7 +27,7 @@ const Editor = () => {
   }, []);
 
   const backToNotePanel = () => {
-    history.push("/User/NotesPanel");
+    history.push("/User/NotesPanel/" + notesPanelType);
   };
 
   const finishHandler = () => {
@@ -76,6 +78,7 @@ const Editor = () => {
 
   return (
     <>
+        <Background onClick={finishHandler}/>
         <div className="editor__container" style={{ background: data.color }}>
           <input
             className="editor__title"

@@ -9,7 +9,7 @@ const SearchBar = ({GetSearchValue,...props}) => {
   return (
     <input
       className="search-bar"
-      placeholder="Search for notes"
+      placeholder="Search"
       onChange={event => dispatch(updateSearchValue(event.target.value))}
     />
   );

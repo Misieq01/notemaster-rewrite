@@ -1,8 +1,5 @@
 import axios from "axios";
 import { getToken } from "./tokenHandler";
-console.log(
-  process.env.NODE_ENV === "production" ? "https://bartek-notemaster.herokuapp.com" : "http://localhost:4000"
-);
 const setOptions = token => {
   return {
     baseUrl: process.env.NODE_ENV === 'production' ? 'https://bartek-notemaster.herokuapp.com' : "http://localhost:4000",

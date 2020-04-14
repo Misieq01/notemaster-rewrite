@@ -13,17 +13,17 @@ const App = () => {
         <Route exact path="/" component={Home} />
         <CustomRoute
           path="/Login"
-          redirectPath="/User/NotesPanel"
+          redirectPath={"/User/NotesPanel/Notes"}
           component={Login}
         />
         <CustomRoute
           path="/Signup"
-          redirectPath="/User/NotesPanel"
+          redirectPath={"/User/NotesPanel/Notes"}
           component={Signup}
         />
         <CustomRoute
           path="/Reset"
-          redirectPath="/User/NotesPanel"
+          redirectPath={"/User/NotesPanel/Notes"}
           component={PasswordReset}
         />
         <CustomRoute

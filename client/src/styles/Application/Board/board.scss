@@ -8,6 +8,7 @@
     @include flex(column nowrap, space-around);
     width: calc(100vw - 300px);
     height: auto;
+    margin-top: 80px;
   }
   &__container--masonry {
     width: 88%;

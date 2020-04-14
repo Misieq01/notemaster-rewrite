@@ -1,9 +1,12 @@
 .side-menu{
 &__container{
+    @include flex(column nowrap, flex-start,flex-start);
     position:fixed;
-    align-self: flex-start;
-    height: calc(100vh - 40px);
-    width: 300px;
-    background:red;
+    height: calc(100% - 90px);
+    margin-top: 80px;
+    padding-top: 10px;
+    left: 0;
+    width: 280px;
+    overflow-x: hidden;
 }
 }

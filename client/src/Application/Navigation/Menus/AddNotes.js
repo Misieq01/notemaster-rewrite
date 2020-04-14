@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory,useLocation } from "react-router-dom";
 import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
@@ -56,6 +56,7 @@ const AddNotes = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory()
+  const location = useLocation().pathname
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -72,7 +73,7 @@ const AddNotes = ({
     const id = mongoose.Types.ObjectId().toHexString();
     dispatch(AddNote(id, type)).then(() => {
       Close();
-      history.push("/User/NotesPanel/Edit/" + id);
+      history.push(location + '/Edit/' + id);
     });
   };
   return <motion.div className='addNotes__container' style={{top: top,left:left}} variants={containerVariants} initial='initial' animate='open' exit='close'>

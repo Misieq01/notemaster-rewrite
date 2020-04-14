@@ -1,4 +1,4 @@
-import {CHANGE_SIDEMENU_DISPLAY,UPDATE_SEARCH_VALUE} from '../Types'
+import {CHANGE_SIDEMENU_DISPLAY,UPDATE_SEARCH_VALUE,CHANGE_NOTESPANEL_TYPE} from '../Types'
 
 export const ChangeDisplaySideMenu = () =>{
     return{

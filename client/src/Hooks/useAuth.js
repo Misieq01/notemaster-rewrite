@@ -46,7 +46,6 @@ const UseAuthProto = {
     );
   },
   signUp(data){
-    console.log(data)
     const env = this;
     if (this._config === "default") {
       this._setResponse("failed", "global", "incorrect data set");

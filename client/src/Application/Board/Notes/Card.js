@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import { useNote } from "../../../Hooks/useNote";
 import { textTruncateChar } from "../../../utils/textTruncate";
 
@@ -12,7 +12,7 @@ import { noteIcons } from "../../../Assets/Icons/index";
 const Card = ({ _id }) => {
   const [displayIcons, setdisplayIcons] = useState(false);
   const [data, dataAction] = useNote(_id);
-
+  const location = useLocation().pathname
   const truncatedLabels = [...data.labels].slice(0, 4).map(e => textTruncateChar(e.name, 12));
   const contentWithSearchValueApplied = data.content
 
@@ -45,7 +45,7 @@ const Card = ({ _id }) => {
   };
 
   return (
-    <Link className="card__link" to={"/User/NotesPanel/Edit/" + data._id}>
+    <Link className="card__link" to={location + '/Edit/' + data._id}>
       <div
         className="card__container"
         style={{ background: data.color }}

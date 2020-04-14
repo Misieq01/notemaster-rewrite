@@ -17,9 +17,9 @@ const transition = {
 };
 
 const ContainerVariants = {
-  initial: { width: 0 },
-  close: { width: 0, ...transition },
-  open: { width: 300, ...transition }
+  initial: { width: 80 },
+  close: { width: 80, ...transition },
+  open: { width: 280, ...transition }
 };
 
 const NoteBoard = React.memo((props) => {

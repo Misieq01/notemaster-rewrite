@@ -86,7 +86,6 @@ userSchema.statics.checkPasswordMatch = async data => {
 userSchema.statics.validateData = async data =>{
   const {firstName,lastName,email,password,passwordConf} = data
   const isTaken = await User.findOne({email:email})
-  console.log(email.length)
   if(firstName.length <= 0) throw { message: "This field can't be empty", field: "firstName" }
   if(lastName.length <= 0) throw { message: "This field can't be empty", field: "lastName" }
   if(email.length <= 0) throw { message: "This field can't be empty", field: "email" }

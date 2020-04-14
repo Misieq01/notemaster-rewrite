@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import Portal from "../../Components/ReactPortal";
 import { AnimatePresence } from "framer-motion";
 
-const Button = ({ svg, buttonTitle, MenuContent, ...props }) => {
+const Button = ({ Icon, buttonTitle, MenuContent, ...props }) => {
   // Manage display of menu component
   const [portalActive, setPortalActive] = useState(false);
 
@@ -19,7 +19,7 @@ const Button = ({ svg, buttonTitle, MenuContent, ...props }) => {
   return (
     <>
       <button className="navigation__wrapper--button" ref={ButtonRef} title={buttonTitle} onClick={ClickHandler}>
-        <img alt="icon" className="navigation__wrapper--icon" src={svg} />
+        <Icon className="navigation__wrapper--icon" />
       </button>
       <AnimatePresence>
         {portalActive && (

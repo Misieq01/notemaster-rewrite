@@ -11,7 +11,6 @@ import {
 
 const UseNoteProto = {
   copyNote() {
-    console.log(this);
     this._dispatch(copyNote(this._id));
   },
   deleteNote() {

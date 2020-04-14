@@ -1,6 +1,6 @@
 import React from "react";
 import * as axios from "../../utils/axiosHandler";
-import { withRouter } from "react-router-dom";
+import { withRouter,useParams } from "react-router-dom";
 import { removeToken } from "../../utils/tokenHandler";
 import { useDispatch } from "react-redux";
 import { ChangeDisplaySideMenu } from "../Store/Actions/othersActions";
@@ -12,13 +12,16 @@ import MenuButton from "./Buttons/MenuButton";
 import AddMenu from "./Menus/AddNotes";
 import Labels from "./Menus/LabelsMenu/Labels";
 
-import AddNoteIcon from "../../Assets/Icons/Navigation/add-note.svg";
-import LogoutIcon from "../../Assets/Icons/Navigation/logout.svg";
-import LabelsIcon from "../../Assets/Icons/Navigation/labels.svg";
-import MenuIcon from "../../Assets/Icons/Navigation/three-lines.svg";
+import {ReactComponent as LabelsIcon} from "../../Assets/Icons/Navigation/labels.svg";
+import {ReactComponent as AddNoteIcon} from "../../Assets/Icons/Navigation/add-note.svg";
+import {ReactComponent as MenuIcon} from "../../Assets/Icons/Navigation/three-lines.svg";
+import {ReactComponent as SettingsIcon} from "../../Assets/Icons/Navigation/settings.svg";
+import {ReactComponent as AccountIcon} from "../../Assets/Icons/Navigation/account.svg";
+import {ReactComponent as LogoutIcon} from "../../Assets/Icons/Navigation/logout.svg";
 
 const Navigation = ({ GetSearchValue, ...props }) => {
   const dispatch = useDispatch();
+  const notesPanelType = useParams().type
   const Logout = () => {
     axios.Post("/Logout", "", () => {
       removeToken();
@@ -28,31 +31,19 @@ const Navigation = ({ GetSearchValue, ...props }) => {
 
   return (
     <div className="navigation__container">
-      <div className="navigation__wrapper" style={{ width: "7vw" }}>
-        <ClickButton
-          svg={MenuIcon}
-          buttonTitle="Open menu"
-          onClick={() => dispatch(ChangeDisplaySideMenu())}
-        />
+      <div className="navigation__wrapper-menu-button">
+        <ClickButton Icon={MenuIcon} buttonTitle="Open menu" onClick={() => dispatch(ChangeDisplaySideMenu())} />
       </div>
-      <div className="navigation__wrapper" style={{ width: "50vw" }}>
+      <div className="navigation__wrapper-center">
+        <span className="navigation__notes-panel-type">{notesPanelType}</span>
         <SearchBar GetSearchValue={GetSearchValue} />
       </div>
-
-      <div className="navigation__wrapper" style={{ width: "36vw" }}>
-        <MenuButton
-          svg={AddNoteIcon}
-          buttonTitle="Add note"
-          MenuContent={AddMenu}
-        />
-        <MenuButton
-          svg={LabelsIcon}
-          buttonTitle="Labels"
-          MenuContent={Labels}
-        />
-      </div>
-      <div className="navigation__wrapper" style={{ width: "7vw" }}>
-        <ClickButton svg={LogoutIcon} buttonTitle="Logout" onClick={Logout} />
+      <div className="navigation__wrapper-right-buttons">
+        <MenuButton Icon={AddNoteIcon} buttonTitle="Add note" MenuContent={AddMenu} />
+        <MenuButton Icon={LabelsIcon} buttonTitle="Labels" MenuContent={Labels} />
+        <ClickButton Icon={SettingsIcon} buttonTitle="Settings" />
+        <ClickButton Icon={AccountIcon} buttonTitle="Account" />
+        <ClickButton Icon={LogoutIcon} buttonTitle="Logout" onClick={Logout} />
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ const AuthMiddleware = require('../middleware/auth')
 const router = express.Router()
 
 router.post('/NewLabel',AuthMiddleware,async (req,res)=>{
-    console.log(req.body);
     try {
         
         const label = new Label(req.body);
