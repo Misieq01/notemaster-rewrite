@@ -38,7 +38,7 @@ const UseAuthProto = {
       res => {
         setToken(res.data);
         env._setResponse(200, "global", "loged in");
-        env._history.push("/User/NotesPanel");
+        env._history.push("/User/NotesPanel/Notes");
       },
       err => {
         env._setResponse(400, err.data.field, err.data.message);
@@ -57,7 +57,7 @@ const UseAuthProto = {
       res => {
         setToken(res.data);
         env._setResponse(200, "global", "signed in");
-        env._history.push("/User/NotesPanel");
+        env._history.push("/User/NotesPanel/Notes");
       },
       err => {
         env._setResponse(400, err.data.field, err.data.message);

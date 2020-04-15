@@ -2,6 +2,7 @@
   &__absolute {
     position: absolute;
     margin: auto;
+    z-index: $zIndex2;
   }
   &__container {
     height: auto;

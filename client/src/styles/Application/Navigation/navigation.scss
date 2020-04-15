@@ -2,9 +2,12 @@
   &__container {
     @include flex(null, flex-start);
     position: fixed;
+    z-index: $zIndex2;
     width: 100%;
     height: 80px;
     border-bottom: 1px solid rgba(30,30,30,0.1);
+    background: $white;
+    top:0;
   }
   &__wrapper {
     @include flex(null, space-around);

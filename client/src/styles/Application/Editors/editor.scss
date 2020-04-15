@@ -1,7 +1,7 @@
 .editor {
   &__container {
     position: fixed;
-    z-index: 150;
+    z-index: $zIndex5;
     top: 100px;
     right: 0;
     left: 0;

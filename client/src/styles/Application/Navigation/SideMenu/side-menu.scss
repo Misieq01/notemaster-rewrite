@@ -3,9 +3,10 @@
     @include flex(column nowrap, flex-start,flex-start);
     position:fixed;
     height: calc(100% - 90px);
-    margin-top: 80px;
+    z-index: $zIndex1;
     padding-top: 10px;
     left: 0;
+    background: $white;
     width: 280px;
     overflow-x: hidden;
 }

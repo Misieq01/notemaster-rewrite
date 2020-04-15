@@ -10,7 +10,7 @@ import { ReactComponent as LabelIcon } from "../../../Assets/Icons/Navigation/la
 import Element from "./SideMenuElement";
 
 const transition = {
-  transition: { duration: 0.3, ease: "easeInOut" },
+  transition: { duration:0.3, ease: "easeInOut" },
 };
 
 const Variants = {

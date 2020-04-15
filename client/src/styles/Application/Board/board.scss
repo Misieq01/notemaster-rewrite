@@ -1,32 +1,32 @@
 .board {
   &__wrapper {
-    @include flex(null, center, flex-start);
-    width: 100vw;
-    height: auto;
-  }
-  &__container {
-    @include flex(column nowrap, space-around);
-    width: calc(100vw - 300px);
+    @include flex(row nowrap, flex-start, flex-start);
+    width: 100%;
     height: auto;
     margin-top: 80px;
   }
-  &__container--masonry {
-    width: 88%;
-    margin: 60px 0;
-  }
-  &__container--separatingLine {
-    width: inherit;
+  &__notes-wrapper{
+    @include flex(column nowrap,flex-start,center);
     height: auto;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    text-align: left;
+    width: 100%;
+    
+  }
+  &__container {
+    @include flex(column nowrap, space-around, center);
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    
+  }
+  &__container--masonry {
+    margin: 30px 0px;
   }
   &__container--lineText {
-    margin-left: 20px;
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.35);
+    color: rgba(100, 100, 100, 0.7);
+    align-self: flex-start;
   }
   &__side-menu-place-holder {
-    width: 10px;
     height: 100px;
   }
 }
