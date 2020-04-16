@@ -2,8 +2,8 @@ import DeleteIcon from "./NoteOptions/delete.svg";
 import CopyIcon from "./NoteOptions/copy.svg";
 import LabelIcon from "./NoteOptions/label.svg";
 import ColorIcon from "./NoteOptions/color.svg";
-import ImportantTrueIcon from "./NoteOptions/important-true.svg";
-import ImportantFalseIcon from "./NoteOptions/important-false.svg";
+import ImportantTrueIcon from "./NoteOptions/pinned.svg";
+import ImportantFalseIcon from "./NoteOptions/not-pinned.svg";
 
 export {default as EmailIcon} from './Auth/email.svg'
 export {default as LoginIcon} from './Auth/login.svg'

@@ -1,4 +1,4 @@
-import {CHANGE_IMPORTANCE,FETCH_NOTES,CHANGE_NOTE_FIELD_VALUE,COPY_NOTE,DELETE_NOTE,POST_UPDATED_NOTE,ADD_NOTE,CHANGE_NOTE_COLOR,ADD_LABEL_TO_NOTE,DELETE_LABEL_FROM_NOTE} from '../Types'
+import {FETCH_NOTES,CHANGE_NOTE_FIELD_VALUE,COPY_NOTE,DELETE_NOTE,POST_UPDATED_NOTE,ADD_NOTE,CHANGE_NOTE_COLOR,ADD_LABEL_TO_NOTE,DELETE_LABEL_FROM_NOTE} from '../Types'
 
 const initialState = {
     notes: [],
@@ -14,10 +14,6 @@ const notes = (state=initialState,action) =>{
         return { ...state, error: "We couldnt get your notes" };
       case CHANGE_NOTE_FIELD_VALUE:
         return { ...state, notes: action.notes };
-      case CHANGE_IMPORTANCE.SUCCESS:
-        return { ...state, notes: action.notes };
-      case CHANGE_IMPORTANCE.FAILED:
-        return { ...state, error: "Failed to change importance of your note" };
       case COPY_NOTE.SUCCESS:
         return { ...state, notes: action.notes };
       case COPY_NOTE.FAILED:

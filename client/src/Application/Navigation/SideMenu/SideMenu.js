@@ -10,14 +10,14 @@ import { ReactComponent as LabelIcon } from "../../../Assets/Icons/Navigation/la
 import Element from "./SideMenuElement";
 
 const transition = {
-  transition: { duration:0.3, ease: "easeInOut" },
+  transition: { duration:0.2, ease: "easeInOut" },
 };
 
 const Variants = {
   initial: { width: 80 },
   close: { width: 80, ...transition },
   open: { width: 280, ...transition },
-  hover: { width: 280, boxShadow: "2px 0 2px rgba(0,0,0,0.12)", ...transition },
+  hover: { width: 280, boxShadow: "2px 0 2px rgba(0,0,0,0.12)", transition },
 };
 
 const SideMenu = () => {

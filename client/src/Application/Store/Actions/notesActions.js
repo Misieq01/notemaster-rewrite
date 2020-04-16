@@ -4,8 +4,7 @@ import {
   COPY_NOTE,
   DELETE_NOTE,
   POST_UPDATED_NOTE,
-  ADD_NOTE,
-  CHANGE_IMPORTANCE
+  ADD_NOTE
 } from "../Types";
 
 import {
@@ -36,25 +35,11 @@ export const changeNoteFieldValue = (id, field, value) => (
   getState
 ) => {
   const state = getState();
-  const notes = getAllNotes(state);
+  const notes = [...getAllNotes(state)];
   const index = GetNoteIndex(state, id);
   const note = { ...getNoteById(state, id), [field]: value };
   notes[index] = note;
   dispatch({ type: CHANGE_NOTE_FIELD_VALUE, notes: notes });
-};
-
-export const changeImportance = (id, value) => (dispatch, getState) => {
-  const state = getState();
-  const notes = [...getAllNotes(state)];
-  const index = GetNoteIndex(state, id);
-  const note = { ...getNoteById(state, id), important: value };
-  notes[index] = note;
-  axios.Patch(
-    "/UpdateNote/" + id,
-    note,
-    () => dispatch({ type: CHANGE_IMPORTANCE.SUCCESS, notes: notes }),
-    () => dispatch({ type: CHANGE_IMPORTANCE.FAILED })
-  );
 };
 
 export const copyNote = id => (dispatch, getState) => {
@@ -103,7 +88,8 @@ export const AddNote = (id, type) => (dispatch, getState) => {
     important: false,
     title: "",
     content: "",
-    type: type
+    type: type,
+    place: 'Notes'
   };
 
   return axios.Post(

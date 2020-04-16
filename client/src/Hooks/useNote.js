@@ -23,13 +23,19 @@ const UseNoteProto = {
     this._setDisplay(false, name);
   },
   changeImportance(value) {
-    this._dispatch(changeImportance(this._id, value));
+    this.updateField('important',value)
+    this.postUpdate(this._id)
   },
   updateField(field,value){
+    console.log(value)
       this._dispatch(changeNoteFieldValue(this._id,field,value))
   },
   postUpdate(){
       this._dispatch(postUpdatedNote(this._id))
+  },
+  changePlace(value){
+    this.updateField('place',value)
+    this.postUpdate(this._id)
   }
 };
 

@@ -7,7 +7,8 @@ const NoteSchema = mongoose.Schema({
     labels: [{type: mongoose.Schema.Types.ObjectId,ref: 'Label'}
     ],
     color: {type: String, default: 'rgb(255,223,186)'},
-    important: {type: Boolean, default: false}
+    important: {type: Boolean, default: false},
+    place: {type: String, default: 'Notes'}
 },{timestamps:true})
 
 

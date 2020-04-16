@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useNote } from "../../../Hooks/useNote";
 import { textTruncateChar } from "../../../utils/textTruncate";
 
@@ -7,14 +7,24 @@ import List from "./List";
 import Note from "./Note";
 import { Icon, Labels, CornerIcon, LabelsPicker, ColorPicker } from "../../Components/index";
 
-import { noteIcons } from "../../../Assets/Icons/index";
+import { ReactComponent as RemoveIcon } from "../../../Assets/Icons/Navigation/bin.svg";
+import { ReactComponent as ArchiveIcon } from "../../../Assets/Icons/Navigation/archive.svg";
+import { ReactComponent as CopyIcon } from "../../../Assets/Icons/NoteOptions/copy.svg";
+import { ReactComponent as ColorIcon } from "../../../Assets/Icons/NoteOptions/color.svg";
+import { ReactComponent as LabelIcon } from "../../../Assets/Icons/NoteOptions/label.svg";
+import { ReactComponent as DeleteIcon } from "../../../Assets/Icons/NoteOptions/remove-permanent.svg";
+import { ReactComponent as RestoreIcon } from "../../../Assets/Icons/Navigation/home.svg";
+import PinnedIcon from "../../../Assets/Icons/NoteOptions/pinned.svg";
+import NotPinnedIcon from "../../../Assets/Icons/NoteOptions/not-pinned.svg";
+import { Delete } from "../../../utils/axiosHandler";
 
 const Card = ({ _id }) => {
   const [displayIcons, setdisplayIcons] = useState(false);
   const [data, dataAction] = useNote(_id);
-  const location = useLocation().pathname
-  const truncatedLabels = [...data.labels].slice(0, 4).map(e => textTruncateChar(e.name, 12));
-  const contentWithSearchValueApplied = data.content
+  const location = useLocation().pathname;
+  const notesPanelType = useParams().type;
+  const truncatedLabels = [...data.labels].slice(0, 4).map((e) => textTruncateChar(e.name, 12));
+  const contentWithSearchValueApplied = data.content;
 
   const cardRef = useRef();
   const labelsIconRef = useRef();
@@ -44,8 +54,56 @@ const Card = ({ _id }) => {
     return data.type === "note" ? <Note content={data.content} /> : <List content={data.content} color={data.color} />;
   };
 
+  const Icons = () => {
+    if (notesPanelType === "Bin") {
+      return (
+        <>
+          <RestoreIcon className="icon" title="Restore note" onClick={() => dataAction.changePlace("Notes")} />
+          <DeleteIcon className="icon" title="Delete note permanently" onClick={() => dataAction.deleteNote()} />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <CornerIcon
+            icon={data.important ? PinnedIcon : NotPinnedIcon}
+            corner="topLeft"
+            yPos={14}
+            xPos={4}
+            size={18}
+            onClick={() => {
+              if (data.place === "Archive" && !data.important) {
+                dataAction.changePlace("Notes");
+              }
+              dataAction.changeImportance(true);
+            }}
+          />
+
+          <LabelIcon
+            className="icon"
+            title="Labels"
+            ref={labelsIconRef}
+            onClick={() => dataAction.displayPicker("labels")}
+          />
+          <ColorIcon className="icon" title="Change color" onClick={() => dataAction.displayPicker("colors")} />
+          <CopyIcon className="icon" title="Copy" onClick={() => dataAction.copyNote()} />
+          <RemoveIcon className="icon" title="Delete" onClick={() => dataAction.changePlace("Bin")} />
+          <ArchiveIcon
+            className="icon"
+            title={notesPanelType === "Archive" ? "Move to notes" : "Move to archive"}
+            onClick={() =>{
+              if(notesPanelType !== 'Archive' && data.important){dataAction.changeImportance(false)}
+              dataAction.changePlace(notesPanelType === "Archive" ? "Notes" : "Archive")}}
+          />
+          <LabelsPickerPopout />
+          <ColorPickerPopout />
+        </>
+      );
+    }
+  };
+
   return (
-    <Link className="card__link" to={location + '/Edit/' + data._id}>
+    <Link className="card__link" to={location + "/Edit/" + data._id}>
       <div
         className="card__container"
         style={{ background: data.color }}
@@ -59,28 +117,9 @@ const Card = ({ _id }) => {
         <div
           className="card__icons-wrapper"
           style={{ opacity: displayIcons ? 0.75 : 0 }}
-          onClick={event => event.preventDefault()}
+          onClick={(event) => event.preventDefault()}
         >
-          <CornerIcon
-            icon={data.important ? noteIcons.ImportantTrueIcon : noteIcons.ImportantFalseIcon}
-            corner="topLeft"
-            yPos={14}
-            xPos={4}
-            size={18}
-            opacity={displayIcons ? "0.45" : "0"}
-            onClick={() => dataAction.changeImportance(!data.important)}
-          />
-          <Icon
-            icon={noteIcons.LabelIcon}
-            title="Labels"
-            ref={labelsIconRef}
-            onClick={() => dataAction.displayPicker("labels")}
-          />
-          <LabelsPickerPopout />
-          <Icon icon={noteIcons.ColorIcon} title="Change color" onClick={() => dataAction.displayPicker("colors")} />
-          <Icon icon={noteIcons.CopyIcon} title="Copy" onClick={()=>dataAction.copyNote()} />
-          <Icon icon={noteIcons.DeleteIcon} title="Delete" onClick={()=>dataAction.deleteNote()} />
-          <ColorPickerPopout />
+          <Icons />
         </div>
       </div>
     </Link>
