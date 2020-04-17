@@ -120,7 +120,7 @@ const NoteBoard = React.memo((props) => {
       <>
         {pinnedNotes.length > 0 ? <MasonryComponent notes={pinnedNotes} label="Pinned" showLabel /> : null}
         {unpinnedNotes.length > 0 ? (
-          <MasonryComponent notes={unpinnedNotes} label="Others" showLabel={pinnedNotes.length > 0} />
+          <MasonryComponent notes={unpinnedNotes} label="Others" showLabel={pinnedNotes.length > 0 || archiveNotes.length > 0} />
         ) : null}
         {archiveNotes.length > 0 ? <MasonryComponent notes={archiveNotes} label="Archive" showLabel /> : null}
       </>
