@@ -31,9 +31,8 @@ const ContainerVariants = {
 const NoteBoard = React.memo((props) => {
   const notesPanelType = useParams().type;
   const allNotes = useSelector((state) => getAllNotes(state));
-  const searchValue = useSelector((state) => state.others.searchValue);
+  const searchValue = useSelector((state) => state.others.searchValue).toLowerCase();
   const sideMenuDisplay = useSelector((state) => state.others.sideMenu);
-  const searchedNotes = allNotes.filter((e) => e.title.toLowerCase().includes(searchValue.toLowerCase()));
 
   const masonryWidth = useMemo(() => {
     const sideMenuSize = sideMenuDisplay ? 280 : 80;
@@ -120,7 +119,11 @@ const NoteBoard = React.memo((props) => {
       <>
         {pinnedNotes.length > 0 ? <MasonryComponent notes={pinnedNotes} label="Pinned" showLabel /> : null}
         {unpinnedNotes.length > 0 ? (
-          <MasonryComponent notes={unpinnedNotes} label="Others" showLabel={pinnedNotes.length > 0 || archiveNotes.length > 0} />
+          <MasonryComponent
+            notes={unpinnedNotes}
+            label="Others"
+            showLabel={pinnedNotes.length > 0 || archiveNotes.length > 0}
+          />
         ) : null}
         {archiveNotes.length > 0 ? <MasonryComponent notes={archiveNotes} label="Archive" showLabel /> : null}
       </>
@@ -164,12 +167,21 @@ const NoteBoard = React.memo((props) => {
     }
   };
 
+  const SearchedNotes = () => {
+    const notes = renderNotes(
+      allNotes.filter(
+        (e) => e.title.toLowerCase().includes(searchValue) || e.content.toLowerCase().includes(searchValue)
+      )
+    );
+    return <MasonryComponent notes={notes} />;
+  };
+
   return (
     <motion.div className="board__wrapper" initial="initial" animate={sideMenuDisplay ? "open" : "close"}>
       <SideMenu />
       <motion.div className="board__side-menu-place-holder" variants={PlaceHolderVariants} />
       <motion.div variants={ContainerVariants} className="board__notes-wrapper">
-        <RenderedNotes />
+        {searchValue.length === 0 ? <RenderedNotes /> : <SearchedNotes />}
       </motion.div>
     </motion.div>
   );
