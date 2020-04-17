@@ -75,7 +75,7 @@ const Card = ({ _id }) => {
               if (data.place === "Archive" && !data.important) {
                 dataAction.changePlace("Notes");
               }
-              dataAction.changeImportance(true);
+              dataAction.changeImportance(!data.important);
             }}
           />
 
