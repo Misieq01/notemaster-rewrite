@@ -1,8 +1,8 @@
 import React from "react";
-import { HashRouter as Router, Route,Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route,Switch,Redirect } from "react-router-dom";
 import CustomRoute from "./Components/CustomRoute";
 
-import { Home, Login, Signup, PasswordReset, Error } from "./Pages/index";
+import {Login, Signup, PasswordReset, Error } from "./Pages/index";
 import Main from "./Application/Main";
 
 const App = () => {
@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router>
 <Switch>
-        <Route exact path="/" component={Home} />
+<Redirect from='/' to='/Login' exact/>
         <CustomRoute
           path="/Login"
           redirectPath={"/User/NotesPanel/Notes"}
