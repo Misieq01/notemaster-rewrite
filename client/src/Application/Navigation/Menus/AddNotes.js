@@ -5,50 +5,21 @@ import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
 import {motion} from 'framer-motion'
 
-const transition = {
-  transition: {
-    duration: 0.35,
-    ease: "easeOut"
-  }
-};
 
 const containerVariants = {
   initial: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    x: 75,
-    y: -60
+    opacity: 0,
   },
   open: {
-    height: "auto",
-    width: 200,
-    borderRadius: 5,
-    x: 0,
-    y: 0,
-    ...transition
+    opacity: 1,
+    transition: { duration: 0.2, ease: "easeOut" },
   },
   close: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    x: 75,
-    y: -60,
-    ...transition
-  }
+    opacity: 0,
+    transition: { duration: 0.1, ease: "easeOut" },
+  },
 };
 
-const elementVariants = {
-  initial: {
-    opacity: 0
-  },
-  open: {
-    opacity:1, transition: {duration: 0.3,delay: 0.4}
-  },
-  close: {
-    opacity:0, transition: {duration: 0.1}
-  }
-}
 
 const AddNotes = ({
   parent,
@@ -77,12 +48,12 @@ const AddNotes = ({
     });
   };
   return <motion.div className='addNotes__container' style={{top: top,left:left}} variants={containerVariants} initial='initial' animate='open' exit='close'>
-          <motion.div variants={elementVariants}>
+          <div>
             <div className='addNotes__container--element' onClick={() => AddNoteHandler("note")}>Note</div>
             <div className='addNotes__container--element' onClick={() => AddNoteHandler("list")}>
               List
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 };
 

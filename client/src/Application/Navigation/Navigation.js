@@ -41,8 +41,8 @@ const Navigation = ({ GetSearchValue, ...props }) => {
       <div className="navigation__wrapper-right-buttons">
         <MenuButton Icon={AddNoteIcon} buttonTitle="Add note" MenuContent={AddMenu} />
         <MenuButton Icon={LabelsIcon} buttonTitle="Labels" MenuContent={Labels} />
-        <ClickButton Icon={SettingsIcon} buttonTitle="Settings" />
-        <ClickButton Icon={AccountIcon} buttonTitle="Account" />
+        {/* <ClickButton Icon={SettingsIcon} buttonTitle="Settings" /> */}
+        {/* <ClickButton Icon={AccountIcon} buttonTitle="Account" /> */}
         <ClickButton Icon={LogoutIcon} buttonTitle="Logout" onClick={Logout} />
       </div>
     </div>

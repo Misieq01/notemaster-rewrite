@@ -19,13 +19,6 @@ const Editor = () => {
   const colorIconRef = useRef();
   const labelsIconRef = useRef();
 
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    return () => {
-      document.body.style.overflowY = "auto";
-    };
-  }, []);
-
   const backToNotePanel = () => {
     history.push("/User/NotesPanel/" + notesPanelType);
   };

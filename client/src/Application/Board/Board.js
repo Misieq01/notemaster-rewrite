@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
 import Masonry from "react-masonry-component";
 import SideMenu from "../Navigation/SideMenu/SideMenu";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { getAllNotes } from "../Store/Selectors/notesSelectors";
+import {deleteManyNotes} from '../Store/Actions/notesActions'
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import Card from "./Notes/Card";
@@ -29,10 +30,12 @@ const ContainerVariants = {
 };
 
 const NoteBoard = React.memo((props) => {
+  const dispatch = useDispatch()
   const notesPanelType = useParams().type;
   const allNotes = useSelector((state) => getAllNotes(state));
   const searchValue = useSelector((state) => state.others.searchValue).toLowerCase();
   const sideMenuDisplay = useSelector((state) => state.others.sideMenu);
+  const editingNoteId = useParams().id || null;
 
   const masonryWidth = useMemo(() => {
     const sideMenuSize = sideMenuDisplay ? 280 : 80;
@@ -78,30 +81,22 @@ const NoteBoard = React.memo((props) => {
   }, [sideMenuDisplay]);
 
   const filterNotesByPlace = () => {
-    return allNotes.filter((e) => e.place.toLowerCase() === notesPanelType.toLowerCase());
+    
+    return allNotes.length > 0 ? allNotes.filter((e) => e.place.toLowerCase() === notesPanelType.toLowerCase()) : [];
   };
 
   const renderNotes = (notes) => {
     return notes.map((e) => {
-      return <Card key={e._id} _id={e._id} />;
+      return editingNoteId === e._id ? null : <Card key={e._id} _id={e._id} />;
     });
   };
 
-  // const RenderedNotes = ({ notesArr, text, key, isSearched = false, ...props }) => {
-  //   const notes = RenderNotes(notesArr);
-  //   return notes.length > 0 ? (
-  //     <div className="board__container" style={{ width: masonryWidth }}>
-  //       {importantNotes.length !== 0 && !isSearched ? <span className="board__container--lineText">{text}</span> : null}
-  //       <Masonry className="board__container--masonry" options={MasonryOptions} style={{ width: masonryWidth }}>
-  //         {notes}
-  //       </Masonry>
-  //     </div>
-  //   ) : null;
-  // };
-
   const MasonryComponent = ({ notes, label = "", showLabel = false }) => {
-    return (
-      <div className="board__container" style={{ width: masonryWidth }}>
+    return(
+      <div
+        className="board__container"
+        style={{ width: masonryWidth }}
+      >
         {showLabel ? <span className="board__container--lineText">{label}</span> : null}
         <Masonry className="board__container--masonry" options={MasonryOptions} style={{ width: masonryWidth }}>
           {notes}
@@ -128,7 +123,7 @@ const NoteBoard = React.memo((props) => {
         {archiveNotes.length > 0 ? <MasonryComponent notes={archiveNotes} label="Archive" showLabel /> : null}
       </>
     ) : (
-      text
+      <span className="board__notes-wrapper--empty-text">{text}</span>
     );
   };
 
@@ -139,12 +134,29 @@ const NoteBoard = React.memo((props) => {
 
   const ArchiveNotes = () => {
     const notes = renderNotes(filterNotesByPlace());
-    return <MasonryComponent notes={notes} />;
+    return notes.length > 0 ? (
+      <MasonryComponent notes={notes} />
+    ) : (
+      <span className="board__notes-wrapper--empty-text">Archive for your notes</span>
+    );
   };
 
   const BinNotes = () => {
-    const notes = renderNotes(filterNotesByPlace());
-    return notes.length > 0 ? <MasonryComponent notes={notes} /> : "Removed notes go there";
+    const filteredNotes = filterNotesByPlace()
+    const notes = renderNotes(filteredNotes);
+    return notes.length > 0 ? (
+      <>
+        <div className="board__delete-all--container">
+          <button className="board__delete-all--button" onClick={()=>dispatch(deleteManyNotes(filteredNotes))}>Clear bin</button>
+          <span className="board__delete-all--text">
+            By clicking you will delete all your bin notes permanently
+          </span>
+        </div>
+        <MasonryComponent notes={notes} />
+      </>
+    ) : (
+      <span className="board__notes-wrapper--empty-text">Removed notes go there</span>
+    );
   };
 
   const NotesByLabel = () => {

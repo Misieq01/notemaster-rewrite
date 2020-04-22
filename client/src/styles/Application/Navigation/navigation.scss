@@ -20,12 +20,12 @@
   }
   &__wrapper-right-buttons{
     @include flex(null,space-around);
-    width: 350px;
+    width: 250px;
     height: 100%;
   }
   &__wrapper-center{
     @include flex(null,flex-start);
-    width: calc(100% - 350px - 80px);
+    width: calc(100% - 250px - 80px);
     height: 100%;
   }
   &__notes-panel-type{

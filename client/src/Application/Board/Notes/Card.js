@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useNote } from "../../../Hooks/useNote";
 import { textTruncateChar } from "../../../utils/textTruncate";
 import { highlightSearchedText } from "../../../utils/highlightText";
-
 import List from "./List";
 import Note from "./Note";
 import { Labels, CornerIcon, LabelsPicker, ColorPicker } from "../../Components/index";
@@ -116,26 +115,26 @@ const Card = ({ _id }) => {
   };
 
   return (
-    <Link className="card__link" to={location + "/Edit/" + data._id}>
-      <div
-        className="card__container"
-        style={{ background: data.color }}
-        ref={cardRef}
-        onMouseOver={() => setdisplayIcons(true)}
-        onMouseLeave={() => setdisplayIcons(false)}
-      >
-        <Title />
-        <Content />
-        <Labels labels={truncatedLabels} size="small" />
+      <Link className="card__link" to={location + "/Edit/" + data._id}>
         <div
-          className="card__icons-wrapper"
-          style={{ opacity: displayIcons ? 0.75 : 0 }}
-          onClick={(event) => event.preventDefault()}
+          className="card__container"
+          style={{ background: data.color }}
+          ref={cardRef}
+          onMouseOver={() => setdisplayIcons(true)}
+          onMouseLeave={() => setdisplayIcons(false)}
         >
-          <Icons />
+          <Title />
+          <Content />
+          <Labels labels={truncatedLabels} size="small" />
+          <div
+            className="card__icons-wrapper"
+            style={{ opacity: displayIcons ? 0.75 : 0 }}
+            onClick={(event) => event.preventDefault()}
+          >
+            <Icons />
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
   );
 };
 

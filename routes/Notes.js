@@ -103,5 +103,24 @@ router.delete("/DeleteNote/:id", AuthMiddleware, async (req, res) => {
     res.send(error);
   }
 });
+router.delete("/DeleteNotes/:notes", AuthMiddleware, async (req, res) => {
+  const notesId = JSON.parse(req.params.notes);
+  try {
+    await Note.deleteMany({_id:notesId})
+    await notesId.forEach((id) => req.user.DeleteNote(id));
+    const  {notes}  = await User.findOne({ _id: req.user._id }).populate({
+      path: "notes",
+      model: "Note",
+      populate: {
+        path: "labels",
+        model: "Label",
+        select: { name: 1, _id: 1 },
+      },
+    })
+    res.send(notes);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;

@@ -3,6 +3,7 @@ import {
   CHANGE_NOTE_FIELD_VALUE,
   COPY_NOTE,
   DELETE_NOTE,
+  DELETE_NOTES,
   POST_UPDATED_NOTE,
   ADD_NOTE
 } from "../Types";
@@ -64,6 +65,17 @@ export const deleteNote = id => (dispatch, getState) => {
     "/DeleteNote/" + id,
     () => dispatch({ type: DELETE_NOTE.SUCCESS, notes: notes }),
     () => dispatch({ type: DELETE_NOTE.FAILED })
+  );
+};
+export const deleteManyNotes = notes => (dispatch, getState) => {
+  const notesId = notes.map(e=>e._id)
+  axios.Delete(
+    "/DeleteNotes/" + JSON.stringify(notesId),
+    (response) => {
+      console.log(response);
+      dispatch({ type: DELETE_NOTES.SUCCESS, notes: response.data });
+    },
+    () => dispatch({ type: DELETE_NOTES.FAILED })
   );
 };
 
