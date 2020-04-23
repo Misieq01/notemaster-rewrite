@@ -14,18 +14,19 @@ const userSchema = mongoose.Schema({
     trim: true,
     lowercase: true,
   },
-  password: { type: String, trim: true},
+  password: { type: String, trim: true },
   notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],
+  labels: [{ type: mongoose.Schema.Types.ObjectId, ref: "Label" }],
   tokens: [
     {
-      token: { type: String }
-    }
-  ]
+      token: { type: String },
+    },
+  ],
 });
 
 // This method apply to every request of getting user data
 // Becasue toJSON is called with every data request
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
   // "this" keyword containt user data which execute this method
   const user = this;
 
@@ -42,14 +43,14 @@ userSchema.methods.toJSON = function() {
 };
 
 // Simple method to return full name of user
-userSchema.methods.GetFullName = function() {
+userSchema.methods.GetFullName = function () {
   // "this" keyword containt user data which execute this method
   const user = this;
 
   return user.firstName + user.lastName;
 };
 
-userSchema.methods.DeleteNote = async function(noteId) {
+userSchema.methods.DeleteNote = async function (noteId) {
   const user = this;
   const index = user.notes.indexOf(noteId);
   user.notes.splice(index, 1);
@@ -57,7 +58,15 @@ userSchema.methods.DeleteNote = async function(noteId) {
   return user;
 };
 
-userSchema.methods.GenerateAuthToken = async function() {
+userSchema.methods.deleteLabel = async function (labelId) {
+  const user = this;
+  const index = user.labels.indexOf(labelId);
+  user.labels.splice(index, 1);
+  await user.save();
+  return user;
+};
+
+userSchema.methods.GenerateAuthToken = async function () {
   // "this" keyword containt user data which execute this method
   const user = this;
 
@@ -74,7 +83,7 @@ userSchema.methods.GenerateAuthToken = async function() {
   return token;
 };
 
-userSchema.statics.checkPasswordMatch = async data => {
+userSchema.statics.checkPasswordMatch = async (data) => {
   if (data.password !== data.passwordConf) {
     throw { message: "Passwords don't match", field: "passwordConf" };
   } else {
@@ -83,19 +92,19 @@ userSchema.statics.checkPasswordMatch = async data => {
   }
 };
 
-userSchema.statics.validateData = async data =>{
-  const {firstName,lastName,email,password,passwordConf} = data
-  const isTaken = await User.findOne({email:email})
-  if(firstName.length <= 0) throw { message: "This field can't be empty", field: "firstName" }
-  if(lastName.length <= 0) throw { message: "This field can't be empty", field: "lastName" }
-  if(email.length <= 0) throw { message: "This field can't be empty", field: "email" }
-  if(!validator.isEmail(email)) throw { message: "Invalid email", field: "email" }
-  if(isTaken) throw { message: "Email is already taken", field: "email" }
-  if(password.length < 8) throw { message: "Password doesn't meet requirements", field: "password" }
-  if(password !== passwordConf) throw { message: "Passwords don't match", field: "passwordConf" };
-  delete data.passwordConf
-  return data
-}
+userSchema.statics.validateData = async (data) => {
+  const { firstName, lastName, email, password, passwordConf } = data;
+  const isTaken = await User.findOne({ email: email });
+  if (firstName.length <= 0) throw { message: "This field can't be empty", field: "firstName" };
+  if (lastName.length <= 0) throw { message: "This field can't be empty", field: "lastName" };
+  if (email.length <= 0) throw { message: "This field can't be empty", field: "email" };
+  if (!validator.isEmail(email)) throw { message: "Invalid email", field: "email" };
+  if (isTaken) throw { message: "Email is already taken", field: "email" };
+  if (password.length < 8) throw { message: "Password doesn't meet requirements", field: "password" };
+  if (password !== passwordConf) throw { message: "Passwords don't match", field: "passwordConf" };
+  delete data.passwordConf;
+  return data;
+};
 
 userSchema.statics.FindByCredentials = async (email, password) => {
   // Checking if email is valid
@@ -118,7 +127,7 @@ userSchema.statics.FindByCredentials = async (email, password) => {
 };
 
 //This method fires each time user document is saved
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   // "this" keyword containt user data which execute this method
   const user = this;
 
