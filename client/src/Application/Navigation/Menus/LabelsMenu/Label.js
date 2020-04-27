@@ -15,6 +15,7 @@ const Labels = ({
 }) => {
   const dispatch = useDispatch()
   const [editValue, setEditValue] = useState(name);
+  console.log(name,editValue)
   const StartEditing = () => {
     SetEditSlot(name);
   };

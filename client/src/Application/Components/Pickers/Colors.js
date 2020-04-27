@@ -1,10 +1,7 @@
 import React, { useMemo } from "react";
-import { ChangeNoteColor } from "../../Store/Actions/notesStuffActions";
-import { useDispatch } from "react-redux";
 import Portal from '../ReactPortal'
 
-const ColorPicker = ({ parent, id, componentType,close, ...props }) => {
-  const dispatch = useDispatch();
+const ColorPicker = ({ parent, id, componentType,close,action}) => {
   
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -19,16 +16,11 @@ const ColorPicker = ({ parent, id, componentType,close, ...props }) => {
     }
   }, [parent, componentType]);
 
-  const updateColor = color => {
-    dispatch(ChangeNoteColor(id, color));
-    close()
-  };
-
   const Color = ({color}) => (
     <div
       className="color-picker__color"
       style={{ background: color }}
-      onClick={() => updateColor(color)}
+      onClick={() => action.changeColor(color)}
     />
   );
 

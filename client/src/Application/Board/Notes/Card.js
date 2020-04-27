@@ -20,7 +20,7 @@ import NotPinnedIcon from "../../../Assets/Icons/NoteOptions/not-pinned.svg";
 
 const Card = ({ _id }) => {
   const [displayIcons, setdisplayIcons] = useState(false);
-  const [data, dataAction] = useNote(_id);
+  const [data, action] = useNote(_id);
   const location = useLocation().pathname;
   const notesPanelType = useParams().type;
   const truncatedLabels = [...data.labels].slice(0, 4).map((e) => textTruncateChar(e.name, 12));
@@ -34,7 +34,8 @@ const Card = ({ _id }) => {
       <ColorPicker
         parent={cardRef.current}
         id={data._id}
-        close={() => dataAction.closePicker("color")}
+        close={() => action.closePicker("color")}
+        action={action}
         componentType="card"
       />
     ) : null;
@@ -45,7 +46,7 @@ const Card = ({ _id }) => {
         parent={labelsIconRef.current}
         id={data._id}
         labels={data.labels}
-        close={() => dataAction.closePicker("labels")}
+        close={() => action.closePicker("labels")}
         componentType="card"
       />
     ) : null;
@@ -67,8 +68,8 @@ const Card = ({ _id }) => {
     if (notesPanelType === "Bin") {
       return (
         <>
-          <RestoreIcon className="icon" title="Restore note" onClick={() => dataAction.changePlace("Notes")} />
-          <DeleteIcon className="icon" title="Delete note permanently" onClick={() => dataAction.deleteNote()} />
+          <RestoreIcon className="icon" title="Restore note" onClick={() => action.changePlace("Notes")} />
+          <DeleteIcon className="icon" title="Delete note permanently" onClick={() => action.deleteNote()} />
         </>
       );
     } else {
@@ -82,9 +83,9 @@ const Card = ({ _id }) => {
             size={18}
             onClick={() => {
               if (data.place === "Archive" && !data.important) {
-                dataAction.changePlace("Notes");
+                action.changePlace("Notes");
               }
-              dataAction.changeImportance(!data.important);
+              action.changeImportance(!data.important);
             }}
           />
 
@@ -92,19 +93,19 @@ const Card = ({ _id }) => {
             className="icon"
             title="Labels"
             ref={labelsIconRef}
-            onClick={() => dataAction.displayPicker("labels")}
+            onClick={() => action.displayPicker("labels")}
           />
-          <ColorIcon className="icon" title="Change color" onClick={() => dataAction.displayPicker("colors")} />
-          <CopyIcon className="icon" title="Copy" onClick={() => dataAction.copyNote()} />
-          <RemoveIcon className="icon" title="Delete" onClick={() => dataAction.changePlace("Bin")} />
+          <ColorIcon className="icon" title="Change color" onClick={() => action.displayPicker("colors")} />
+          <CopyIcon className="icon" title="Copy" onClick={() => action.copyNote()} />
+          <RemoveIcon className="icon" title="Delete" onClick={() => action.changePlace("Bin")} />
           <ArchiveIcon
             className="icon"
             title={notesPanelType === "Archive" ? "Move to notes" : "Move to archive"}
             onClick={() => {
               if (notesPanelType !== "Archive" && data.important) {
-                dataAction.changeImportance(false);
+                action.changeImportance(false);
               }
-              dataAction.changePlace(notesPanelType === "Archive" ? "Notes" : "Archive");
+              action.changePlace(notesPanelType === "Archive" ? "Notes" : "Archive");
             }}
           />
           <LabelsPickerPopout />

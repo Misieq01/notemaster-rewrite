@@ -83,13 +83,19 @@ userSchema.methods.GenerateAuthToken = async function () {
   return token;
 };
 
-userSchema.statics.checkPasswordMatch = async (data) => {
-  if (data.password !== data.passwordConf) {
-    throw { message: "Passwords don't match", field: "passwordConf" };
-  } else {
-    delete data.passwordConf;
-    return data;
-  }
+userSchema.methods.returnNotes = async function () {
+  const user = this;
+
+  const { notes } = await User.findById(user._id).populate({
+    path: "notes",
+    model: "Note",
+    populate: {
+      path: "labels",
+      model: "Label",
+      select: { name: 1, _id: 1 },
+    },
+  });
+  return notes
 };
 
 userSchema.statics.validateData = async (data) => {

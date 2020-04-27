@@ -11,7 +11,7 @@ router.post("/NewNote", AuthMiddleware, async (req, res) => {
     await note.save();
     req.user.notes.push(note._id);
     await req.user.save();
-    res.status(201).send();
+    res.status(201).send(note);
   } catch (error) {
     res.send(error);
   }
@@ -32,15 +32,7 @@ router.post('/CopyNote:id',AuthMiddleware,async(req,res)=>{
 
 router.get("/GetAllNotes", AuthMiddleware, async (req, res) => {
   try {
-    const { notes } = await User.findOne({ _id: req.user._id }).populate({
-      path: "notes",
-      model: "Note",
-      populate: {
-        path: "labels",
-        model: "Label",
-        select: { name: 1, _id: 1 }
-      }
-    });
+    const notes = await req.user.returnNotes();
     res.send(notes);
   } catch (error) {
     res.send(error);
@@ -71,9 +63,10 @@ router.patch("/NoteAddLabel/:id", AuthMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
     const note = await Note.findById(id);
-    note.labels.push(req.body.label);
+    note.labels.push(req.body.labelId);
     await note.save();
-    res.send();
+    await note.populate('labels').execPopulate()
+    res.send(note);
   } catch (error) {
     res.send(error.message);
   }
@@ -81,13 +74,14 @@ router.patch("/NoteAddLabel/:id", AuthMiddleware, async (req, res) => {
 
 router.patch("/NoteDeleteLabel/:id", AuthMiddleware, async (req, res) => {
   const id = req.params.id;
-  const label = req.body.label;
+  const labelId = req.body.labelId;
   try {
     const note = await Note.findById(id);
-    const index = note.labels.indexOf(label)
+    const index = note.labels.indexOf(labelId);
     note.labels.splice(index,1)
     await note.save();
-    res.send();
+    await note.populate('labels').execPopulate()
+    res.send(note);
   } catch (error) {
     res.send(error.message);
   }
@@ -98,7 +92,9 @@ router.delete("/DeleteNote/:id", AuthMiddleware, async (req, res) => {
   try {
     await Note.findByIdAndDelete(id);
     await req.user.DeleteNote(id)
-    res.send();
+    // await req.user.save()
+    const notes = await req.user.returnNotes()
+    res.send(notes);
   } catch (error) {
     res.send(error);
   }
@@ -108,15 +104,7 @@ router.delete("/DeleteNotes/:notes", AuthMiddleware, async (req, res) => {
   try {
     await Note.deleteMany({_id:notesId})
     await notesId.forEach((id) => req.user.DeleteNote(id));
-    const  {notes}  = await User.findOne({ _id: req.user._id }).populate({
-      path: "notes",
-      model: "Note",
-      populate: {
-        path: "labels",
-        model: "Label",
-        select: { name: 1, _id: 1 },
-      },
-    })
+    const notes = await req.user.returnNotes()
     res.send(notes);
   } catch (error) {
     res.send(error);

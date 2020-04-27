@@ -19,7 +19,7 @@ const LabelsPicker = ({ parent, id,componentType,close, ...props }) => {
   const [searchValue, setSearchValue] = useState('')
 
   const AddLabelToNoteHandler = label => {
-    dispatch(AddLabelToNote(id,label))
+    dispatch(AddLabelToNote(id,label._id))
   };
 
   const DeleteLabelFromNoteHandler = label => {

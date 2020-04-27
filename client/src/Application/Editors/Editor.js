@@ -12,7 +12,7 @@ import {noteIcons} from '../../Assets/Icons/index'
 const Editor = () => {
   const history = useHistory();
   const id = useParams().id;
-  const [data, dataAction] = useNote(id);
+  const [data, action] = useNote(id);
   const [titleShadow, setTitleShadow] = useState("none");
   const notesPanelType = useParams().type
 
@@ -24,21 +24,21 @@ const Editor = () => {
   };
 
   const finishHandler = () => {
-    dataAction.postUpdate();
+    action.postUpdate();
     backToNotePanel();
   };
   const deleteNoteHandler = () => {
-    dataAction.deleteNote();
+    action.deleteNote();
     backToNotePanel();
   };
 
   const copyNoteHandler = () => {
-    dataAction.copyNote();
+    action.copyNote();
     backToNotePanel();
   };
 
   const updateContentField = event =>{
-    dataAction.updateField('content',event.target.value)
+    action.updateField('content',event.target.value)
   }
 
   const TitleShadowHandler = top => {
@@ -54,7 +54,8 @@ const Editor = () => {
       <ColorPicker
         parent={colorIconRef.current}
         id={data._id}
-        close={() => dataAction.closePicker("colors")}
+        close={() => action.closePicker("colors")}
+        action={action}
         componentType="editor"
       />
     ) : null;
@@ -64,7 +65,7 @@ const Editor = () => {
       <LabelsPicker
         parent={labelsIconRef.current}
         id={data._id}
-        close={() => dataAction.closePicker("labels")}
+        close={() => action.closePicker("labels")}
         componentType="editor"
       />
     ) : null;
@@ -76,7 +77,7 @@ const Editor = () => {
           <input
             className="editor__title"
             placeholder="Title"
-            onChange={event => dataAction.updateField("title", event.target.value)}
+            onChange={event => action.updateField("title", event.target.value)}
             value={data.title}
             style={{ boxShadow: titleShadow }}
           />
@@ -93,14 +94,14 @@ const Editor = () => {
               icon={noteIcons.LabelIcon}
               title="Edit labels"
               ref={labelsIconRef}
-              onClick={() => dataAction.displayPicker("labels")}
+              onClick={() => action.displayPicker("labels")}
             />
             <LabelsPickerPopout />
             <Icon
               icon={noteIcons.ColorIcon}
               title="Change color"
               ref={colorIconRef}
-              onClick={() => dataAction.displayPicker("colors")}
+              onClick={() => action.displayPicker("colors")}
             />
             <ColorPickerPopout />
 

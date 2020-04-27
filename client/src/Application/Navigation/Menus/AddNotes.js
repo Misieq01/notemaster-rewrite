@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useHistory,useLocation } from "react-router-dom";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 import { AddNote } from "../../Store/Actions/notesActions";
 import {motion} from 'framer-motion'
@@ -41,10 +41,9 @@ const AddNotes = ({
   }, [parent]);
 
   const AddNoteHandler = type => {
-    const id = mongoose.Types.ObjectId().toHexString();
-    dispatch(AddNote(id, type)).then(() => {
+    dispatch(AddNote(type)).then(res => {
       Close();
-      history.push(location + '/Edit/' + id);
+      history.push(location + '/Edit/' + res);
     });
   };
   return <motion.div className='addNotes__container' style={{top: top,left:left}} variants={containerVariants} initial='initial' animate='open' exit='close'>

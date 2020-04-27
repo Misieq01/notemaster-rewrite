@@ -36,6 +36,11 @@ const UseNoteProto = {
   changePlace(value){
     this.updateField('place',value)
     this.postUpdate(this._id)
+  },
+  changeColor(color){
+    this.updateField('color',color)
+    this.closePicker('color')
+    this.postUpdate(this._id)
   }
 };
 

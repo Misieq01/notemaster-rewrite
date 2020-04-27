@@ -6,7 +6,7 @@ import {
   DELETE_NOTES,
   POST_UPDATED_NOTE,
   ADD_NOTE,
-  CHANGE_NOTE_COLOR,
+  REFETCH_NOTES,
   ADD_LABEL_TO_NOTE,
   DELETE_LABEL_FROM_NOTE,
 } from "../Types";
@@ -18,15 +18,22 @@ const initialState = {
 };
 
 const notes = (state = initialState, action) => {
+  const notes = [...state.notes]
   switch (action.type) {
     case FETCH_NOTES.SUCCESS:
       return { ...state, notes: action.payload, loading: false };
     case FETCH_NOTES.FAILED:
       return { ...state, error: "We couldnt get your notes" };
+    case REFETCH_NOTES:
+      return { ...state, notes: action.notes };
     case CHANGE_NOTE_FIELD_VALUE:
-      return { ...state, notes: action.notes };
+      const noteIndex = notes.findIndex(e=> e._id === action.id)
+      const note = {...notes[noteIndex],[action.field]: action.value}
+      notes[noteIndex] = note
+      return { ...state, notes: notes };
     case COPY_NOTE.SUCCESS:
-      return { ...state, notes: action.notes };
+      notes.push(action.note);
+      return { ...state, notes: notes};
     case COPY_NOTE.FAILED:
       return { ...state, error: "Failed to copy note" };
     case DELETE_NOTE.SUCCESS:
@@ -45,22 +52,21 @@ const notes = (state = initialState, action) => {
         error: "We have problem with saving your note on server",
       };
     case ADD_NOTE.SUCCESS:
-      return { ...state, notes: action.notes };
+      notes.push(action.note);
+      return { ...state, notes: notes };
     case ADD_NOTE.FAILED:
       return {
         ...state,
         error: "Something went wrong with adding your note ",
       };
-    case CHANGE_NOTE_COLOR.SUCCESS:
-      return { ...state, notes: action.notes };
-    case CHANGE_NOTE_COLOR.FAILED:
-      return { ...state, error: "Changing color failed" };
     case ADD_LABEL_TO_NOTE.SUCCESS:
-      return { ...state, notes: action.notes };
+      notes[notes.findIndex(e=> e._id === action.note._id)] = action.note
+      return { ...state, notes: notes };
     case ADD_LABEL_TO_NOTE.FAILED:
       return { ...state, error: "We couldnt add label to your note" };
     case DELETE_LABEL_FROM_NOTE.SUCCESS:
-      return { ...state, notes: action.notes };
+      notes[notes.findIndex((e) => e._id === action.note._id)] = action.note;
+      return { ...state, notes: notes };
     case DELETE_LABEL_FROM_NOTE.FAILED:
       return { ...state, error: "We couldnt delete label from your note" };
     default:

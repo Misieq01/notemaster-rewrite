@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const NoteSchema = mongoose.Schema({
-    title: {type: String,require:true},
+    title: {type: String},
     type: {type: String},
     content: {type: Object},
     labels: [{type: mongoose.Schema.Types.ObjectId,ref: 'Label'}
@@ -19,6 +19,7 @@ NoteSchema.statics.ClearLabels = async (labelId) =>{
         note.labels.splice(index,1)
         await note.save()
     })
+    return notes
 }
 
 NoteSchema.statics.Copy = async (noteId) =>{
