@@ -25,11 +25,11 @@ const containerVariants = {
 };
 
 const Labels = ({ parent, Close }) => {
-  console.log('rendered')
   const dispatch = useDispatch();
   const labels = useSelector((state) => GetAllLabels(state));
   const [inputValue, setInputValue] = useState("");
   const [editSlot, setEditSlot] = useState("");
+  const [placeholder,setPlaceholder] = useState('Type label')
 
   const [top, left] = useMemo(() => {
     const rect = parent.getBoundingClientRect();
@@ -43,7 +43,14 @@ const Labels = ({ parent, Close }) => {
   }, [parent]);
 
   const AddLabelHandler = () => {
-    dispatch(AddLabel(inputValue));
+    if(labels.find(e=>e.name.toLowerCase() === inputValue.toLowerCase())){
+      setPlaceholder('Label already exist')
+      setTimeout(()=>{
+        setPlaceholder('Type label')
+      },2000)
+    }else{
+      dispatch(AddLabel(inputValue));
+    }
     setInputValue("");
   };
 
@@ -71,7 +78,7 @@ const Labels = ({ parent, Close }) => {
           <div className="labels-menu__input-wrapper">
             <input
               className="labels-menu__input-wrapper--input"
-              placeholder="Type label"
+              placeholder={placeholder}
               value={inputValue}
               onChange={(event) => setInputValue(event.target.value)}
             />
