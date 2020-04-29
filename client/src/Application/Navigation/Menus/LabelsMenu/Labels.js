@@ -25,6 +25,7 @@ const containerVariants = {
 };
 
 const Labels = ({ parent, Close }) => {
+  console.log('rendered')
   const dispatch = useDispatch();
   const labels = useSelector((state) => GetAllLabels(state));
   const [inputValue, setInputValue] = useState("");

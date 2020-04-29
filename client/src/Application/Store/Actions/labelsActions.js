@@ -27,7 +27,7 @@ export const AddLabel = name => dispatch => {
   );
 };
 export const UpdateLabel = (id, name) => (dispatch, getState) => {
-  axios.Patch(
+  return axios.Patch(
     "/ChangeLabel/" + id,
     {name},
     response => {

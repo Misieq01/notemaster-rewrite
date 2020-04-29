@@ -15,7 +15,6 @@ const Labels = ({
 }) => {
   const dispatch = useDispatch()
   const [editValue, setEditValue] = useState(name);
-  console.log(name,editValue)
   const StartEditing = () => {
     SetEditSlot(name);
   };
@@ -25,8 +24,9 @@ const Labels = ({
   };
 
   const FinishEditing = () => {
-    dispatch(UpdateLabel(id,editValue))
-    SetEditSlot('')
+    dispatch(UpdateLabel(id,editValue)).then(()=>{
+      SetEditSlot('')
+    })
   };
 
   const PreventPropagation = event => {
