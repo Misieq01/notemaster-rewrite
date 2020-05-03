@@ -30,12 +30,19 @@ const notes = (state = initialState, action) => {
       //I want here to update ONLY one specific note (object) inside notes (array) without returning new array to prevent rerender in Board component
       // Which cause performance lost
       // more notes = more performance lost
-      state.notes.forEach((e) => {
-        if (e._id === action.id) {
-          e[action.field] = action.value;
-        }
-      });
-      return state;
+      if (action.field === "content") {
+        state.notes.forEach((e) => {
+          if (e._id === action.id) {
+            e[action.field] = action.value;
+          }
+        });
+        return state;
+      } else {
+        return {
+          ...state,
+          notes: state.notes.map((e) => (e._id === action.id ? { ...e, [action.field]: action.value } : e)),
+        };
+      }
     case COPY_NOTE.SUCCESS:
       notes.push(action.note);
       return { ...state, notes: notes };

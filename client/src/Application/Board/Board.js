@@ -59,7 +59,6 @@ const NoteBoard = () => {
         }
       case 4:
         if (availableSpace % 264 < 45) {
-          console.log("fired");
           return "822px";
         } else {
           return "1101px";
