@@ -18,7 +18,7 @@ const initialState = {
 };
 
 const notes = (state = initialState, action) => {
-  const notes = [...state.notes];
+  const notes = [...state.notes]
   switch (action.type) {
     case FETCH_NOTES.SUCCESS:
       return { ...state, notes: action.payload, loading: false };
@@ -27,25 +27,13 @@ const notes = (state = initialState, action) => {
     case REFETCH_NOTES:
       return { ...state, notes: action.notes };
     case CHANGE_NOTE_FIELD_VALUE:
-      //I want here to update ONLY one specific note (object) inside notes (array) without returning new array to prevent rerender in Board component
-      // Which cause performance lost
-      // more notes = more performance lost
-      if (action.field === "content") {
-        state.notes.forEach((e) => {
-          if (e._id === action.id) {
-            e[action.field] = action.value;
-          }
-        });
-        return state;
-      } else {
-        return {
-          ...state,
-          notes: state.notes.map((e) => (e._id === action.id ? { ...e, [action.field]: action.value } : e)),
-        };
-      }
+      const noteIndex = notes.findIndex(e=> e._id === action.id)
+      const note = {...notes[noteIndex],[action.field]: action.value}
+      notes[noteIndex] = note
+      return { ...state, notes: notes };
     case COPY_NOTE.SUCCESS:
       notes.push(action.note);
-      return { ...state, notes: notes };
+      return { ...state, notes: notes};
     case COPY_NOTE.FAILED:
       return { ...state, error: "Failed to copy note" };
     case DELETE_NOTE.SUCCESS:
@@ -72,7 +60,7 @@ const notes = (state = initialState, action) => {
         error: "Something went wrong with adding your note ",
       };
     case ADD_LABEL_TO_NOTE.SUCCESS:
-      notes[notes.findIndex((e) => e._id === action.note._id)] = action.note;
+      notes[notes.findIndex(e=> e._id === action.note._id)] = action.note
       return { ...state, notes: notes };
     case ADD_LABEL_TO_NOTE.FAILED:
       return { ...state, error: "We couldnt add label to your note" };
