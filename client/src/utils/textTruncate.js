@@ -1,6 +1,8 @@
 export const textTruncateWord = (text,maxLenght = 400) =>{
     if(text.length > maxLenght){
-        return text.slice(0, maxLenght).substring(0, Math.min(text.length, text.lastIndexOf(" "))) + "...";
+        const truncateToChar = text.slice(0,maxLenght)
+        const truncateToWord = truncateToChar.substring(0,Math.min(truncateToChar.length,truncateToChar.lastIndexOf(" ")))
+        return truncateToWord + " ..."
         
     }else{
         return text

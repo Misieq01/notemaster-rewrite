@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNote } from "../../../Hooks/useNote";
@@ -8,18 +8,17 @@ import List from "./List";
 import Note from "./Note";
 import { Labels, CornerIcon, LabelsPicker, ColorPicker } from "../../Components/index";
 
-import { ReactComponent as RemoveIcon } from "../../../Assets/Icons/Navigation/bin.svg";
-import { ReactComponent as ArchiveIcon } from "../../../Assets/Icons/Navigation/archive.svg";
-import { ReactComponent as CopyIcon } from "../../../Assets/Icons/NoteOptions/copy.svg";
-import { ReactComponent as ColorIcon } from "../../../Assets/Icons/NoteOptions/color.svg";
-import { ReactComponent as LabelIcon } from "../../../Assets/Icons/NoteOptions/label.svg";
-import { ReactComponent as DeleteIcon } from "../../../Assets/Icons/NoteOptions/remove-permanent.svg";
-import { ReactComponent as RestoreIcon } from "../../../Assets/Icons/Navigation/home.svg";
-import PinnedIcon from "../../../Assets/Icons/NoteOptions/pinned.svg";
-import NotPinnedIcon from "../../../Assets/Icons/NoteOptions/not-pinned.svg";
+import { ReactComponent as RemoveIcon } from "../../../Assets/Icons/bin.svg";
+import { ReactComponent as ArchiveIcon } from "../../../Assets/Icons/archive.svg";
+import { ReactComponent as CopyIcon } from "../../../Assets/Icons/copy.svg";
+import { ReactComponent as ColorIcon } from "../../../Assets/Icons/color.svg";
+import { ReactComponent as LabelIcon } from "../../../Assets/Icons/label.svg";
+import { ReactComponent as DeleteIcon } from "../../../Assets/Icons/remove-permanent.svg";
+import { ReactComponent as RestoreIcon } from "../../../Assets/Icons/home.svg";
+import PinnedIcon from "../../../Assets/Icons/pinned.svg";
+import NotPinnedIcon from "../../../Assets/Icons/not-pinned.svg";
 
-const Card = ({ _id }) => {
-  const [displayIcons, setdisplayIcons] = useState(false);
+const Card = React.memo(({_id}) => {
   const [data, action] = useNote(_id);
   const location = useLocation().pathname;
   const notesPanelType = useParams().type;
@@ -121,15 +120,12 @@ const Card = ({ _id }) => {
           className="card__container"
           style={{ background: data.color }}
           ref={cardRef}
-          onMouseOver={() => setdisplayIcons(true)}
-          onMouseLeave={() => setdisplayIcons(false)}
         >
           <Title />
-          <Content />
+          <Content/>
           <Labels labels={truncatedLabels} size="small" />
           <div
             className="card__icons-wrapper"
-            style={{ opacity: displayIcons ? 0.75 : 0 }}
             onClick={(event) => event.preventDefault()}
           >
             <Icons />
@@ -137,6 +133,6 @@ const Card = ({ _id }) => {
         </div>
       </Link>
   );
-};
+});
 
 export default Card;

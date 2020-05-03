@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import { useNote } from "../../Hooks/useNote";
@@ -37,11 +37,11 @@ const Editor = () => {
     backToNotePanel();
   };
 
-  const updateContentField = event =>{
-    action.updateField('content',event.target.value)
+  const updateContentField = value =>{
+    action.updateField('content',value)
   }
 
-  const TitleShadowHandler = top => {
+  const titleShadowHandler = top => {
     if (top === 0) {
       setTitleShadow("none");
     } else if (top !== 0 && titleShadow === "none") {
@@ -83,10 +83,10 @@ const Editor = () => {
           />
           <Body
             type={data.type}
-            GetInputData={updateContentField}
+            getInputData={updateContentField}
             content={data.content}
             background={data.color}
-            TitleShadowHandler={TitleShadowHandler}
+            titleShadowHandler={titleShadowHandler}
           />
           <Labels labels={data.labels} size="medium" />
           <div className="editor__option-wrapper">

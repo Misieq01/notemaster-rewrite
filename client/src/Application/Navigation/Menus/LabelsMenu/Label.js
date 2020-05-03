@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import {useDispatch} from 'react-redux'
 import {UpdateLabel,DeleteLabel} from '../../../Store/Actions/labelsActions'
 
-import DeleteIcon from "../../../../Assets/Icons/Labels/delete.svg";
-import AcceptIcon from "../../../../Assets/Icons/Labels/accept.svg";
+import DeleteIcon from "../../../../Assets/Icons/delete.svg";
+import AcceptIcon from "../../../../Assets/Icons/accept.svg";
 
 const Labels = ({
   name,

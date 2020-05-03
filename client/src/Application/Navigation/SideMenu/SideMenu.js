@@ -2,10 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { GetAllLabels } from "../../Store/Selectors/labelsSelectors";
-import { ReactComponent as ArchiveIcon } from "../../../Assets/Icons/Navigation/archive.svg";
-import { ReactComponent as BinIcon } from "../../../Assets/Icons/Navigation/bin.svg";
-import { ReactComponent as NotesIcon } from "../../../Assets/Icons/Navigation/home.svg";
-import { ReactComponent as LabelIcon } from "../../../Assets/Icons/Navigation/label.svg";
+import { ReactComponent as ArchiveIcon } from "../../../Assets/Icons/archive.svg";
+import { ReactComponent as BinIcon } from "../../../Assets/Icons/bin.svg";
+import { ReactComponent as NotesIcon } from "../../../Assets/Icons/home.svg";
+import { ReactComponent as LabelIcon } from "../../../Assets/Icons/label.svg";
 
 import Element from "./SideMenuElement";
 

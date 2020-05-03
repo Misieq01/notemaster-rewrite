@@ -6,9 +6,9 @@ import {getNoteById} from '../../Store/Selectors/notesSelectors'
 import {AddLabelToNote,DeleteLabelFromNote} from '../../Store/Actions/notesStuffActions'
 import Portal from '../ReactPortal'
 
-import CheckedBodIcon from "../../../Assets/Icons/Labels/square-check.svg";
-import UnCheckedBodIcon from "../../../Assets/Icons/Labels/square-uncheck.svg";
-import SearchIcon from "../../../Assets/Icons/Labels/search.svg";
+import CheckedBodIcon from "../../../Assets/Icons/square-check.svg";
+import UnCheckedBodIcon from "../../../Assets/Icons/square-uncheck.svg";
+import SearchIcon from "../../../Assets/Icons/search.svg";
 
 
 const LabelsPicker = ({ parent, id,componentType,close, ...props }) => {

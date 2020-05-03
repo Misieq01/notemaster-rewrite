@@ -9,6 +9,7 @@
     background: none;
     cursor: pointer;
     text-align: center;
+    &:hover > .card__icons-wrapper{opacity: 0.75}
     &:hover {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
     }
@@ -32,6 +33,7 @@
     width: 100%;
     height: 20px;
     margin: 10px 0;
+    opacity: 0;
   }
   &__icons-wrapper--icon {
     opacity: 0.65;

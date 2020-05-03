@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { AddLabel } from "../../../Store/Actions/labelsActions";
 import { GetAllLabels } from "../../../Store/Selectors/labelsSelectors";
 
-import SearchIcon from "../../../../Assets/Icons/Labels/search.svg";
-import AddIcon from "../../../../Assets/Icons/Labels/plus.svg";
+import SearchIcon from "../../../../Assets/Icons/search.svg";
+import AddIcon from "../../../../Assets/Icons/plus.svg";
 
 import Label from "./Label";
 

@@ -23,7 +23,7 @@ const ResizableTextArea = props => {
   }, [props.value, props.maxRows,props.minRows]);
 
   const HandleChange = event => {
-    props.onChange(event);
+    props.onChange(event.target.value);
     const lineHeight = props.lineHeight;
     const minRows = data.minRows;
     const maxRows = data.maxRows;

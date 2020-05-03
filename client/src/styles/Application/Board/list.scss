@@ -1,0 +1,39 @@
+.list{
+    &__container{
+        @include flex(column nowrap,flex-start,center);
+        width: 90%;
+        height: auto;
+    }
+    &__child-wrapper{
+       @include flex(column nowrap,flex-start,center);
+        height: auto;
+        width: 100%;
+    }
+    &__field{
+        @include flex();
+        width: 92%;
+        margin: 5px 0;
+        background: none;
+
+        &--child{
+            @extend .list__field;
+            margin-left: 10px;
+            width: calc(92% - 10px);
+        }
+    }
+    &__field--icon{
+        width: 14px;
+        height: 14px;
+        margin-right: 10px;
+        fill: $black;
+        cursor: pointer;
+    }
+    &__field--text{
+        width: calc(100% - 37px);
+        height: auto;
+        margin-top: 5px;
+        font-size: 15px;
+        background: none;
+        text-align: left;
+    }
+}

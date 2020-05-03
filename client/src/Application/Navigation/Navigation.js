@@ -12,12 +12,12 @@ import MenuButton from "./Buttons/MenuButton";
 import AddMenu from "./Menus/AddNotes";
 import Labels from "./Menus/LabelsMenu/Labels";
 
-import {ReactComponent as LabelsIcon} from "../../Assets/Icons/Navigation/labels.svg";
-import {ReactComponent as AddNoteIcon} from "../../Assets/Icons/Navigation/add-note.svg";
-import {ReactComponent as MenuIcon} from "../../Assets/Icons/Navigation/three-lines.svg";
-import {ReactComponent as SettingsIcon} from "../../Assets/Icons/Navigation/settings.svg";
-import {ReactComponent as AccountIcon} from "../../Assets/Icons/Navigation/account.svg";
-import {ReactComponent as LogoutIcon} from "../../Assets/Icons/Navigation/logout.svg";
+import {ReactComponent as LabelsIcon} from "../../Assets/Icons/labels.svg";
+import {ReactComponent as AddNoteIcon} from "../../Assets/Icons/add-note.svg";
+import {ReactComponent as MenuIcon} from "../../Assets/Icons/three-lines.svg";
+import {ReactComponent as SettingsIcon} from "../../Assets/Icons/settings.svg";
+import {ReactComponent as AccountIcon} from "../../Assets/Icons/account.svg";
+import {ReactComponent as LogoutIcon} from "../../Assets/Icons/logout.svg";
 
 const Navigation = ({ GetSearchValue, ...props }) => {
   const dispatch = useDispatch();

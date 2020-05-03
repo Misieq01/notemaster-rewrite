@@ -73,7 +73,7 @@ export const AddNote = (type) => (dispatch) => {
     color: "rgb(255,255,186)",
     important: false,
     title: "",
-    content: "",
+    content: type === 'note' ? "" : [{ text: "", id: 0, fields: [{ text: "", id: 0,parentId: 0 }] }],
     type: type,
     place: "Notes",
   };

@@ -2,10 +2,10 @@ import React from "react";
 
 import TextArea from "../Components/ExpandingTextArea";
 
-const NoteEditor = ({ background, GetInputData, content,TitleShadowHandler, ...props }) => {
+const NoteEditor = ({ background, getInputData, content,titleShadowHandler, ...props }) => {
   return (
     <TextArea
-      onChange={GetInputData}
+      onChange={getInputData}
       fieldName={"content"}
       placeholder="Place for your thoughts"
       lineHeight={30}
@@ -13,7 +13,7 @@ const NoteEditor = ({ background, GetInputData, content,TitleShadowHandler, ...p
       maxRows={20}
       value={content}
       background={background}
-      onScroll={TitleShadowHandler}
+      onScroll={titleShadowHandler}
     />
   );
 };

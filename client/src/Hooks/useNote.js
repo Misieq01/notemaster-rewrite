@@ -27,7 +27,6 @@ const UseNoteProto = {
     this.postUpdate(this._id)
   },
   updateField(field,value){
-    console.log(value)
       this._dispatch(changeNoteFieldValue(this._id,field,value))
   },
   postUpdate(){

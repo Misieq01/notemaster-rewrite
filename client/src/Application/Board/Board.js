@@ -29,7 +29,8 @@ const ContainerVariants = {
   open: { width: "calc(100% - 280px)", ...transition },
 };
 
-const NoteBoard = React.memo((props) => {
+const NoteBoard = () => {
+  console.log('redner')
   const dispatch = useDispatch()
   const notesPanelType = useParams().type;
   const allNotes = useSelector((state) => getAllNotes(state));
@@ -197,6 +198,6 @@ const NoteBoard = React.memo((props) => {
       </motion.div>
     </motion.div>
   );
-});
+};
 
 export default NoteBoard;
